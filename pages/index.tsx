@@ -7,14 +7,14 @@ export default function Home() {
   return (
     <>
       {/* <!-- Google tag (gtag.js) --> */}
-      <Script
+      {/* <Script
         strategy="lazyOnload"
         async
         src="YOUR GOOGLE_ANALYTICS_SCRIPT_URL"
       ></Script>
       <Script strategy="lazyOnload">
         {`YOUR GOOGLE_ANALYTICS_TRACKING_CODE`}
-      </Script>
+      </Script> */}
       <Head>
         <link
           rel="preload"
