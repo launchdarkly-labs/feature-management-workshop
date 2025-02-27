@@ -368,7 +368,6 @@ export const DEFAULT_AI_TRAVEL_PROMPT = {
 
 
 export const CSNAV_ITEMS = [
-//  arrowIconCSNAV,
   {
     hoverBackground: codeexamplesHoverCSNAV,
     noHoverBackground: codeexamplesNoHoverCSNAV,
@@ -385,15 +384,6 @@ export const CSNAV_ITEMS = [
     link: "/architecture",
     title: "Architecture",
   },
-  // release: {
-  //   icon: releaseIcon,
-  //   hoverBackground: releaseHoverCSNAV,
-  //   noHoverBackground: releaseNoHoverCSNAV,
-  //   iconHover: releaseIconHover,
-  //   type: "usecase",
-  //   link: "/bank",
-  //   title: "ToggleBank",
-  // },
 ]
 
 export const NAV_ELEMENTS_VARIANT = {

@@ -34,7 +34,7 @@ const TestimonialList = ({
   duration = 50,
 }: {
   list: any;
-  reverse: boolean;
+  reverse?: boolean;
   duration: number;
 }) => {
   return (
