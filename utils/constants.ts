@@ -367,9 +367,9 @@ export const DEFAULT_AI_TRAVEL_PROMPT = {
 
 
 
-export const CSNAV_ITEMS = {
-  arrow: arrowIconCSNAV,
-  codeexamples: {
+export const CSNAV_ITEMS = [
+//  arrowIconCSNAV,
+  {
     hoverBackground: codeexamplesHoverCSNAV,
     noHoverBackground: codeexamplesNoHoverCSNAV,
     icon: curlyBrackets,
@@ -377,7 +377,7 @@ export const CSNAV_ITEMS = {
     link: "/examples",
     title: "Code Examples",
   },
-  architecture: {
+   {
     icon: architectureIconCSNAV,
     hoverBackground: architectureHoverCSNAV,
     noHoverBackground: architectureNoHoverCSNAV,
@@ -385,43 +385,16 @@ export const CSNAV_ITEMS = {
     link: "/architecture",
     title: "Architecture",
   },
-  release: {
-    icon: releaseIcon,
-    hoverBackground: releaseHoverCSNAV,
-    noHoverBackground: releaseNoHoverCSNAV,
-    iconHover: releaseIconHover,
-    type: "usecase",
-    link: "/bank",
-    title: "ToggleBank",
-  },
-  monitor: {
-    icon: monitorIcon,
-    hoverBackground: monitorHoverCSNAV,
-    noHoverBackground: monitorNoHoverCSNAV,
-    iconHover: monitorIconHover,
-    type: "usecase",
-    link: "/investment",
-    title: "FrontierCapital",
-  },
-  ai: {
-    icon: aiIcon,
-    hoverBackground: aiHoverCSNAV,
-    noHoverBackground: aiNoHoverCSNAV,
-    iconHover: aiIconHover,
-    type: "usecase",
-    link: "/airways",
-    title: "LaunchAirways",
-  },
-  experiment: {
-    icon: experimentIcon,
-    hoverBackground: experimentHoverCSNAV,
-    noHoverBackground: experimentNoHoverCSNAV,
-    iconHover: experimentIconHover,
-    type: "usecase",
-    link: "/marketplace",
-    title: "GalaxyMarketplace",
-  },
-};
+  // release: {
+  //   icon: releaseIcon,
+  //   hoverBackground: releaseHoverCSNAV,
+  //   noHoverBackground: releaseNoHoverCSNAV,
+  //   iconHover: releaseIconHover,
+  //   type: "usecase",
+  //   link: "/bank",
+  //   title: "ToggleBank",
+  // },
+]
 
 export const NAV_ELEMENTS_VARIANT = {
   bank: {

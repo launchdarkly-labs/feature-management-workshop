@@ -4,9 +4,7 @@ const ScrollingTestimonials = () => {
   return (
     <div className="py-12 font-audimat">
       <div className="mb-8 px-4">
-        < p className="text-black text-4xl font-semibold  text-center">
-          Customer Testimonials
-        </p>
+        <p className="text-black text-4xl font-semibold  text-center">Customer Testimonials</p>
         <p className="text-center text-black text-sm mt-2 max-w-lg mx-auto">
           Take it from more than just us...
         </p>
@@ -30,7 +28,15 @@ const ScrollingTestimonials = () => {
   );
 };
 
-const TestimonialList = ({ list, reverse = false, duration = 50 }) => {
+const TestimonialList = ({
+  list,
+  reverse = false,
+  duration = 50,
+}: {
+  list: any;
+  reverse: boolean;
+  duration: number;
+}) => {
   return (
     <motion.div
       initial={{ translateX: reverse ? "-100%" : "0%" }}
@@ -50,7 +56,6 @@ const TestimonialList = ({ list, reverse = false, duration = 50 }) => {
               <span className="block mb-3 text-sm font-medium">{t.title}</span>
               <span className="block text-sm ">{t.info}</span>
             </div>
-            
           </div>
         );
       })}
