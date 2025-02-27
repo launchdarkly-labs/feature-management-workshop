@@ -1,15 +1,12 @@
-# Welcome to the LaunchDarkly 2023-2024 Core Booth Demo
+# Welcome to the LaunchDarkly 2025 ToggleBank Template Demo App
 
-This demo focuses on covering the 4 core use cases across... 
+This demo focuses on covering the 4 core use cases across in the financial industry in a fictional company Togglebank... 
 
-- De-Risking Releases
-- Targeted Experiences
-- Product Experimentation
-- Mobile Release Optimization
-
-
-Throughout this demo, you'll explore `Toggle Bank`, `Launch Airways`, and `Galaxy Marketplace`. 
+- Monitor & Remediate Releases
+- Accelerate AI
+- Optimize Experiences
+- Increase release velocity
 
 
 ## Setup Info
-Please follow instructions provided in this [confluence document](https://launchdarkly.atlassian.net/wiki/spaces/REV/pages/2773942302/Demo+Instances+2024+-+Technical):
+<!-- Please follow instructions provided in this [confluence document](https://launchdarkly.atlassian.net/wiki/spaces/REV/pages/2773942302/Demo+Instances+2024+-+Technical): -->
