@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -11,7 +9,6 @@ import { Menu } from "lucide-react";
 import { useRouter } from "next/router";
 import { CSCard } from "./ldcscard";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { CSNAV_ITEMS } from "@/utils/constants";
 
 export function CSNav() {
@@ -20,7 +17,7 @@ export function CSNav() {
   function goHome() {
     router.push("/");
   }
-
+  console.log(CSNAV_ITEMS);
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -35,73 +32,39 @@ export function CSNav() {
         <div className="grid gap-4 py-4">
           <div className="grid items-center gap-4">
             <div className="my-2">
-              <h3 className="text-ldlightgray font-sohnelight text-sm tracking-widest">CORE SERVICES DEMO</h3>
-            </div>
-            {Object.entries(CSNAV_ITEMS).map(([key, item]) => {
-              if (item.type === "usecase") {
-                return (
-                  <motion.div
-                    key={key}
-                    initial={{ x: -100, opacity: 0 }}
-                    whileHover={{ scale: 1.05 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.05, duration: 0.2 }}
-                    className="cursor-pointer"
-                  >
-                    <div onClick={() => router.push(item.link)} className={`bg-gradient-to-r from-${key}-start to-${key}-end rounded-3xl shadow-lg`}>
-                      <CSCard
-                        className="cursor-pointer"
-                        cardTitle={item.title}
-                        icon={item.icon}
-                        iconHover={item.iconHover}
-                        hoverBackground={item.hoverBackground}
-                        noHoverBackground={item.noHoverBackground}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              }
-              return null;
-            })}
-
-            <div className="my-2">
-              <h3 className="text-ldlightgray font-sohnelight tracking-widest text-sm">EXPLORE MORE</h3>
+              <h3 className="text-ldlightgray font-sohnelight tracking-widest text-sm">
+                EXPLORE MORE
+              </h3>
             </div>
 
-            {Object.entries(CSNAV_ITEMS).map(([key, item]) => {
-              if (item.type === "resource") {
-                return (
-                  <motion.div
-                    key={key}
-                    initial={{ x: -100, opacity: 0 }}
-                    whileHover={{ scale: 1.05 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.05, duration: 0.2 }}
-                    className="cursor-pointer"
+            {CSNAV_ITEMS.map((item, index: number) => {
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ x: -100, opacity: 0 }}
+                  whileHover={{ scale: 1.05 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.05, duration: 0.2 }}
+                  className="cursor-pointer"
+                >
+                  <div
+                    onClick={() => router.push(item.link)}
+                    className={`bg-gradient-to-r from-${index}-start to-${index}-end rounded-3xl shadow-lg`}
                   >
-                    <div onClick={() => router.push(item.link)} className={`bg-gradient-to-r from-${key}-start to-${key}-end rounded-3xl shadow-lg`}>
-                      <CSCard
-                        className="cursor-pointer"
-                        cardTitle={item.title}
-                        icon={item.icon}
-                        iconHover={item.icon}
-                        hoverBackground={item.hoverBackground}
-                        noHoverBackground={item.noHoverBackground}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              }
-              return null;
+                    <CSCard
+                      className="cursor-pointer"
+                      cardTitle={item.title}
+                      icon={item.icon}
+                      iconHover={item.icon}
+                      hoverBackground={item.hoverBackground}
+                      noHoverBackground={item.noHoverBackground}
+                    />
+                  </div>
+                </motion.div>
+              );
             })}
-
           </div>
         </div>
-        <SheetFooter>
-          {/* <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose> */}
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
