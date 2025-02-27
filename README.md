@@ -7,5 +7,5 @@ This demo focuses on covering the 4 core use cases across in the financial indus
 - Optimize Experiences
 - Increase Release Velocity
 
-## Setup Info
+<!-- ## Setup Info -->
 <!-- Please follow instructions provided in this [confluence document](https://launchdarkly.atlassian.net/wiki/spaces/REV/pages/2773942302/Demo+Instances+2024+-+Technical): -->
