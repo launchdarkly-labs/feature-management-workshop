@@ -1,10 +1,4 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useRouter } from "next/router";
 import { CSCard } from "./ldcscard";
@@ -26,7 +20,12 @@ export function CSNav() {
       <SheetContent className="overflow-y-scroll w-full" side="left">
         <SheetHeader className="">
           <SheetTitle className="font-sohne text-2xl">
-            <img src="ldLogo_black.svg" onClick={goHome} className="w-56 cursor-pointer" />
+            <img
+              src="ldLogo_black.svg"
+              onClick={goHome}
+              className="w-56 cursor-pointer"
+              title="Go Home"
+            />
           </SheetTitle>
         </SheetHeader>
         <div className="grid gap-4 py-4">
@@ -46,13 +45,13 @@ export function CSNav() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.05, duration: 0.2 }}
                   className="cursor-pointer"
+                  title={`Go to ${item.title}`}
                 >
                   <div
                     onClick={() => router.push(item.link)}
                     className={`bg-gradient-to-r from-${index}-start to-${index}-end rounded-3xl shadow-lg`}
                   >
                     <CSCard
-                      className="cursor-pointer"
                       cardTitle={item.title}
                       icon={item.icon}
                       iconHover={item.icon}
