@@ -11,8 +11,8 @@ export const CSCard = ({
   hoverBackground,
   noHoverBackground,
 }: {
-  className: string;
-  cardTitle: string;
+  className?: string;
+  cardTitle?: string;
   icon: any;
   iconHover: any;
   hoverBackground: any;
