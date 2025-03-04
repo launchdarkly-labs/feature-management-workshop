@@ -119,7 +119,7 @@ const homePageVariants: any = {
       {
         titleText: "Wealth Management",
         subtitleText: "Use next generation tooling to ensure your future is safe.",
-        imgSrc: "Smoochy.png",
+        imgSrc: "WealthManagementImg.png",
       },
       {
         titleText: "Sign Up For Toggle Card",
@@ -153,37 +153,4 @@ const homePageVariants: any = {
       },
     ],
   },
-  // airlines: {
-  //   name: "Launch Airways",
-  //   industryMessages:
-  //     "Launch into the skies. In the air in milliseconds, reach your destination without risk, and ship your travel dreams faster than ever before",
-  //   gradiantColor: "bg-gradient-airways ",
-  //   heroImg: {
-  //     imageA: airlineLoginHeroBackground.src,
-  //     imageB: airlineLoginHeroBackground.src,
-  //     imageC: airlineLoginHeroBackground.src,
-  //   },
-  //   cards: [
-  //     {
-  //       titleText: "Wheels up",
-  //       subtitleText:
-  //         "You deserve to arrive refreshed, stretch out in one of our luxurious cabins.",
-  //       imgSrc: airplaneImg.src,
-  //     },
-  //     {
-  //       titleText: "Ready for an adventure",
-  //       subtitleText: "The world is open for travel. Plan your next adventure.",
-  //       imgSrc: hotAirBalloonImg.src,
-  //     },
-  //     {
-  //       titleText: "Experience luxury",
-  //       subtitleText: "Choose Launch Platinum. Select on longer flights.",
-  //       imgSrc: airplaneDining.src,
-  //     },
-  //   ],
-  // },
-  // market: {
-  //   industryMessages: "Shop for the latest tech gadgets and more.",
-  //   gradiantColor: " bg-market-header grid items-center justify-center",
-  // },
 };

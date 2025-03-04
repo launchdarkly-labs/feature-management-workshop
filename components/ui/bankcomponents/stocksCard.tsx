@@ -38,10 +38,10 @@ export const StocksComponent: React.FC = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const { loginUser, userObject, updateAudienceContext } = useContext(LoginContext);
   const [runDemo, setRunDemo] = useState(false);
-  const [loggedUser, setInitialUser] = useState();
-  const [loggedEmail, setInitialEmail] = useState();
+  const [loggedUser, setInitialUser] = useState("");
+  const [loggedEmail, setInitialEmail] = useState("");
 
-  const generateInitialData = (initialValue) => {
+  const generateInitialData = (initialValue: number) => {
     const data = [];
     const startTime = new Date();
     startTime.setMinutes(startTime.getMinutes() - 10);
@@ -59,7 +59,7 @@ export const StocksComponent: React.FC = () => {
     return data;
   };
 
-  const generateChartData = (stockData) => {
+  const generateChartData = (stockData: StockData[]) => {
     const lastTenDataPoints = stockData.slice(-10);
     const secondLastValue =
       lastTenDataPoints.length > 1
@@ -88,30 +88,30 @@ export const StocksComponent: React.FC = () => {
     };
   };
 
-  const [stocks, setStocks] = useState([
+  const [stocks, setStocks] = useState<Stock[]>([
     {
       ticker: "LD",
       name: "LaunchDarkly",
       data: generateInitialData(1025),
-      image: "ld.png",
+      image: "banking/stocks/ld.png",
     },
     {
       ticker: "AAPL",
       name: "Apple Inc.",
       data: generateInitialData(190),
-      image: "apple.png",
+      image: "banking/stocks/apple.png",
     },
     {
       ticker: "TSLA",
       name: "Tesla",
       data: generateInitialData(205),
-      image: "tesla.png",
+      image: "banking/stocks/tesla.png",
     },
     {
       ticker: "NVDA",
       name: "Nvidia",
       data: generateInitialData(612),
-      image: "nvidia.png",
+      image: "banking/stocks/nvidia.png",
     },
   ]);
 
@@ -192,56 +192,56 @@ export const StocksComponent: React.FC = () => {
         <img src="stocksicon.png" onClick={toggleRunDemo} />
       </div>
       <p className=" font-bold font-sohne text-lg pt-2">Stocks</p>
-        <div className="space-y-4 ">
-          {stocks.map((stock, index) => (
-            <div key={index} className="mt-4 rounded-lg">
-              <div className="flex flex-row sm:flex-row justify-between items-center gap-x-3">
-                <div className="flex items-center gap-x-1">
-                  <img
-                    src={`${stock.image}`}
-                    alt={`${stock.ticker} logo`}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <span className="font-bold  font-sohne">{stock.name}</span>
-                </div>
-                <div className="w-[25%] h-[20%] xl:w-10 xl:h-10 mx-auto hidden sm:block">
-                  <Line
-                    data={generateChartData(stock.data)}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                        x: { display: false },
-                        y: { display: false },
+      <div className="space-y-4 ">
+        {stocks.map((stock, index) => (
+          <div key={index} className="mt-4 rounded-lg">
+            <div className="flex flex-row sm:flex-row justify-between items-center gap-x-3">
+              <div className="flex items-center gap-x-1">
+                <img
+                  src={`${stock.image}`}
+                  alt={`${stock.ticker} logo`}
+                  className="w-10 h-10 rounded-full"
+                />
+                <span className="font-bold  font-sohne">{stock.name}</span>
+              </div>
+              <div className="w-[25%] h-[20%] xl:w-10 xl:h-10 mx-auto hidden sm:block">
+                <Line
+                  data={generateChartData(stock.data)}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: { display: false },
+                      y: { display: false },
+                    },
+                    plugins: {
+                      legend: { display: false },
+                      tooltip: { enabled: false },
+                    },
+                    elements: {
+                      line: {
+                        tension: 0.6,
                       },
-                      plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false },
-                      },
-                      elements: {
-                        line: {
-                          tension: 0.6,
-                        },
-                      },
-                    }}
-                  />
-                </div>
-                <div className="flex items-center space-x-1">
-                  <span className="font-bold text-right block ">
-                    {stock.data[stock.data.length - 1].value}
-                  </span>
-                  {stock.data[stock.data.length - 1].direction === "up" ? (
-                    <IoIosArrowDropupCircle className="text-green-500" />
-                  ) : stock.data[stock.data.length - 1].direction === "down" ? (
-                    <IoIosArrowDropdownCircle className="text-red-500" />
-                  ) : stock.data[stock.data.length - 1].direction === null ? (
-                    <IoMdRemoveCircleOutline className="" />
-                  ) : null}
-                </div>
+                    },
+                  }}
+                />
+              </div>
+              <div className="flex items-center space-x-1">
+                <span className="font-bold text-right block ">
+                  {stock.data[stock.data.length - 1].value}
+                </span>
+                {stock.data[stock.data.length - 1].direction === "up" ? (
+                  <IoIosArrowDropupCircle className="text-green-500" />
+                ) : stock.data[stock.data.length - 1].direction === "down" ? (
+                  <IoIosArrowDropdownCircle className="text-red-500" />
+                ) : stock.data[stock.data.length - 1].direction === null ? (
+                  <IoMdRemoveCircleOutline className="" />
+                ) : null}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
