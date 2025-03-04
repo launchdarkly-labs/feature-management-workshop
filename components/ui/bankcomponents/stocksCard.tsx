@@ -157,7 +157,7 @@ export const StocksComponent: React.FC = () => {
         }
         const direction = newValue > lastValue ? "up" : newValue < lastValue ? "down" : null;
         const newTime = new Date().toLocaleTimeString();
-        const newDataPoint = { time: newTime, value: newValue, direction };
+        const newDataPoint: StockData = { time: newTime, value: newValue, direction };
 
         return {
           ...stock,
