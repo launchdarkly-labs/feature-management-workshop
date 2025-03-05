@@ -46,6 +46,7 @@ export const CSCard = ({
           height={48}
           style={{
             maxWidth: "100%",
+            width: "auto",
             height: "auto"
           }} />
         <p className="text-xl font-sohne flex-grow text-center mx-auto">{cardTitle}</p>
