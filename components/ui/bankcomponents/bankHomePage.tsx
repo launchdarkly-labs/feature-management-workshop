@@ -29,7 +29,7 @@ import {
   NavbarSignUpButton,
 } from "@/components/ui/NavComponent/NavbarSignUpInButton";
 import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { BANK } from "@/utils/constants";
 import LoginContext from "@/utils/contexts/login";
 
@@ -102,10 +102,23 @@ export default function BankHomePage() {
                     </NavbarRightSideWrapper>
                 </>
             </NavWrapper>
-
             <header className={`w-full relative `}>
-                <Image src={heroBackgroundCreditcard} className='absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg' alt="Icon Background" />
-                <Image src={heroBackgroundDollarSign} className='absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg' alt="Icon Background" />
+                <Image
+                    src={heroBackgroundCreditcard}
+                    className='absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg'
+                    alt="Icon Background"
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
+                <Image
+                    src={heroBackgroundDollarSign}
+                    className='absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg'
+                    alt="Icon Background"
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
 
                 <div
                     className="w-full max-w-7xl py-14 sm:py-[8rem] px-4 xl:px-0 xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
@@ -131,7 +144,6 @@ export default function BankHomePage() {
                     </div>
                 </div>
             </header>
-
             <div className="z-20 2xl:mt-20" >
                 <div className="flex justify-center mb-6 text-bankhomepagebuttonblue font-sohne tracking-widest">
                     EXPLORE   SOMETHING   NEW
@@ -150,8 +162,26 @@ export default function BankHomePage() {
                                 whileHover={{ scale: 1.2 }}
                             >
                                 <div className="relative w-24 h-24  cursor-pointer" >
-                                    <Image src={iconBackground} width={160} height={120} className="absolute inset-0 m-auto" alt="Icon Background" />
-                                    <Image src={ele?.imgSrc} width={40} height={96} className="absolute left-1 bottom-1 inset-0 m-auto" alt={ele?.title} />
+                                    <Image
+                                        src={iconBackground}
+                                        width={160}
+                                        height={120}
+                                        className="absolute inset-0 m-auto"
+                                        alt="Icon Background"
+                                        style={{
+                                            maxWidth: "100%",
+                                            height: "auto"
+                                        }} />
+                                    <Image
+                                        src={ele?.imgSrc}
+                                        width={40}
+                                        height={96}
+                                        className="absolute left-1 bottom-1 inset-0 m-auto"
+                                        alt={ele?.title}
+                                        style={{
+                                            maxWidth: "100%",
+                                            height: "auto"
+                                        }} />
                                 </div>
                                 <p className="text-xl mt-2 font-sohnelight">{ele?.title}</p>
                             </motion.div>
@@ -159,7 +189,6 @@ export default function BankHomePage() {
                     })}
                 </section>
             </div>
-
             <div className="container mx-auto my-10 p-4">
                 <div className="flex flex-col sm:flex-row mb-4 gap-x-8 p-4 mx-10 sm:mx-20 sm:pb-8 gap-y-10 sm:gap-y-0">
                     <div className="w-full sm:w-1/3 bg-blue-500 p-4 rounded-2xl bg-bank-gradient-blue-background shadow-2xl">
@@ -188,7 +217,15 @@ export default function BankHomePage() {
                             </div>
                         </div>
                         <div className="w-1/2 items-center justify-center hidden sm:flex">
-                            <Image src={retirmentBackground} width={200} height={50} alt="Retirement Background" />
+                            <Image
+                                src={retirmentBackground}
+                                width={200}
+                                height={50}
+                                alt="Retirement Background"
+                                style={{
+                                    maxWidth: "100%",
+                                    height: "auto"
+                                }} />
                         </div>
                     </div>
                 </div>
@@ -209,18 +246,20 @@ export default function BankHomePage() {
                             </div>
                         </div>
                         <div className="w-full hidden sm:block mt-4 sm:mt-0 sm:w-2/3 bg-purple-500 p-4 rounded-2xl relative">
-                            <Image src={specialOfferBackground} className='rounded-r-2xl' layout="fill" objectFit="cover" alt="Retirement Background" />
+                            <Image
+                                src={specialOfferBackground}
+                                className='rounded-r-2xl'
+                                alt="Retirement Background"
+                                fill
+                                sizes="100vw"
+                                style={{
+                                    objectFit: "cover"
+                                }} />
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
         </motion.main>
-
-
-
     );
 
 }

@@ -8,7 +8,7 @@ import LoginContext from "@/utils/contexts/login";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
 import { AccountTrends } from "@/components/ui/bankcomponents/accounttrends";
 import FederatedAccountModule from "@/components/ui/bankcomponents/federatedAccountModule";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
 import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
 import { motion } from "framer-motion";
@@ -72,20 +72,22 @@ export default function BankUserDashboard() {
 
     return (
         <>
-
-
-
             <Image
                 src={bankDashboardBackgroundRight}
                 className="fixed right-0 top-0 bottom-0 min-h-screen"
                 alt="Bank Home Page Background"
-            />
+                style={{
+                    maxWidth: "100%",
+                    height: "auto"
+                }} />
             <Image
                 src={bankDashboardBackgroundLeft}
                 className="fixed left-0 bottom-0 m-h-screen"
                 alt="Bank Home Page Background"
-            />
-
+                style={{
+                    maxWidth: "100%",
+                    height: "auto"
+                }} />
             <main className="w-full px-4 xl:px-0 mx-auto max-w-7xl relative ">
                 <NavWrapper>
                     <>
@@ -219,8 +221,6 @@ export default function BankUserDashboard() {
                     </div>
                 </div>
             </main>
-
-
         </>
     );
 }

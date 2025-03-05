@@ -6,7 +6,7 @@ import BankUserDashboard from "@/components/ui/bankcomponents/bankUserDashboard"
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
 import { motion } from "framer-motion";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export default function Bank() {
   const { isLoggedIn } = useContext(LoginContext);
@@ -24,12 +24,18 @@ export default function Bank() {
               src={bankHomePageBackgroundRight}
               className="fixed right-0 bottom-0 min-h-screen"
               alt="Bank Home Page Background"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <Image
               src={bankHomePageBackgroundLeft}
               className="fixed left-0 bottom-0 min-h-screen"
               alt="Bank Home Page Background"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <BankHomePage />
 
           </>
