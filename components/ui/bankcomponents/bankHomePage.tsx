@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, ReactElement } from "react";
 import { motion } from "framer-motion";
 import iconBackground from "@/public/banking/icons/icon-background.svg";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
@@ -189,78 +189,78 @@ export default function BankHomePage() {
           })}
         </section>
       </div>
-      {/* TODO: fix this reusable */}
       <div className="container mx-auto my-10 p-4">
-        <div className="flex flex-col sm:flex-row mb-4 gap-x-8 p-4 mx-10 sm:mx-20 sm:pb-8 gap-y-10 sm:gap-y-0">
-          <div className="w-full sm:w-1/3 bg-blue-500 p-4 rounded-2xl bg-bank-gradient-blue-background shadow-2xl">
-            <div className="flex flex-col gap-y-6 mt-4 ">
-              <div className="mx-8 text-sm text-gray-300 tracking-widest font-sohnelight">
-                MORTGAGE
-              </div>
-              <div className="mx-8 mt-4 text-white font-sohne text-xl">Set down new roots</div>
-              <div className="text-gray-300 mx-8 mb-4 font-sohne text-md">
-                From finding your new place to getting the keys – we're here to help.
-              </div>
-            </div>
-          </div>
-          <div className="w-full sm:w-2/3 bg-white p-4 rounded-2xl shadow-2xl flex">
-            <div className="flex flex-col gap-y-6 mt-4 w-full sm:w-1/2">
-              <div className="mx-8 text-sm text-gray-400 tracking-widest font-sohnelight">
-                RETIREMENT
-              </div>
-              <div className="mx-8 mt-4 text-blue-600 font-sohne text-xl">
-                Prepare for retirement
-              </div>
-              <div className="text-black mx-8 mb-4 font-sohne text-md">
-                Plan for the future by using our Retirement Planning Calculator.
-              </div>
-            </div>
-            <div className="w-1/2 items-center justify-center hidden sm:flex">
-              <Image
-                src={retirementBackground}
-                width={200}
-                height={50}
-                alt="Retirement Background"
-                priority
-                style={{
-                  width: "auto",
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
+        <AdContentRowWrapper
+          leftChild={
+            <div className="bg-bank-gradient-blue-background p-4 rounded-2xl h-full">
+              <AdContentCard
+                title={"MORTGAGE"}
+                subtitle="Set down new roots"
+                contentText="  From finding your new place to getting the keys – we're here to help."
               />
             </div>
-          </div>
-        </div>
-        {/* Second Row */}
-        <div className="p-4 mx-10 sm:mx-20 sm:pb-20">
-          <div className="flex flex-col sm:flex-row shadow-2xl p-y-10 sm:p-y-0 rounded-2xl sm:rounded-2xl ">
-            <div className="w-full sm:w-1/3 bg-white p-4 rounded-2xl sm:rounded-r-none">
-              <div className="flex flex-col gap-y-4 mt-4">
+          }
+          rightChild={
+            <div className="bg-white p-4 rounded-2xl flex">
+              <div className="flex flex-col gap-y-6 mt-4 w-full sm:w-1/2">
                 <div className="mx-8 text-sm text-gray-400 tracking-widest font-sohnelight">
-                  SPECIAL OFFER
+                  RETIREMENT
                 </div>
-                <div className="mx-8 mt-4 text-blue-600 font-sohne text-xl">Take advantage</div>
+                <div className="mx-8 mt-4 text-blue-600 font-sohne text-xl">
+                  Prepare for retirement
+                </div>
                 <div className="text-black mx-8 mb-4 font-sohne text-md">
-                  Exclusive credit card offer with premium service from Toggle Bank. Terms apply.
+                  Plan for the future by using our Retirement Planning Calculator.
                 </div>
               </div>
+              <div className="w-1/2 items-center justify-center hidden sm:flex">
+                <Image
+                  src={retirementBackground}
+                  width={200}
+                  height={50}
+                  alt="Retirement Background"
+                  priority
+                  style={{
+                    width: "auto",
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </div>
             </div>
-            <div className="w-full hidden sm:block mt-4 sm:mt-0 sm:w-2/3 bg-purple-500 p-4 rounded-2xl relative">
-              <Image
-                src={specialOfferBackground}
-                className="rounded-r-2xl"
-                alt="Retirement Background"
-                priority
-                sizes="100vw"
-                style={{
-                  objectFit: "cover",
-                  width: "100%",
-                  height: "100%",
-                }}
+          }
+        />
+
+        {/* Second Row */}
+        <AdContentRowWrapper
+          xGap={"gap-x-0"}
+          leftChild={
+            <div className=" bg-white p-4 rounded-tl-2xl rounded-bl-2xl h-full">
+              <AdContentCard
+                title={"SPECIAL OFFER"}
+                titleColor="!text-gray-400"
+                subtitle="Take advantage"
+                subtitleColor="!text-blue-600"
+                contentText="Exclusive credit card offer with premium service from Toggle Bank. Terms apply."
+                contentTextColor="!text-black"
               />
             </div>
-          </div>
-        </div>
+          }
+          rightChild={
+            <Image
+              src={specialOfferBackground}
+              className="rounded-r-2xl"
+              alt="Retirement Background"
+              priority
+              sizes="100vw"
+              style={{
+                objectFit: "cover",
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          }
+        />
       </div>
     </motion.main>
   );
@@ -284,4 +284,51 @@ const bankHomePageValues: any = {
     { imgSrc: mortgageOnHover, title: "Savings" },
     { imgSrc: savingsOnHover, title: "Mortgages" },
   ],
+};
+
+const AdContentRowWrapper = ({
+  leftChild,
+  rightChild,
+  xGap,
+}: {
+  leftChild: ReactElement;
+  rightChild: ReactElement;
+  xGap?: string;
+}) => {
+  return (
+    <div
+      className={`flex flex-col sm:flex-row mb-4 gap-x-8 p-4 mx-10 sm:mx-20 sm:pb-8 gap-y-10 sm:gap-y-0 ${xGap}`}
+    >
+      <div className="w-full sm:w-1/3 rounded-2xl shadow-2xl">{leftChild}</div>
+      <div className="w-full sm:w-2/3 rounded-2xl shadow-2xl ">{rightChild}</div>
+    </div>
+  );
+};
+
+const AdContentCard = ({
+  title,
+  titleColor,
+  subtitle,
+  subtitleColor,
+  contentText,
+  contentTextColor,
+}: {
+  title: string;
+  titleColor?: string;
+  subtitle: string;
+  subtitleColor?: string;
+  contentText: string;
+  contentTextColor?: string;
+}) => {
+  return (
+    <div className="flex flex-col gap-y-6 my-auto h-full justify-center ">
+      <div className={`mx-8 text-sm text-gray-300 tracking-widest font-sohnelight ${titleColor}`}>
+        {title}
+      </div>
+      <div className={`mx-8 mt-4 text-white font-sohne text-xl ${subtitleColor}`}>{subtitle}</div>
+      <div className={`text-gray-300 mx-8 mb-4 font-sohne text-md ${contentTextColor}`}>
+        {contentText}
+      </div>
+    </div>
+  );
 };
