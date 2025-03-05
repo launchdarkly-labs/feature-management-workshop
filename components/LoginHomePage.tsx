@@ -104,27 +104,27 @@ const homePageVariants: any = {
     industryMessages: "More than 100,000 customers worldwide",
     gradiantColor: "bg-gradient-bank",
     bankingServicesArr: [
-      { imgSrc: "Checking.png", title: "Checking" },
-      { imgSrc: "Business.png", title: "Business" },
-      { imgSrc: "Credit.png", title: "Credit Card" },
-      { imgSrc: "Savings.png", title: "Savings" },
-      { imgSrc: "Mortgage.png", title: "Mortgages" },
+      { imgSrc: "banking/Checking.png", title: "Checking" },
+      { imgSrc: "banking/Business.png", title: "Business" },
+      { imgSrc: "banking/Credit.png", title: "Credit Card" },
+      { imgSrc: "banking/Savings.png", title: "Savings" },
+      { imgSrc: "banking/Mortgage.png", title: "Mortgages" },
     ],
     cards: [
       {
         titleText: "Home Mortgages",
         subtitleText: "Toggle the light on and come home. Were here to help.",
-        imgSrc: "House.png",
+        imgSrc: "banking/House.png",
       },
       {
         titleText: "Wealth Management",
         subtitleText: "Use next generation tooling to ensure your future is safe.",
-        imgSrc: "Smoochy.png",
+        imgSrc: "banking/WealthManagementImg.png",
       },
       {
         titleText: "Sign Up For Toggle Card",
         subtitleText: "Special offers for our most qualified members. Terms apply.",
-        imgSrc: "Cards.png",
+        imgSrc: "banking/Cards.png",
       },
     ],
   },
@@ -153,37 +153,4 @@ const homePageVariants: any = {
       },
     ],
   },
-  // airlines: {
-  //   name: "Launch Airways",
-  //   industryMessages:
-  //     "Launch into the skies. In the air in milliseconds, reach your destination without risk, and ship your travel dreams faster than ever before",
-  //   gradiantColor: "bg-gradient-airways ",
-  //   heroImg: {
-  //     imageA: airlineLoginHeroBackground.src,
-  //     imageB: airlineLoginHeroBackground.src,
-  //     imageC: airlineLoginHeroBackground.src,
-  //   },
-  //   cards: [
-  //     {
-  //       titleText: "Wheels up",
-  //       subtitleText:
-  //         "You deserve to arrive refreshed, stretch out in one of our luxurious cabins.",
-  //       imgSrc: airplaneImg.src,
-  //     },
-  //     {
-  //       titleText: "Ready for an adventure",
-  //       subtitleText: "The world is open for travel. Plan your next adventure.",
-  //       imgSrc: hotAirBalloonImg.src,
-  //     },
-  //     {
-  //       titleText: "Experience luxury",
-  //       subtitleText: "Choose Launch Platinum. Select on longer flights.",
-  //       imgSrc: airplaneDining.src,
-  //     },
-  //   ],
-  // },
-  // market: {
-  //   industryMessages: "Shop for the latest tech gadgets and more.",
-  //   gradiantColor: " bg-market-header grid items-center justify-center",
-  // },
 };

@@ -32,7 +32,7 @@ export const STARTER_PERSONAS: Persona[] = [
   {
     personaname: "Alysha",
     personatier: PERSONA_TIER_STANARD,
-    personaimage: "beta.png",
+    personaimage: "personas/beta.png",
     personaemail: "alysha@launchmail.io",
     personarole: PERSONA_ROLE_BETA,
     personalaunchclubstatus: LAUNCH_CLUB_STANDARD,
@@ -41,7 +41,7 @@ export const STARTER_PERSONAS: Persona[] = [
   {
     personaname: "Jenn",
     personatier: PERSONA_TIER_STANARD,
-    personaimage: "woman.png",
+    personaimage: "personas/woman.png",
     personaemail: "jenn@launchmail.io",
     personarole: PERSONA_ROLE_DEVELOPER,
     personalaunchclubstatus: LAUNCH_CLUB_STANDARD,
@@ -50,7 +50,7 @@ export const STARTER_PERSONAS: Persona[] = [
   {
     personaname: "Cody",
     personatier: PERSONA_TIER_STANARD,
-    personaimage: "standard.jpg",
+    personaimage: "personas/standard.jpg",
     personaemail: "cody@launchmail.io",
     personarole: PERSONA_ROLE_USER,
     personalaunchclubstatus: LAUNCH_CLUB_STANDARD,

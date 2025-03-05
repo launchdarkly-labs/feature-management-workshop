@@ -45,7 +45,7 @@ const NavBar = ({ cart, setCart, className, variant, ...props } : NavBarProps) =
         </div>
         <div className="ml-2 sm:ml-8 flex items-center">
           <img
-            src={navElementsVariant[variant]?.logoImg.src || "ld-logo.svg"}
+            src={navElementsVariant[variant]?.logoImg.src || "ldLogo/ld-logo.svg"}
             className="pr-2 h-10 cursor-pointer"
           />
         </div>
@@ -160,7 +160,7 @@ const NavBar = ({ cart, setCart, className, variant, ...props } : NavBarProps) =
                   <PopoverTrigger>
                     <Avatar>
                       <AvatarImage
-                        src={userObject?.personaimage || "ToggleAvatar.png"}
+                        src={userObject?.personaimage}
                         className=""
                       />
                     </Avatar>
@@ -171,7 +171,7 @@ const NavBar = ({ cart, setCart, className, variant, ...props } : NavBarProps) =
                       <>
                         <div className="mx-auto flex place-content-center w-full">
                           <img
-                            src={userObject?.personaimage || "ToggleAvatar.png"}
+                            src={userObject?.personaimage || "personas/ToggleAvatar.png"}
                             className="rounded-full h-48"
                           />
                         </div>

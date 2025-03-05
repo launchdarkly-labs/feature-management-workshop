@@ -57,7 +57,7 @@ const WealthManagementSheet = ({
       variants={variants}
       className="bg-white border border-zinc-200 rounded-xl shadow-xl h-full flex flex-col p-10 items-center justify-center"
     >
-      <img src="/chart.png" height={60} width={60} alt="chart" />
+      <img src="banking/chart.png" height={60} width={60} alt="chart" />
       <p className="flex font-sohne py-2 text-3xl text-center">
         Review your wealth management insights
       </p>
@@ -99,7 +99,7 @@ const WealthManagementSheet = ({
                       </p>
 
                       <div className="flex items-center">
-                        <img src="aws.png" />
+                        <img src="banking/aws.png" />
                       </div>
                     </div>
                     <div className="relative py-2 sm:col-span-1 lg:col-span-2 w-full overflow-y-auto mb-4 ">
