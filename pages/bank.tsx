@@ -24,12 +24,20 @@ export default function Bank() {
               src={bankHomePageBackgroundRight}
               className="fixed right-0 bottom-0 min-h-screen"
               alt="Bank Home Page Background"
-            />
+              style={{
+                maxWidth: "100%",
+                width: "auto",
+                height: "auto"
+              }} />
             <Image
               src={bankHomePageBackgroundLeft}
               className="fixed left-0 bottom-0 min-h-screen"
               alt="Bank Home Page Background"
-            />
+              style={{
+                maxWidth: "100%",
+                width: "auto",
+                height: "auto"
+              }} />
             <BankHomePage />
 
           </>
