@@ -15,7 +15,7 @@ export default function Home() {
         {`YOUR GOOGLE_ANALYTICS_TRACKING_CODE`}
       </Script> */}
       <Head>
-        {/* <link
+        <link
           rel="preload"
           href={"@/public/banking/backgrounds/bank-homepage-background-right.svg"}
           as="image"
@@ -24,7 +24,7 @@ export default function Home() {
           rel="preload"
           href={"@/public/banking/backgrounds/bank-homepage-background-left.svg"}
           as="image"
-        /> */}
+        />
       </Head>
 
       <Bank />
