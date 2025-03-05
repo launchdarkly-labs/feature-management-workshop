@@ -11,7 +11,7 @@ export function CSNav() {
   function goHome() {
     router.push("/");
   }
-  console.log(CSNAV_ITEMS);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -21,7 +21,7 @@ export function CSNav() {
         <SheetHeader className="">
           <SheetTitle className="font-sohne text-2xl">
             <img
-              src="ldLogo_black.svg"
+              src="ldLogo/ldLogo_black.svg"
               onClick={goHome}
               className="w-56 cursor-pointer"
               title="Go Home"

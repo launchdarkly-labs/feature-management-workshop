@@ -41,7 +41,7 @@ export default function ArchitecturePage() {
                 Flag values initialize and store in memory in 25ms, update
                 within 200ms
               </p>
-              <img src="/img/architecture.png" className="my-4 w-full" />
+              <img src="/architecture/architecture.png" className="my-4 w-full" />
               <h3 className="text-2xl font-bold my-3.5">
                 Lifecycle of the SDK
               </h3>
@@ -49,7 +49,7 @@ export default function ArchitecturePage() {
                 Evaluate stored flag values from memory instantly, with no
                 performance penalty
               </p>
-              <img src="/img/lifecycle.png" className="my-4 w-full" />
+              <img src="/architecture/lifecycle.png" className="my-4 w-full" />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
@@ -64,7 +64,7 @@ export default function ArchitecturePage() {
                 A global <strong>Flag Delivery Network</strong> ensures
                 consistent performance from anywhere.
               </p>
-              <img src="/img/FDN.avif" className="my-4 w-full" />
+              <img src="/architecture/FDN.avif" className="my-4 w-full" />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
@@ -116,7 +116,7 @@ export default function ArchitecturePage() {
                   discovery.
                 </li>
               </ul>
-              <img src="/img/security.png" className="my-4 w-full" />
+              <img src="/architecture/security.png" className="my-4 w-full" />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
@@ -128,7 +128,7 @@ export default function ArchitecturePage() {
                 Resilient Architecture
               </h3>
               <p>Multi-zone, Relay Proxy, local fallback</p>
-              <img src="/img/resiliency.png" className="my-4 w-full" />
+              <img src="/architecture/resiliency.png" className="my-4 w-full" />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
@@ -143,7 +143,7 @@ export default function ArchitecturePage() {
                 Architect and build platforms that operate globally. Build at
                 internet scale.
               </p>
-              <img src="/img/speed.png" className="my-4 w-full" />
+              <img src="/architecture/speed.png" className="my-4 w-full" />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

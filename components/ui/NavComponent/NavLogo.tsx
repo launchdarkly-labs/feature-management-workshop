@@ -11,7 +11,7 @@ const NavLogo = ({ srcHref, altText }: { srcHref?: string; altText?: string }) =
       {srcHref ? (
         <img src={srcHref} alt={`${altText ? altText : "industry"} logo`} className="h-10 pr-2" />
       ) : (
-        <img src="ld-logo.svg" alt="Default logo" className="h-10 pr-2" />
+        <img src="ldLogo/ld-logo.svg" alt="Default logo" className="h-10 pr-2" />
       )}
     </div>
   );

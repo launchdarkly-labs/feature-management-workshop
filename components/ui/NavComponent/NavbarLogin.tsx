@@ -31,7 +31,7 @@ const NavbarLogin = ({ variant }) => {
     <Popover id="navbar-login">
       <PopoverTrigger>
         <Avatar className="shadow-xl">
-          <AvatarImage src={userObject?.personaimage || "ToggleAvatar.png"} className="" />
+          <AvatarImage src={userObject?.personaimage} className="" />
         </Avatar>
       </PopoverTrigger>
 
@@ -40,7 +40,7 @@ const NavbarLogin = ({ variant }) => {
           <>
             <div className="mx-auto flex place-content-center w-full">
               <img
-                src={userObject?.personaimage || "ToggleAvatar.png"}
+                src={userObject?.personaimage || "personas/ToggleAvatar.png"}
                 className="rounded-full h-48"
               />
             </div>

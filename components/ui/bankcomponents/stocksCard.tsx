@@ -189,7 +189,7 @@ export const StocksComponent: React.FC = () => {
       <div
         className={`bg-blue-300/30 rounded-full flex items-center justify-center w-10 h-10 border-2`}
       >
-        <img src="stocksicon.png" onClick={toggleRunDemo} />
+        <img src="banking/stocks/stocksicon.png" onClick={toggleRunDemo} />
       </div>
       <p className=" font-bold font-sohne text-lg pt-2">Stocks</p>
       <div className="space-y-4 ">

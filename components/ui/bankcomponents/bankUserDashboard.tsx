@@ -212,10 +212,10 @@ export default function BankUserDashboard() {
 
                 <div className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
                     <div className="w-full lg:w-1/2">
-                        <img src="CC.png" className="shadow-xl rounded-xl" />
+                        <img src="banking/SpecialOffer-CC.svg" className="shadow-xl rounded-xl w-full" />
                     </div>
                     <div className="w-full lg:w-1/2 flex justify-end ">
-                        <img src="Loan.png" className="shadow-xl rounded-xl" />
+                        <img src="banking/SpecialOffer-CarLoan.svg" className="shadow-xl rounded-xl w-full" />
                     </div>
                 </div>
             </main>
