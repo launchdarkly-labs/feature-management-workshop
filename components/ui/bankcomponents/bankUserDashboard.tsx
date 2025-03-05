@@ -76,16 +76,20 @@ export default function BankUserDashboard() {
                 src={bankDashboardBackgroundRight}
                 className="fixed right-0 top-0 bottom-0 min-h-screen"
                 alt="Bank Home Page Background"
+                priority
                 style={{
                     maxWidth: "100%",
+                    width: "auto",
                     height: "auto"
                 }} />
             <Image
                 src={bankDashboardBackgroundLeft}
                 className="fixed left-0 bottom-0 m-h-screen"
                 alt="Bank Home Page Background"
+                priority
                 style={{
                     maxWidth: "100%",
+                    width: "auto",
                     height: "auto"
                 }} />
             <main className="w-full px-4 xl:px-0 mx-auto max-w-7xl relative ">

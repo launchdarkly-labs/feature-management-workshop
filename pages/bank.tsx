@@ -26,6 +26,7 @@ export default function Bank() {
               alt="Bank Home Page Background"
               style={{
                 maxWidth: "100%",
+                width: "auto",
                 height: "auto"
               }} />
             <Image
@@ -34,6 +35,7 @@ export default function Bank() {
               alt="Bank Home Page Background"
               style={{
                 maxWidth: "100%",
+                width: "auto",
                 height: "auto"
               }} />
             <BankHomePage />
