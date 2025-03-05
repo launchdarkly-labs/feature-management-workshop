@@ -26,7 +26,7 @@ for (let iteration = 0; iteration < iterationCount; iteration++) {
     }
 
     // If a labeled product is found, continue with the test logic
-    const labelAccent = await labeledProduct.textContent() || "none";
+    const labelAccent = (await labeledProduct.textContent()) || "none";
     const addToCart = shouldClickAddToCart({ label: labelAccent });
 
     const checkout = addToCart && shouldClickCheckout();  // Notice the change here, we aren't passing the label anymore

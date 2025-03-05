@@ -1,6 +1,6 @@
 import { cn } from "@/utils/utils";
 import React, { useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import arrow from "@/public/sidenav/arrow.svg";
 
 export const CSCard = ({

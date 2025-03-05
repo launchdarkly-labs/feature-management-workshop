@@ -29,7 +29,7 @@ import {
   NavbarSignUpButton,
 } from "@/components/ui/NavComponent/NavbarSignUpInButton";
 import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { BANK } from "@/utils/constants";
 import LoginContext from "@/utils/contexts/login";
 

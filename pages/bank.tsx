@@ -6,7 +6,7 @@ import BankUserDashboard from "@/components/ui/bankcomponents/bankUserDashboard"
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function Bank() {
   const { isLoggedIn } = useContext(LoginContext);
