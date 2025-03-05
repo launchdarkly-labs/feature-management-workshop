@@ -18,11 +18,12 @@ Avatar.displayName = AvatarPrimitive.Root.displayName;
 const AvatarImage = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Image>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, src = "personas/ToggleAvatar.png", ...props }, ref) => (
+>(({ className, src, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
     className={cn("aspect-square h-full w-full hover:brightness-[120%]", className)}
-    src={src}
+    src={src ? src : "personas/ToggleAvatar.png"}
+    alt="Avatar"
     {...props}
   />
 ));

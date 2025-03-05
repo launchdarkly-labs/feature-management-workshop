@@ -3,17 +3,16 @@ import React from "react";
 const NavLinkButton = ({
   text,
   index,
-  navlinkHref,
   navLinkColor,
+  href,
 }: {
   text: string;
   index: number;
-  navlinkHref: string;
+  href: string;
   navLinkColor: string;
 }) => {
   return (
     <button
-      href={navlinkHref}
       className={`cursor-default hidden sm:block bg-transparent pb-[3rem] items-start text-base font-sohnelight font-medium transition-colors bg-no-repeat bg-bottom bg-[length:100%_3px] 
                   ${
                     index === 0
@@ -21,7 +20,7 @@ const NavLinkButton = ({
                       : `text-navlink  hover:text-navbarlightgrey hover:bg-${navLinkColor}`
                   }`}
     >
-      {text}
+      <a href={href}> {text}</a>
     </button>
   );
 };

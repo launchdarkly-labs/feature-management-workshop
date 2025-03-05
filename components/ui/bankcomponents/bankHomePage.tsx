@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { motion } from "framer-motion";
 import iconBackground from "@/public/banking/icons/icon-background.svg";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
@@ -13,7 +13,7 @@ import business from "@/public/banking/icons/business.svg";
 import businessOnHover from "@/public/banking/icons/business-on-hover.svg";
 import savings from "@/public/banking/icons/savings.svg";
 import savingsOnHover from "@/public/banking/icons/savings-on-hover.svg";
-import retirmentBackground from "@/public/banking/backgrounds/bank-homepage-retirment-card-background.svg";
+import retirementBackground from "@/public/banking/backgrounds/bank-homepage-retirment-card-background.svg";
 import specialOfferBackground from "@/public/banking/backgrounds/bank-homepage-specialoffer-background.svg";
 import NavWrapper from "@/components/ui/NavComponent/NavWrapper";
 import CSNavWrapper from "@/components/ui/NavComponent/CSNavWrapper";
@@ -53,8 +53,8 @@ export default function BankHomePage() {
             <>
               {NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
                 return (
-                  <DropdownMenuItem href={navLink?.href} key={index}>
-                    {navLink?.text}
+                  <DropdownMenuItem key={index}>
+                    <a href={navLink?.href}> {navLink?.text}</a>
                   </DropdownMenuItem>
                 );
               })}
@@ -98,8 +98,10 @@ export default function BankHomePage() {
           src={heroBackgroundCreditcard}
           className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg"
           alt="Icon Background"
+          priority
           style={{
             maxWidth: "100%",
+            width: "auto",
             height: "auto",
           }}
         />
@@ -107,8 +109,10 @@ export default function BankHomePage() {
           src={heroBackgroundDollarSign}
           className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg"
           alt="Icon Background"
+          priority
           style={{
             maxWidth: "100%",
+            width: "auto",
             height: "auto",
           }}
         />
@@ -158,8 +162,10 @@ export default function BankHomePage() {
                     height={120}
                     className="absolute inset-0 m-auto"
                     alt="Icon Background"
+                    priority
                     style={{
                       maxWidth: "100%",
+                      width: "auto",
                       height: "auto",
                     }}
                   />
@@ -169,8 +175,10 @@ export default function BankHomePage() {
                     height={96}
                     className="absolute left-1 bottom-1 inset-0 m-auto"
                     alt={ele?.title}
+                    priority
                     style={{
                       maxWidth: "100%",
+                      width: "auto",
                       height: "auto",
                     }}
                   />
@@ -181,6 +189,7 @@ export default function BankHomePage() {
           })}
         </section>
       </div>
+      {/* TODO: fix this reusable */}
       <div className="container mx-auto my-10 p-4">
         <div className="flex flex-col sm:flex-row mb-4 gap-x-8 p-4 mx-10 sm:mx-20 sm:pb-8 gap-y-10 sm:gap-y-0">
           <div className="w-full sm:w-1/3 bg-blue-500 p-4 rounded-2xl bg-bank-gradient-blue-background shadow-2xl">
@@ -208,11 +217,13 @@ export default function BankHomePage() {
             </div>
             <div className="w-1/2 items-center justify-center hidden sm:flex">
               <Image
-                src={retirmentBackground}
+                src={retirementBackground}
                 width={200}
                 height={50}
                 alt="Retirement Background"
+                priority
                 style={{
+                  width: "auto",
                   maxWidth: "100%",
                   height: "auto",
                 }}
@@ -239,10 +250,12 @@ export default function BankHomePage() {
                 src={specialOfferBackground}
                 className="rounded-r-2xl"
                 alt="Retirement Background"
-                fill
+                priority
                 sizes="100vw"
                 style={{
                   objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
                 }}
               />
             </div>

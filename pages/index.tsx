@@ -14,18 +14,6 @@ export default function Home() {
       <Script strategy="lazyOnload">
         {`YOUR GOOGLE_ANALYTICS_TRACKING_CODE`}
       </Script> */}
-      <Head>
-        <link
-          rel="preload"
-          href={"@/public/banking/backgrounds/bank-homepage-background-right.svg"}
-          as="image"
-        />
-        <link
-          rel="preload"
-          href={"@/public/banking/backgrounds/bank-homepage-background-left.svg"}
-          as="image"
-        />
-      </Head>
 
       <Bank />
     </>
