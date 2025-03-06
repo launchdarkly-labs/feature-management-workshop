@@ -1,6 +1,5 @@
 import { useContext, ReactElement } from "react";
 import { motion } from "framer-motion";
-import iconBackground from "@/public/banking/icons/icon-background.svg";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
 import heroBackgroundDollarSign from "@/public/banking/backgrounds/bank-hero-background-dollarsign.svg";
 import checking from "@/public/banking/icons/checking.svg";
@@ -30,6 +29,7 @@ import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import Image from "next/image";
 import { BANK } from "@/utils/constants";
 import LoginContext from "@/utils/contexts/login";
+import { Button } from "../button";
 
 export default function BankHomePage() {
   const { isLoggedIn } = useContext(LoginContext);
@@ -84,7 +84,7 @@ export default function BankHomePage() {
             <>
               {!isLoggedIn && (
                 <>
-                  <NavbarSignUpButton backgroundColor="bg-gradient-bank" />
+                  <NavbarSignUpButton backgroundColor="bg-gradient-bank hidden sm:block" />
                 </>
               )}
 
@@ -93,10 +93,10 @@ export default function BankHomePage() {
           </NavbarRightSideWrapper>
         </>
       </NavWrapper>
-      <header className={`w-full relative `}>
+      <header className={`w-full relative mx-auto max-w-7xl`}>
         <Image
           src={heroBackgroundCreditcard}
-          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg"
+          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg opacity-40 sm:opacity-100 z-[-100]"
           alt="Icon Background"
           priority
           style={{
@@ -107,7 +107,7 @@ export default function BankHomePage() {
         />
         <Image
           src={heroBackgroundDollarSign}
-          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg"
+          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg opacity-40 sm:opacity-100 z-[-100]"
           alt="Icon Background"
           priority
           style={{
@@ -117,36 +117,36 @@ export default function BankHomePage() {
           }}
         />
 
-        <div className="w-full max-w-7xl py-14 sm:py-[8rem] px-4 xl:px-0 xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div className="grid grid-cols-2 sm:flex flex-row sm:flex-col text-white w-full sm:w-1/2 justify-start mb-4 pr-10 sm:mb-0 gap-y-10 z-10">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl  font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent px-2 sm:px-6 md:px-8 lg:px-10 xl:px-8">
+        <section className="w-full max-w-7xl py-14 sm:py-[8rem] px-4 xl:px-0 xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:flex flex-row sm:flex-col text-white w-full sm:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
+            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent px-2 sm:px-6 md:px-8 lg:px-10 xl:px-8">
               Spend smart with Toggle Bank
             </h1>
-            <h2 className="text-sm sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black px-6 sm:px-6 md:px-8 lg:px-10 xl:px-8 ">
+            <p className="text-lg sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black px-6 sm:px-6 md:px-8 lg:px-10 xl:px-8 ">
               {bankHomePageValues?.industryMessages}
-            </h2>
+            </p>
             <div className="flex space-x-4 px-6 sm:px-2 md:px-4 lg:px-6 xl:px-8">
-              <button className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
+              <Button className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
                 Join Now
-              </button>
-              <button className="shadow-2xl border hover:bg-bank-gradient-text-color border-blue-800 hover:border-bankhomepagebuttonblue hover:text-white text-blue-800  rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
+              </Button>
+              <Button className="shadow-2xl border bg-white hover:bg-bank-gradient-text-color border-blue-800 hover:border-bankhomepagebuttonblue hover:text-white text-blue-800  rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
                 Learn More
-              </button>
+              </Button>
             </div>
           </div>
 
           <div className="w-full sm:w-auto z-10">{/* <BankLoginComponent /> */}</div>
-        </div>
+        </section>
       </header>
-      <div className="z-20 2xl:mt-20">
-        <div className="flex justify-center mb-6 text-bankhomepagebuttonblue font-sohne tracking-widest">
+      <section className="2xl:mt-20 mx-auto max-w-7xl">
+        <h2 className="flex justify-center text-bankhomepagebuttonblue font-sohne tracking-widest text-md sm:text-xl 2xl:text-2xl">
           EXPLORE SOMETHING NEW
-        </div>
+        </h2>
 
         <section
-          className="w-3/4 grid grid-cols-2 sm:flex sm:flex-row font-sohnelight text-center justify-center mx-auto gap-y-8 
+          className="w-full sm:w-3/4 grid grid-cols-2 sm:flex sm:flex-row font-sohnelight text-center justify-center mx-auto gap-y-8 
             sm:gap-y-0 gap-x-8
-          sm:gap-x-12 lg:gap-x-24 py-8 z-20"
+          sm:gap-x-12 lg:gap-x-24 py-8 px-4 sm:px-0"
         >
           {bankHomePageValues?.bankingServicesArr.map((ele: any, i: number) => {
             return (
@@ -155,25 +155,10 @@ export default function BankHomePage() {
                 key={i}
                 whileHover={{ scale: 1.2 }}
               >
-                <div className="relative w-24 h-24  cursor-pointer">
-                  <Image
-                    src={iconBackground}
-                    width={160}
-                    height={120}
-                    className="absolute inset-0 m-auto"
-                    alt="Icon Background"
-                    priority
-                    style={{
-                      maxWidth: "100%",
-                      width: "auto",
-                      height: "auto",
-                    }}
-                  />
+                <div className="relative w-24 h-24  cursor-pointer  bg-white rounded-full shadow-2xl sm:shadow-none flex items-center justify-center">
                   <Image
                     src={ele?.imgSrc}
-                    width={40}
-                    height={96}
-                    className="absolute left-1 bottom-1 inset-0 m-auto"
+                    className=""
                     alt={ele?.title}
                     priority
                     style={{
@@ -188,8 +173,8 @@ export default function BankHomePage() {
             );
           })}
         </section>
-      </div>
-      <div className="container mx-auto my-10 p-4">
+      </section>
+      <section className="w-full sm:w-3/4 mx-auto my-10 max-w-7xl flex flex-col gap-y-10 px-4 sm:px-0">
         <AdContentRowWrapper
           leftChild={
             <div className="bg-bank-gradient-blue-background p-4 rounded-2xl h-full">
@@ -201,7 +186,7 @@ export default function BankHomePage() {
             </div>
           }
           rightChild={
-            <div className="bg-white p-4 rounded-2xl flex">
+            <div className="bg-white p-4 rounded-2xl flex h-full">
               <div className="flex flex-col gap-y-6 mt-4 w-full sm:w-1/2">
                 <div className="mx-8 text-sm text-gray-400 tracking-widest font-sohnelight">
                   RETIREMENT
@@ -234,8 +219,11 @@ export default function BankHomePage() {
         {/* Second Row */}
         <AdContentRowWrapper
           xGap={"gap-x-0"}
+          yGap="gap-y-0"
+          roundedBorderLeftCard = "rounded-tl-2xl rounded-tr-2xl sm:rounded-tr-none rounded-bl-none sm:rounded-bl-2xl"
+          roundedBorderRightCard = "rounded-tr-none sm:rounded-tr-2xl rounded-br-2xl rounded-bl-2xl sm:rounded-bl-none"
           leftChild={
-            <div className=" bg-white p-4 rounded-tl-2xl rounded-bl-2xl h-full">
+            <div className=" bg-white p-4 rounded-tl-2xl rounded-tr-2xl sm:rounded-tr-none rounded-bl-none sm:rounded-bl-2xl h-full">
               <AdContentCard
                 title={"SPECIAL OFFER"}
                 titleColor="!text-gray-400"
@@ -249,19 +237,13 @@ export default function BankHomePage() {
           rightChild={
             <Image
               src={specialOfferBackground}
-              className="rounded-r-2xl"
+              className="rounded-tr-none sm:rounded-tr-2xl rounded-br-2xl rounded-bl-2xl sm:rounded-bl-none w-full h-[14.5rem] sm:h-full object-cover"
               alt="Retirement Background"
               priority
-              sizes="100vw"
-              style={{
-                objectFit: "cover",
-                width: "100%",
-                height: "100%",
-              }}
             />
           }
         />
-      </div>
+      </section>
     </motion.main>
   );
 }
@@ -289,19 +271,23 @@ const bankHomePageValues: any = {
 const AdContentRowWrapper = ({
   leftChild,
   rightChild,
-  xGap,
+  xGap = "gap-x-8",
+  yGap = "gap-y-10 sm:gap-y-0 ",
+  roundedBorderLeftCard = "rounded-2xl",
+  roundedBorderRightCard = "rounded-2xl",
 }: {
   leftChild: ReactElement;
   rightChild: ReactElement;
   xGap?: string;
+  yGap?: string;
+  roundedBorderLeftCard?: string;
+  roundedBorderRightCard?: string;
 }) => {
   return (
-    <div
-      className={`flex flex-col sm:flex-row mb-4 gap-x-8 p-4 mx-10 sm:mx-20 sm:pb-8 gap-y-10 sm:gap-y-0 ${xGap}`}
-    >
-      <div className="w-full sm:w-1/3 rounded-2xl shadow-2xl">{leftChild}</div>
-      <div className="w-full sm:w-2/3 rounded-2xl shadow-2xl ">{rightChild}</div>
-    </div>
+    <section className={`flex flex-col sm:flex-row ${yGap} ${xGap}`}>
+      <div className={`w-full sm:w-1/3 ${roundedBorderLeftCard} shadow-2xl`}>{leftChild}</div>
+      <div className={`w-full sm:w-2/3 ${roundedBorderRightCard} shadow-2xl`}>{rightChild}</div>
+    </section>
   );
 };
 
