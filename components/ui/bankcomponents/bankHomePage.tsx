@@ -237,14 +237,9 @@ export default function BankHomePage() {
           rightChild={
             <Image
               src={specialOfferBackground}
-              className="rounded-tr-none sm:rounded-tr-2xl rounded-br-2xl rounded-bl-2xl sm:rounded-bl-none w-full h-[14.5rem] sm:h-full"
+              className="rounded-tr-none sm:rounded-tr-2xl rounded-br-2xl rounded-bl-2xl sm:rounded-bl-none w-full h-[14.5rem] sm:h-full object-cover"
               alt="Retirement Background"
               priority
-              style={{
-                objectFit: "cover",
-                width: "auto",
-           
-              }}
             />
           }
         />
