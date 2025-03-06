@@ -1,6 +1,5 @@
 import { useContext, ReactElement } from "react";
 import { motion } from "framer-motion";
-import iconBackground from "@/public/banking/icons/icon-background.svg";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
 import heroBackgroundDollarSign from "@/public/banking/backgrounds/bank-hero-background-dollarsign.svg";
 import checking from "@/public/banking/icons/checking.svg";
@@ -30,6 +29,7 @@ import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import Image from "next/image";
 import { BANK } from "@/utils/constants";
 import LoginContext from "@/utils/contexts/login";
+import { Button } from "../button";
 
 export default function BankHomePage() {
   const { isLoggedIn } = useContext(LoginContext);
@@ -96,7 +96,7 @@ export default function BankHomePage() {
       <header className={`w-full relative `}>
         <Image
           src={heroBackgroundCreditcard}
-          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg"
+          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg opacity-40 sm:opacity-100"
           alt="Icon Background"
           priority
           style={{
@@ -107,7 +107,7 @@ export default function BankHomePage() {
         />
         <Image
           src={heroBackgroundDollarSign}
-          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg"
+          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg opacity-40 sm:opacity-100"
           alt="Icon Background"
           priority
           style={{
@@ -118,20 +118,20 @@ export default function BankHomePage() {
         />
 
         <div className="w-full max-w-7xl py-14 sm:py-[8rem] px-4 xl:px-0 xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div className="grid grid-cols-2 sm:flex flex-row sm:flex-col text-white w-full sm:w-1/2 justify-start mb-4 pr-10 sm:mb-0 gap-y-10 z-10">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl  font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent px-2 sm:px-6 md:px-8 lg:px-10 xl:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:flex flex-row sm:flex-col text-white w-full sm:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
+            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent px-2 sm:px-6 md:px-8 lg:px-10 xl:px-8">
               Spend smart with Toggle Bank
             </h1>
-            <h2 className="text-sm sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black px-6 sm:px-6 md:px-8 lg:px-10 xl:px-8 ">
+            <h2 className="text-lg sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black px-6 sm:px-6 md:px-8 lg:px-10 xl:px-8 ">
               {bankHomePageValues?.industryMessages}
             </h2>
             <div className="flex space-x-4 px-6 sm:px-2 md:px-4 lg:px-6 xl:px-8">
-              <button className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
+              <Button className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
                 Join Now
-              </button>
-              <button className="shadow-2xl border hover:bg-bank-gradient-text-color border-blue-800 hover:border-bankhomepagebuttonblue hover:text-white text-blue-800  rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
+              </Button>
+              <Button className="shadow-2xl border bg-white hover:bg-bank-gradient-text-color border-blue-800 hover:border-bankhomepagebuttonblue hover:text-white text-blue-800  rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
                 Learn More
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -155,25 +155,10 @@ export default function BankHomePage() {
                 key={i}
                 whileHover={{ scale: 1.2 }}
               >
-                <div className="relative w-24 h-24  cursor-pointer">
-                  <Image
-                    src={iconBackground}
-                    width={160}
-                    height={120}
-                    className="absolute inset-0 m-auto"
-                    alt="Icon Background"
-                    priority
-                    style={{
-                      maxWidth: "100%",
-                      width: "auto",
-                      height: "auto",
-                    }}
-                  />
+                <div className="relative w-24 h-24  cursor-pointer  bg-white rounded-full shadow-2xl sm:shadow-none flex items-center justify-center">
                   <Image
                     src={ele?.imgSrc}
-                    width={40}
-                    height={96}
-                    className="absolute left-1 bottom-1 inset-0 m-auto"
+                    className=""
                     alt={ele?.title}
                     priority
                     style={{
