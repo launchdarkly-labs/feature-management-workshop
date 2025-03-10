@@ -13,8 +13,6 @@ import { PERSONA_ROLE_DEVELOPER, COHERE, ANTHROPIC, DEFAULT_AI_MODEL } from "@/u
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetClose } from "@/components/ui/sheet";
-import { set } from "lodash";
-import { isMobile } from "react-device-detect";
 
 type ApiResponse = {
     response: string;
