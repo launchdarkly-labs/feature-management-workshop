@@ -159,13 +159,13 @@ export default function BankUserDashboard() {
                             federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
                         } font-sohne  `}
                     >
-                        <div className="p-6 w-full rounded-xl">
+                        <div className=" w-full rounded-xl">
                             <div className="justify-center xl:justify-start">
-                                <p className="text-blue-600 font-sohne mb-6 text-[24px]">
+                                <h1 className="text-blue-600 font-sohne text-[24px] mb-6 sm:ml-6">
                                     Account Summary
-                                </p>
+                                </h1>
 
-                                <div className="flex flex-col sm:flex-row gap-y-4 sm:gap-x-4">
+                                <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
                                     <motion.div
                                         className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
@@ -192,7 +192,7 @@ export default function BankUserDashboard() {
                     {federatedAccounts ? <FederatedAccountModule /> : null}
                 </section>
 
-                <p className="text-blue-600 font-sohne mb-6 ml-6 text-[24px]">Wealth Management</p>
+                <p className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">Wealth Management</p>
                 <section className="flex flex-col xl:flex-row w-full gap-y-8 sm:gap-x-8 mb-10 h-full">
                     <div className={`w-full  ${wealthManagement ? "xl:w-[60%]" : "sm:w-full"}`}>
                         <AccountTrends data={data} />
