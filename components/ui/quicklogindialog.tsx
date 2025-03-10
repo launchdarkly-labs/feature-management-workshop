@@ -17,7 +17,7 @@ export function QuickLoginDialog() {
     loginUser(persona.personaemail);
   };
 
-  const homePageButtonStyling = `mb-4 p-2 w-full mx-auto font-audimat rounded-none text-xl border-2 border-loginComponentBlue text-black hover:bg-gray-800 hover:text-white`;
+  const homePageButtonStyling = ` p-2 w-full mx-auto font-audimat rounded-none text-xl border-2 border-loginComponentBlue text-black hover:bg-gray-800 hover:text-white`;
   const dashboardButtonStyling = `w-full min-h-full p-1  font-audimat rounded-none text-xl border-2 border-loginComponentBlue text-black hover:text-white hover:bg-gray-800`;
 
   return (
