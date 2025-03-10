@@ -13,6 +13,7 @@ import { PERSONA_ROLE_DEVELOPER, COHERE, ANTHROPIC, DEFAULT_AI_MODEL } from "@/u
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetClose } from "@/components/ui/sheet";
+import { set } from "lodash";
 
 type ApiResponse = {
     response: string;
@@ -25,15 +26,19 @@ function ChatBotInterface({
     cardRef,
     isOpen,
     toggleSidebar,
+    closeButtonHeight,
 }: {
     cardRef: React.RefObject<HTMLDivElement>;
     isOpen: boolean;
     toggleSidebar: (boolean?: boolean) => void;
+    closeButtonHeight: number;
 }) {
     const [input, setInput] = useState("");
     const startArray: object[] = [];
     const [messages, setMessages] = useState(startArray);
     const [isLoading, setIsLoading] = useState(false);
+    const [chatHeaderHeight, setChatHeaderHeight] = useState(0);
+    const [chatFooterHeight, setChatFooterHeight] = useState(0);
 
     const client = useLDClient();
     const { toast } = useToast();
@@ -131,7 +136,9 @@ function ChatBotInterface({
         });
     };
 
-    const chatContentRef = useRef(null);
+    const chatContentRef = useRef<HTMLDivElement>(null);
+    const chatHeaderRef = useRef<HTMLDivElement>(null);
+    const chatFooterRef = useRef<HTMLDivElement>(null);
 
     const aiModelName = () => {
         if (aiNewModelChatbotFlag?.model?.name?.includes("cohere")) {
@@ -147,15 +154,27 @@ function ChatBotInterface({
         }
     }, [messages]);
 
+    useEffect(() => {
+        if (chatHeaderRef.current?.offsetHeight) {
+            setChatHeaderHeight(chatHeaderRef?.current?.offsetHeight);
+        }
+    }, [chatHeaderHeight]);
+
+    useEffect(() => {
+        if (chatFooterRef.current?.offsetHeight) {
+            setChatFooterHeight(chatFooterRef?.current?.offsetHeight);
+        }
+    }, [chatFooterHeight]);
+
     return (
         <>
             {isOpen && (
                 <div
                     ref={cardRef}
-                    className="fixed bottom-16 right-0 z-50 flex items-end justify-end p-4 sm:p-6 max-w-full"
+                    className="relative sm:fixed sm:bottom-16 sm:right-0 sm:z-50 flex items-end justify-end p-0 sm:p-6 max-w-full "
                 >
                     <Card className="w-full max-w-md mx-auto">
-                        <CardHeader className="flex flex-row items-center">
+                        <CardHeader className="flex flex-row items-center" ref={chatHeaderRef}>
                             <div className="flex items-center space-x-4">
                                 <Avatar>
                                     <img src={"/personas/ToggleAvatar.png"} alt="Chatbot Avatar" />{" "}
@@ -165,29 +184,39 @@ function ChatBotInterface({
                                     <p className="text-sm font-medium leading-none">
                                         Chatbot Assistant
                                     </p>
-                                    <p className={"text-sm text-gray-500 dark:text-gray-400"}>
-                                        Powered by{" "}
-                                        <span
-                                            className={`font-bold text-white ${
-                                                aiNewModelChatbotFlag?.model?.name?.includes(COHERE)
-                                                    ? "!text-cohereColor"
-                                                    : ""
-                                            } 
+                                    {aiNewModelChatbotFlag?.model?.name && (
+                                        <>
+                                            <p
+                                                className={
+                                                    "text-sm text-gray-500 dark:text-gray-400"
+                                                }
+                                            >
+                                                Powered by{" "}
+                                                <span
+                                                    className={`font-bold text-white ${
+                                                        aiNewModelChatbotFlag?.model?.name?.includes(
+                                                            COHERE
+                                                        )
+                                                            ? "!text-cohereColor"
+                                                            : ""
+                                                    } 
                       ${
                           aiNewModelChatbotFlag?.model?.name?.includes(ANTHROPIC)
                               ? "!text-anthropicColor"
                               : ""
                       }
                       `}
-                                        >
-                                            {aiModelName()}
-                                        </span>{" "}
-                                        with{" "}
-                                        <span className="text-amazonColor font-bold">
-                                            {" "}
-                                            Amazon Bedrock{" "}
-                                        </span>
-                                    </p>
+                                                >
+                                                    {aiModelName()}
+                                                </span>{" "}
+                                                with{" "}
+                                                <span className="text-amazonColor font-bold">
+                                                    {" "}
+                                                    Amazon Bedrock{" "}
+                                                </span>
+                                            </p>{" "}
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className="ml-auto flex items-center space-x-2">
@@ -218,7 +247,7 @@ function ChatBotInterface({
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="ml-auto rounded-full"
+                                    className="ml-auto rounded-full hidden sm:block"
                                     onClick={() => toggleSidebar(false)}
                                 >
                                     <XIcon className="h-6 w-6" />
@@ -226,46 +255,54 @@ function ChatBotInterface({
                                 </Button>
                             </div>
                         </CardHeader>
-                        <CardContent className="h-[400px] overflow-y-auto" ref={chatContentRef}>
-                            <div className="space-y-4">
-                                <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800">
-                                    Hello! How can I assist you today?
-                                </div>
-                                {messages.map((m) => {
-                                    if (m?.role === "assistant") {
+                        <CardContent
+                            className={` overflow-y-auto`}
+                            ref={chatContentRef}
+                            style={{
+                                height: `calc(100vh - ${chatHeaderHeight + closeButtonHeight + chatFooterHeight+2.2 }px)`,
+                            }}
+                        >
+                            {aiNewModelChatbotFlag?._ldMeta?.enabled && (
+                                <div className="space-y-4">
+                                    <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800">
+                                        Hello! How can I assist you today?
+                                    </div>
+                                    {messages.map((m) => {
+                                        if (m?.role === "assistant") {
+                                            return (
+                                                <div
+                                                    key={m?.id}
+                                                    className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800"
+                                                >
+                                                    {m?.content}
+                                                </div>
+                                            );
+                                        }
+
+                                        if (m?.role === "loader" && isLoading) {
+                                            return (
+                                                <div
+                                                    key={m?.id}
+                                                    className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800"
+                                                >
+                                                    <PulseLoader className="" />
+                                                </div>
+                                            );
+                                        }
+
                                         return (
                                             <div
                                                 key={m?.id}
-                                                className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800"
+                                                className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ml-auto bg-gradient-airways text-white dark:bg-gray-50 dark:text-gray-900"
                                             >
                                                 {m?.content}
                                             </div>
                                         );
-                                    }
-
-                                    if (m?.role === "loader" && isLoading) {
-                                        return (
-                                            <div
-                                                key={m?.id}
-                                                className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-gray-100 dark:bg-gray-800"
-                                            >
-                                                <PulseLoader className="" />
-                                            </div>
-                                        );
-                                    }
-
-                                    return (
-                                        <div
-                                            key={m?.id}
-                                            className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ml-auto bg-gradient-airways text-white dark:bg-gray-50 dark:text-gray-900"
-                                        >
-                                            {m?.content}
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                                    })}
+                                </div>
+                            )}
                         </CardContent>
-                        <CardFooter>
+                        <CardFooter className="p-4 sm:p-6" ref={chatFooterRef}>
                             <form
                                 className="flex w-full items-center space-x-2"
                                 onSubmit={(e) => e.preventDefault()}
@@ -308,6 +345,7 @@ export default function Chatbot() {
     const isMobile = useIsMobile();
     const [isOpen, setIsOpen] = useState(false);
     const [openMobile, setOpenMobile] = useState(false);
+    const [closeButtonHeight, setCloseButtonHeight] = useState(0);
     const cardRef = useRef<HTMLDivElement>(null);
     const aiNewModelChatbotFlag =
         useFlags()["ai-config--togglebot"] == undefined
@@ -332,7 +370,6 @@ export default function Chatbot() {
         };
     }, [isOpen]);
 
-    // Helper to toggle the sidebar.
     const toggleSidebar = useCallback(
         (boolean?: boolean) => {
             if (boolean === false) {
@@ -342,6 +379,16 @@ export default function Chatbot() {
         },
         [isMobile, setIsOpen, setOpenMobile]
     );
+
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (closeButtonRef.current?.offsetHeight) {
+            setCloseButtonHeight(closeButtonRef.current?.offsetHeight);
+        }
+        console.log(closeButtonHeight);
+    }, [closeButtonHeight]);
+
     return (
         <>
             <div className="fixed bottom-4 right-4 z-10">
@@ -366,12 +413,7 @@ export default function Chatbot() {
                     <SheetContent
                         data-sidebar="sidebar"
                         data-mobile="true"
-                        className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground !border-0 [&>button]:hidden"
-                        style={
-                            {
-                                "--sidebar-width": "100vw",
-                            } as React.CSSProperties
-                        }
+                        className="w-full h-full bg-sidebar p-0 text-sidebar-foreground !border-0 [&>button]:hidden"
                         side={"right"}
                         id="sidebar-mobile"
                     >
@@ -380,19 +422,19 @@ export default function Chatbot() {
                                 cardRef={cardRef}
                                 isOpen={openMobile}
                                 toggleSidebar={toggleSidebar}
+                                closeButtonHeight={closeButtonHeight}
                             />
-                            <SheetClose className="h-10 w-full bg-airlinedarkblue text-white">
+                            <SheetClose
+                                className="h-10 w-full bg-airlinedarkblue text-white"
+                                ref={closeButtonRef}
+                            >
                                 Close
                             </SheetClose>
                         </div>
                     </SheetContent>
                 </Sheet>
             ) : (
-                <ChatBotInterface
-                    cardRef={cardRef}
-                    isOpen={isOpen}
-                    toggleSidebar={toggleSidebar}
-                />
+                <ChatBotInterface cardRef={cardRef} isOpen={isOpen} toggleSidebar={toggleSidebar} closeButtonHeight={0} />
             )}
         </>
     );
