@@ -25,42 +25,20 @@ const NavBarLoginInterface = () => {
 
     return (
         <>
-            {isLoggedIn && (
-                <>
-                    <div className="mx-auto flex place-content-center w-full">
+            <div className="w-full bg-white shadow-2xl mx-auto text-black p-4 sm:p-8 h-full flex flex-col sm:flex-none justify-center sm:justify-normal">
+                <div className="mx-auto flex place-content-center w-full mb-8 mt-4">
+                    {isLoggedIn && (
                         <img
                             src={userObject?.personaimage || "personas/ToggleAvatar.png"}
                             className="rounded-full h-48"
                         />
-                    </div>
-                    <div className="mx-auto text-center items-center align-center flex text-black font-sohnelight pt-4  text-xl align-center">
-                        <p className="pt-4">
-                            {NAV_ELEMENTS_VARIANT["bank"]?.popoverMessage}
-                            {userObject?.personaname || userObject.personaname}, as a<br></br>
-                            <span className="text-2xl">
-                                {capitalizeFirstLetter(userObject?.personatier)} Tier
-                            </span>
-                            !
-                        </p>
-                    </div>
-                    <div className="mx-auto text-center">
-                        <Button
-                            onClick={logoutUser}
-                            className={`bg-loginComponentBlue text-white text-xl font-audimat items-center my-2 w-full rounded-none`}
-                        >
-                            Logout
-                        </Button>
-                        <QuickLoginDialog />
-                    </div>
-                </>
-            )}
+                    )}
 
-            {!isLoggedIn && (
-                <div className="w-full  bg-white font-audimat shadow-2xl mx-auto text-black p-4 sm:p-8 h-full flex flex-col">
-                    <div className=" mx-auto text-center mt-4 mb-8">
-                        <img src={COMPANY_LOGOS["bank"].vertical.src} className=" mx-auto" />
-                    </div>
-                    <div className="w-full flex flex-col gap-y-4 mb-4">
+                    {!isLoggedIn && <img src={COMPANY_LOGOS["bank"].vertical.src} className="" />}
+                </div>
+
+                <div className="w-full flex flex-col gap-y-4 mb-4">
+                    {!isLoggedIn && (
                         <Input
                             placeholder="Email"
                             value={defaultEmail}
@@ -69,43 +47,63 @@ const NavBarLoginInterface = () => {
                             className=" outline-none border-0 border-b-2 text-xl"
                             onChange={(e) => setDefaultEmail(e.target.value)}
                         />
+                    )}
 
-                        <Button
-                            onClick={() => handleLogin()}
-                            className={` w-full mx-auto font-sohnelight rounded-none  text-lg bg-loginComponentBlue text-white`}
-                        >
-                            Login with SSO
-                        </Button>
-                        <QuickLoginDialog />
-                    </div>
-                    <div className="flex flex-row items-start sm:items-baseline
-                     font-sohnelight font-extralight sm:flex-col text-xs justify-between gap-y-2">
-                        <div className="">
-                            <p>Forgot Password?</p>
-                        </div>
-                        <div>
-                            <p className="text-right flex flex-col sm:flex-row ">
-                                Don't have an account?{" "}
-                                <a href="#" className=" ml-2 cursor-auto">
-                                    Sign Up
-                                </a>
+                    {isLoggedIn && (
+                        <div className="mx-auto text-center items-center align-center flex text-black font-sohnelight text-xl align-center">
+                            <p >
+                                {NAV_ELEMENTS_VARIANT["bank"]?.popoverMessage}
+                                {userObject?.personaname || userObject.personaname}, as a<br></br>
+                                <span className="text-2xl">
+                                    {capitalizeFirstLetter(userObject?.personatier)} Tier
+                                </span>
+                                !
                             </p>
                         </div>
-                    </div>
+                    )}
+
+                    <Button
+                        onClick={() => {
+                            isLoggedIn ? logoutUser() : handleLogin();
+                        }}
+                        className={` w-full mx-auto font-sohnelight rounded-none  text-lg bg-loginComponentBlue text-white`}
+                    >
+                        {isLoggedIn ? "Logout" : "Login with SSO"}
+                    </Button>
+                    <QuickLoginDialog />
+
+                    {!isLoggedIn && (
+                        <div
+                            className="flex flex-row items-start sm:items-baseline
+                     font-sohnelight font-extralight sm:flex-col text-xs justify-between gap-y-2"
+                        >
+                            <div className="">
+                                <p>Forgot Password?</p>
+                            </div>
+                            <div>
+                                <p className="text-right flex flex-col sm:flex-row ">
+                                    Don't have an account?{" "}
+                                    <a href="#" className=" ml-2 cursor-auto">
+                                        Sign Up
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </>
     );
 };
 
 const NavbarLogin = () => {
-    const { isLoggedIn, userObject, logoutUser } = useContext(LoginContext);
+    const { isLoggedIn, userObject } = useContext(LoginContext);
 
     const isMobile = useIsMobile();
 
     if (isMobile) {
         return (
-            <Sheet id="navbar-login">
+            <Sheet id="navbar-login font-audimat">
                 <SheetTrigger>
                     <Avatar className="shadow-xl">
                         <AvatarImage src={userObject?.personaimage} className="" />
@@ -130,7 +128,7 @@ const NavbarLogin = () => {
     }
 
     return (
-        <Popover id="navbar-login">
+        <Popover id="navbar-login font-audimat">
             <PopoverTrigger>
                 <Avatar className="shadow-xl">
                     <AvatarImage src={userObject?.personaimage} className="" />
