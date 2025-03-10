@@ -12,6 +12,7 @@ import { BatteryCharging } from "lucide-react";
 import { PERSONA_ROLE_DEVELOPER, COHERE, ANTHROPIC, DEFAULT_AI_MODEL } from "@/utils/constants";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
+import { useIsTablet } from "../hooks/use-tablet";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetClose } from "@/components/ui/sheet";
 
 type ApiResponse = {
@@ -25,12 +26,10 @@ function ChatBotInterface({
     cardRef,
     isOpen,
     toggleSidebar,
-    closeButtonHeight,
 }: {
     cardRef: React.RefObject<HTMLDivElement>;
     isOpen: boolean;
     toggleSidebar: (boolean?: boolean) => void;
-    closeButtonHeight: number;
 }) {
     const [input, setInput] = useState("");
     const startArray: object[] = [];
@@ -170,9 +169,9 @@ function ChatBotInterface({
             {isOpen && (
                 <div
                     ref={cardRef}
-                    className="relative sm:fixed sm:bottom-16 sm:right-0 sm:z-50 flex items-end justify-end p-0 sm:p-6 max-w-full "
+                    className="relative lg:fixed lg:bottom-16 lg:right-0 lg:z-50 flex items-end justify-end p-0 lg:p-6 max-w-full "
                 >
-                    <Card className="w-full max-w-md mx-auto">
+                    <Card className="w-full lg:max-w-md lg:mx-auto">
                         <CardHeader className="flex flex-row items-center" ref={chatHeaderRef}>
                             <div className="flex items-center space-x-4">
                                 <Avatar>
@@ -246,7 +245,7 @@ function ChatBotInterface({
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="ml-auto rounded-full hidden sm:block"
+                                    className="ml-auto rounded-full hidden lg:block"
                                     onClick={() => toggleSidebar(false)}
                                 >
                                     <XIcon className="h-6 w-6" />
@@ -255,16 +254,13 @@ function ChatBotInterface({
                             </div>
                         </CardHeader>
                         <CardContent
-                            className={`sm:h-[500px] overflow-y-auto`}
+                            className={`lg:h-[500px] overflow-y-auto`}
                             ref={chatContentRef}
                             style={
                                 isMobile
                                     ? {
                                           height: `calc(100vh - ${
-                                              chatHeaderHeight +
-                                              closeButtonHeight +
-                                              chatFooterHeight +
-                                              2.2
+                                              chatHeaderHeight + chatFooterHeight + 40
                                           }px)`,
                                       }
                                     : {}
@@ -310,7 +306,7 @@ function ChatBotInterface({
                                 </div>
                             )}
                         </CardContent>
-                        <CardFooter className="p-4 sm:p-6" ref={chatFooterRef}>
+                        <CardFooter className="p-4 lg:p-6" ref={chatFooterRef}>
                             <form
                                 className="flex w-full items-center space-x-2"
                                 onSubmit={(e) => e.preventDefault()}
@@ -351,9 +347,9 @@ function ChatBotInterface({
 
 export default function Chatbot() {
     const isMobile = useIsMobile();
+    const isTablet = useIsTablet();
     const [isOpen, setIsOpen] = useState(false);
     const [openMobile, setOpenMobile] = useState(false);
-    const [closeButtonHeight, setCloseButtonHeight] = useState(0);
     const cardRef = useRef<HTMLDivElement>(null);
     const aiNewModelChatbotFlag =
         useFlags()["ai-config--togglebot"] == undefined
@@ -388,15 +384,6 @@ export default function Chatbot() {
         [isMobile, setIsOpen, setOpenMobile]
     );
 
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        if (closeButtonRef.current?.offsetHeight) {
-            setCloseButtonHeight(closeButtonRef.current?.offsetHeight);
-        }
-        console.log(closeButtonHeight);
-    }, [closeButtonHeight]);
-
     return (
         <>
             <div className="fixed bottom-4 right-4 z-10">
@@ -430,24 +417,15 @@ export default function Chatbot() {
                                 cardRef={cardRef}
                                 isOpen={openMobile}
                                 toggleSidebar={toggleSidebar}
-                                closeButtonHeight={closeButtonHeight}
                             />
-                            <SheetClose
-                                className="h-10 w-full bg-airlinedarkblue text-white"
-                                ref={closeButtonRef}
-                            >
+                            <SheetClose className="h-10 w-full bg-airlinedarkblue text-white">
                                 Close
                             </SheetClose>
                         </div>
                     </SheetContent>
                 </Sheet>
             ) : (
-                <ChatBotInterface
-                    cardRef={cardRef}
-                    isOpen={isOpen}
-                    toggleSidebar={toggleSidebar}
-                    closeButtonHeight={0}
-                />
+                <ChatBotInterface cardRef={cardRef} isOpen={isOpen} toggleSidebar={toggleSidebar} />
             )}
         </>
     );
