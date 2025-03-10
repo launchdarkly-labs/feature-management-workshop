@@ -14,6 +14,7 @@ import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetClose } from "@/components/ui/sheet";
 import { set } from "lodash";
+import { isMobile } from "react-device-detect";
 
 type ApiResponse = {
     response: string;
@@ -39,7 +40,7 @@ function ChatBotInterface({
     const [isLoading, setIsLoading] = useState(false);
     const [chatHeaderHeight, setChatHeaderHeight] = useState(0);
     const [chatFooterHeight, setChatFooterHeight] = useState(0);
-
+    const isMobile = useIsMobile();
     const client = useLDClient();
     const { toast } = useToast();
     const aiConfigKey = "ai-config--togglebot";
@@ -256,11 +257,20 @@ function ChatBotInterface({
                             </div>
                         </CardHeader>
                         <CardContent
-                            className={` overflow-y-auto`}
+                            className={`sm:h-[500px] overflow-y-auto`}
                             ref={chatContentRef}
-                            style={{
-                                height: `calc(100vh - ${chatHeaderHeight + closeButtonHeight + chatFooterHeight+2.2 }px)`,
-                            }}
+                            style={
+                                isMobile
+                                    ? {
+                                          height: `calc(100vh - ${
+                                              chatHeaderHeight +
+                                              closeButtonHeight +
+                                              chatFooterHeight +
+                                              2.2
+                                          }px)`,
+                                      }
+                                    : {}
+                            }
                         >
                             {aiNewModelChatbotFlag?._ldMeta?.enabled && (
                                 <div className="space-y-4">
@@ -434,7 +444,12 @@ export default function Chatbot() {
                     </SheetContent>
                 </Sheet>
             ) : (
-                <ChatBotInterface cardRef={cardRef} isOpen={isOpen} toggleSidebar={toggleSidebar} closeButtonHeight={0} />
+                <ChatBotInterface
+                    cardRef={cardRef}
+                    isOpen={isOpen}
+                    toggleSidebar={toggleSidebar}
+                    closeButtonHeight={0}
+                />
             )}
         </>
     );
