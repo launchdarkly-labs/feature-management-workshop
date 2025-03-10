@@ -1,4 +1,3 @@
-//@ts-nocheck
 import * as React from "react";
 import { useRef, useContext } from "react";
 import { Button } from "@/components/ui/button";
@@ -7,9 +6,9 @@ import { QuickLoginDialog } from "./quicklogindialog";
 import { useState } from "react";
 import { COMPANY_LOGOS } from "@/utils/constants";
 import LoginContext from "@/utils/contexts/login";
-import  { VariantInterface } from "@/utils/typescriptTypesInterfaceLogin";
 
-export function LoginComponent({ variant }: VariantInterface) {
+
+export function LoginComponent() {
   const inputRef = useRef();
   const [defaultEmail, setDefaultEmail] = useState<string>("user@launchmail.io");
   const { loginUser } = useContext(LoginContext);
@@ -23,7 +22,7 @@ export function LoginComponent({ variant }: VariantInterface) {
   return (
     <div className="w-full  bg-white font-audimat shadow-2xl mx-auto text-black p-4 sm:p-8 h-full flex flex-col">
       <div className=" mx-auto text-center mt-4 mb-8">
-        <img src={COMPANY_LOGOS[variant].vertical.src} className=" mx-auto" />
+        <img src={COMPANY_LOGOS["bank"].vertical.src} className=" mx-auto" />
       </div>
       <div className="w-full mb-4">
         <Input
@@ -41,7 +40,7 @@ export function LoginComponent({ variant }: VariantInterface) {
         >
           Login with SSO
         </Button>
-        <QuickLoginDialog variant={variant} />
+        <QuickLoginDialog />
       </div>
       <div className="flex flex-col items-start sm:items-baseline font-sohnelight font-extralight sm:flex-row text-xs justify-between">
         <div className="pb-3">

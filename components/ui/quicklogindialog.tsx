@@ -9,9 +9,9 @@ import {
 import { useContext } from "react";
 import LoginContext from "@/utils/contexts/login";
 import { capitalizeFirstLetter } from "@/utils/utils";
-import type { VariantInterface, Persona } from "@/utils/typescriptTypesInterfaceLogin";
+import type { Persona } from "@/utils/typescriptTypesInterfaceLogin";
 
-export function QuickLoginDialog({ variant }: VariantInterface) {
+export function QuickLoginDialog() {
   const { loginUser, isLoggedIn, userObject, allUsers } = useContext(LoginContext);
 
   const personaClicked = (persona: Persona): void => {
@@ -52,9 +52,7 @@ export function QuickLoginDialog({ variant }: VariantInterface) {
                         <p className="">{persona.personaemail}</p>
                         <p className="">Role: {persona.personarole}</p>
                         <p className="">
-                          {variant?.includes("airlines")
-                            ? capitalizeFirstLetter(persona.personalaunchclubstatus)
-                            : capitalizeFirstLetter(persona.personatier)}{" "}
+                          {capitalizeFirstLetter(persona.personatier)}{" "}
                           Tier
                         </p>
                       </div>
