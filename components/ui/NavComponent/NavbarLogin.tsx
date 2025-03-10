@@ -26,18 +26,18 @@ const NavBarLoginInterface = () => {
     return (
         <>
             <div className="w-full bg-white shadow-2xl mx-auto text-black p-4 sm:p-8 h-full flex flex-col sm:flex-none justify-center sm:justify-normal">
-                <div className="mx-auto flex place-content-center w-full mb-8 mt-4">
+                <div className="mx-auto flex place-content-center w-full">
                     {isLoggedIn && (
                         <img
                             src={userObject?.personaimage || "personas/ToggleAvatar.png"}
-                            className="rounded-full h-48"
+                            className="rounded-full h-48 mb-4"
                         />
                     )}
 
-                    {!isLoggedIn && <img src={COMPANY_LOGOS["bank"].vertical.src} className="" />}
+                    {!isLoggedIn && <img src={COMPANY_LOGOS["bank"].vertical.src} className="pt-4 pb-8" />}
                 </div>
 
-                <div className="w-full flex flex-col gap-y-4 mb-4">
+                <div className="w-full flex flex-col gap-y-4">
                     {!isLoggedIn && (
                         <Input
                             placeholder="Email"
@@ -51,7 +51,7 @@ const NavBarLoginInterface = () => {
 
                     {isLoggedIn && (
                         <div className="mx-auto text-center items-center align-center flex text-black font-sohnelight text-xl align-center">
-                            <p >
+                            <p>
                                 {NAV_ELEMENTS_VARIANT["bank"]?.popoverMessage}
                                 {userObject?.personaname || userObject.personaname}, as a<br></br>
                                 <span className="text-2xl">
@@ -103,7 +103,7 @@ const NavbarLogin = () => {
 
     if (isMobile) {
         return (
-            <Sheet id="navbar-login font-audimat">
+            <Sheet>
                 <SheetTrigger>
                     <Avatar className="shadow-xl">
                         <AvatarImage src={userObject?.personaimage} className="" />
@@ -112,7 +112,7 @@ const NavbarLogin = () => {
                 <SheetContent
                     data-sidebar="sidebar"
                     data-mobile="true"
-                    className="w-full h-full bg-sidebar p-0 text-sidebar-foreground !border-0 [&>button]:hidden"
+                    className="w-full h-full bg-sidebar p-0 text-sidebar-foreground !border-0 [&>button]:hidden font-audimat"
                     side={"right"}
                     id="sidebar-mobile"
                 >
@@ -128,14 +128,14 @@ const NavbarLogin = () => {
     }
 
     return (
-        <Popover id="navbar-login font-audimat">
+        <Popover>
             <PopoverTrigger>
                 <Avatar className="shadow-xl">
                     <AvatarImage src={userObject?.personaimage} className="" />
                 </Avatar>
             </PopoverTrigger>
 
-            <PopoverContent className={`  ${!isLoggedIn ? "p-0" : ""}`}>
+            <PopoverContent className={`p-0 font-audimat`}>
                 <NavBarLoginInterface />
             </PopoverContent>
         </Popover>
