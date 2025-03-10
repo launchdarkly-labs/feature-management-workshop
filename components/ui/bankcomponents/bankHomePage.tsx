@@ -93,7 +93,7 @@ export default function BankHomePage() {
           </NavbarRightSideWrapper>
         </>
       </NavWrapper>
-      <header className={`w-full relative`}>
+      <header className={`w-full relative 3xl:mx-auto 3xl:max-w-7xl`}>
         <Image
           src={heroBackgroundCreditcard}
           className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg opacity-40 sm:opacity-100 z-[-100]"
