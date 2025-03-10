@@ -46,7 +46,7 @@ export default function Bank() {
             <BankUserDashboard />
           </>
         )}
-        <Chatbot vertical="banking"/>
+        <Chatbot/>
       </motion.main>
     </>
   );
