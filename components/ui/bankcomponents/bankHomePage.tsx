@@ -88,7 +88,7 @@ export default function BankHomePage() {
                 </>
               )}
 
-              <NavbarLogin variant={BANK} />
+              <NavbarLogin />
             </>
           </NavbarRightSideWrapper>
         </>

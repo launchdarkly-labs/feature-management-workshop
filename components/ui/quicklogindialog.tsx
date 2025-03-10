@@ -13,7 +13,6 @@ import type { Persona } from "@/utils/typescriptTypesInterfaceLogin";
 
 export function QuickLoginDialog() {
   const { loginUser, isLoggedIn, userObject, allUsers } = useContext(LoginContext);
-
   const personaClicked = (persona: Persona): void => {
     loginUser(persona.personaemail);
   };
