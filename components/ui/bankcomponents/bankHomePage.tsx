@@ -49,18 +49,6 @@ export default function BankHomePage() {
 
           <NavLogo srcHref={NAV_ELEMENTS_VARIANT[BANK]?.logoImg?.src} altText={BANK} />
 
-          <NavbarDropdownMenu>
-            <>
-              {NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
-                return (
-                  <DropdownMenuItem key={index}>
-                    <a href={navLink?.href}> {navLink?.text}</a>
-                  </DropdownMenuItem>
-                );
-              })}
-            </>
-          </NavbarDropdownMenu>
-
           {/* left side navbar template */}
 
           <NavbarLeftSideWrapper>
@@ -78,6 +66,18 @@ export default function BankHomePage() {
               })}
             </>
           </NavbarLeftSideWrapper>
+
+          <NavbarDropdownMenu>
+            <>
+              {NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
+                return (
+                  <DropdownMenuItem key={index}>
+                    <a href={navLink?.href}> {navLink?.text}</a>
+                  </DropdownMenuItem>
+                );
+              })}
+            </>
+          </NavbarDropdownMenu>
 
           {/* right side navbar template */}
           <NavbarRightSideWrapper>
@@ -118,7 +118,7 @@ export default function BankHomePage() {
         />
 
         <section className="w-full max-w-7xl py-14 sm:py-[8rem] xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div className="flex flex-col text-white w-full xl:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
+          <div className="flex flex-col text-white w-full sm:w-3/4 xl:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
             <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent pr-2 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-8">
               Spend smart with Toggle Bank
             </h1>
