@@ -34,7 +34,9 @@ const NavBarLoginInterface = () => {
                         />
                     )}
 
-                    {!isLoggedIn && <img src={COMPANY_LOGOS["bank"].vertical.src} className="pt-4 pb-8" />}
+                    {!isLoggedIn && (
+                        <img src={COMPANY_LOGOS["bank"].vertical.src} className="pt-4 pb-8" />
+                    )}
                 </div>
 
                 <div className="w-full flex flex-col gap-y-4">
@@ -135,7 +137,7 @@ const NavbarLogin = () => {
                 </Avatar>
             </PopoverTrigger>
 
-            <PopoverContent className={`p-0 font-audimat`}>
+            <PopoverContent className={`p-0 font-audimat`} side="bottom" align="end">
                 <NavBarLoginInterface />
             </PopoverContent>
         </Popover>
