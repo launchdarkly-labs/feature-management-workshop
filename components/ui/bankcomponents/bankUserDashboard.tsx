@@ -157,14 +157,14 @@ export default function BankUserDashboard() {
 
                     <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
                         <section
-                            className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl bg-white rounded-xl border border-zinc-200 ${
-                                wealthManagement ? "sm:w-[50%] xl:w-[60%]" : ""
+                            className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl min-h-[400px] bg-white rounded-xl border border-zinc-200 ${
+                                wealthManagement ? "sm:w-[50%] xl:w-[60%]" : "lg:w-[99.9%]"
                             }`}
                         >
                             <WealthManagementGraph data={data} />
                         </section>
 
-                        {wealthManagement ? (
+                        {wealthManagement && (
                             <section className="w-full sm:w-[50%] xl:w-[40%]">
                                 <WealthManagementSheet
                                     data={data}
@@ -175,7 +175,7 @@ export default function BankUserDashboard() {
                                     aiResponse={aiResponse}
                                 />
                             </section>
-                        ) : null}
+                        )}
                     </div>
                 </section>
 
