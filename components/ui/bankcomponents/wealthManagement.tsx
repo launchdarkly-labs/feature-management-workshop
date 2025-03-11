@@ -55,7 +55,7 @@ const WealthManagementSheet = ({
       animate="visible"
       exit="exit"
       variants={variants}
-      className="bg-white border border-zinc-200 rounded-xl shadow-xl h-full flex flex-col p-10 items-center justify-center"
+      className="bg-white border border-zinc-200 rounded-xl shadow-xl h-full flex flex-col p-6 sm:p-8 xl:p-10 items-center justify-center"
     >
       <img src="banking/chart.png" height={60} width={60} alt="chart" />
       <p className="flex font-sohne py-2 text-3xl text-center">
@@ -75,11 +75,7 @@ const WealthManagementSheet = ({
             </Button>
           </div>
         </SheetTrigger>
-        <SheetContent className="overflow-auto w-full sm:w-full xl:w-[80%] ">
-          <SheetHeader className="mb-10">
-            <SheetTitle className="text-4xl text-black"></SheetTitle>
-            <SheetDescription className="text-xl pb-24"></SheetDescription>
-          </SheetHeader>
+        <SheetContent className="overflow-auto w-full sm:w-full xl:w-[80%] p-10">
 
           <div className={`w-full h-full font-sohne rounded-2xl`}>
             <div className="p-6 bg-gradient-bank  w-full rounded-2xl shadow-xl text-black">
@@ -88,8 +84,8 @@ const WealthManagementSheet = ({
                   Wealth Management
                 </p>
 
-                <div className="flex flex-col lg:flex-row gap-y-4 sm:gap-x-4 accounttext">
-                  <div className="px-6 pt-6 w-full lg:w-1/3  bg-white rounded-2xl">
+                <div className="flex flex-col xl:flex-row gap-y-4 sm:gap-x-4 accounttext">
+                  <div className="px-6 pt-6 w-full flex-1 bg-white rounded-2xl">
                     <div className="flex justify-between">
                       <p className="  font-sohne font-bold text-lg">
                         Wealth Insights AI <br />
@@ -149,7 +145,7 @@ const WealthManagementSheet = ({
                       </div>
                     </div>
                   </div>
-                  <div className="p-4 w-full lg:w-1/3 bg-white rounded-2xl">
+                  <div className="p-4 w-full flex-1 bg-white rounded-2xl">
                     <div className="space-y-2">
                       <div className="bg-blue-300/30 rounded-full flex items-center justify-center w-10 h-10">
                         <AiOutlineAreaChart className="text-blue-700 h-8 w-8" />
@@ -234,7 +230,7 @@ const WealthManagementSheet = ({
                       </div>
                     </div> */}
                   </div>
-                  <div className="p-4  w-full lg:w-1/3 bg-white rounded-2xl">
+                  <div className="p-4  w-full flex-1 bg-white rounded-2xl">
                     <StocksComponent />
                   </div>
                 </div>
@@ -242,9 +238,6 @@ const WealthManagementSheet = ({
             </div>
           </div>
 
-          <SheetFooter>
-            <SheetClose asChild>{/* Add a close button here */}</SheetClose>
-          </SheetFooter>
         </SheetContent>
       </Sheet>
     </motion.div>

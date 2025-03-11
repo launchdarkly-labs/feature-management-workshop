@@ -26,6 +26,7 @@ import { CSNav } from "@/components/ui/csnav";
 
 import { NavbarSignUpButton } from "@/components/ui/NavComponent/NavbarSignUpInButton";
 import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
+import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
 
 export default function BankUserDashboard() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -60,7 +61,7 @@ export default function BankUserDashboard() {
         }
     }
 
-    const data = [
+    const data:WealthManagementGraphDataType[] = [
         { month: "05/23", balance: 18427 },
         { month: "06/23", balance: 25345 },
         { month: "07/23", balance: 32647 },
@@ -94,7 +95,7 @@ export default function BankUserDashboard() {
                 }}
             />
             <main className="w-full px-4 3xl:px-0 mx-auto max-w-7xl relative ">
-                <NavWrapper>
+                <NavWrapper className="mb-0 sm:mb-8">
                     <>
                         <CSNavWrapper>
                             <CSNav />
@@ -149,8 +150,34 @@ export default function BankUserDashboard() {
                         </NavbarRightSideWrapper>
                     </>
                 </NavWrapper>
+
+                <section className="w-full mb-8">
+                    <h2 className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">
+                        Wealth Management
+                    </h2>
+                    <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
+                        <div className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl bg-white rounded-xl border border-zinc-200 ${wealthManagement ? "sm:w-[50%] xl:w-[60%]" : ""}`}>
+                            <AccountTrends data={data} />
+                        </div>
+
+                        {wealthManagement ? (
+                            <div className="w-full sm:w-[50%] xl:w-[40%]">
+                                <WealthManagementSheet
+                                    data={data}
+                                    aiPrompt={viewPrompt}
+                                    submitQuery={submitQuery}
+                                    prompt={prompt}
+                                    loading={loading}
+                                    aiResponse={aiResponse}
+                                />
+                            </div>
+                        ) : null}
+                    </div>
+                </section>
+
+
                 <section
-                    className={`flex flex-col xl:flex-row py-8 ${
+                    className={`flex flex-col xl:flex-row mb-8 ${
                         federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
                     }`}
                 >
@@ -192,30 +219,7 @@ export default function BankUserDashboard() {
                     {federatedAccounts ? <FederatedAccountModule /> : null}
                 </section>
 
-                <section className="w-full mb-10">
-                    <h2 className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">
-                        Wealth Management
-                    </h2>
-                    <div className="flex flex-col xl:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
-                        <div className={`w-full  ${wealthManagement ? "xl:w-[60%]" : "sm:w-full"}`}>
-                            <AccountTrends data={data} />
-                        </div>
-
-                        {wealthManagement ? (
-                            <div className="w-full xl:w-[40%]">
-                                <WealthManagementSheet
-                                    data={data}
-                                    aiPrompt={viewPrompt}
-                                    submitQuery={submitQuery}
-                                    prompt={prompt}
-                                    loading={loading}
-                                    aiResponse={aiResponse}
-                                />
-                            </div>
-                        ) : null}
-                    </div>
-                </section>
-
+               
                 <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
                     <div className="w-full lg:w-1/2">
                         <img
