@@ -34,7 +34,7 @@ export default function FederatedAccountModule() {
           {!federatedAccountOne ? (
             <motion.div
               onClick={() => setFederatedAccountOne(true)}
-              className="flex p-4 h-[300px] w-full sm:w-1/2 bg-white items-center rounded-xl shadow-xl"
+              className="flex p-4  w-full sm:w-1/2 bg-white items-center rounded-xl shadow-xl"
               whileHover={{ scale: 1.1 }}
             >
               <PlusSquare size={96} className="text-gray-400 mx-auto" />

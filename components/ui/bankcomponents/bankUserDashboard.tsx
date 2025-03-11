@@ -197,7 +197,7 @@ export default function BankUserDashboard() {
                                         className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
                                     >
-                                        <CheckingAccount wealthManagement={wealthManagement} />
+                                        <CheckingAccount />
                                     </motion.div>
                                     <motion.div
                                         className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
