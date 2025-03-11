@@ -65,8 +65,8 @@ export function FederatedCreditAccount() {
             <SheetTrigger className="h-full">
                 <BankDashboardAccountCard
                     cardIcon={<CreditCard className="text-gray-700 h-8 w-8" />}
-                    cardTitle="External federated credit"
-                    balanceLabel="Total credit balance"
+                    cardTitle="External Federated Credit"
+                    balanceLabel="Total Credit Balance"
                     balanceNumber="$1,203.00"
                     cardIconColor="bg-gray-300/30"
                 />

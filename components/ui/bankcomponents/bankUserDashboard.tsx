@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, ReactElement } from "react";
 import { CheckingAccount } from "@/components/ui/bankcomponents/checkingview";
 import { CreditAccount } from "@/components/ui/bankcomponents/creditview";
 import { MorgtgageAccount } from "@/components/ui/bankcomponents/mortgageview";
@@ -7,7 +7,6 @@ import { oldCheckingData } from "@/lib/oldCheckingData";
 import LoginContext from "@/utils/contexts/login";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
 import { WealthManagementGraph } from "@/components/ui/bankcomponents/WealthManagementGraph";
-import FederatedAccountModule from "@/components/ui/bankcomponents/federatedAccountModule";
 import Image from "next/image";
 import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
 import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
@@ -154,20 +153,19 @@ export default function BankUserDashboard() {
                 </NavWrapper>
 
                 <section className="w-full mb-8">
-                    <h2 className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">
-                        Wealth Management
-                    </h2>
+                    <SectionTitle text="Wealth Management" textColor="text-blue-600 font-bold" />
+
                     <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
-                        <div
+                        <section
                             className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl bg-white rounded-xl border border-zinc-200 ${
                                 wealthManagement ? "sm:w-[50%] xl:w-[60%]" : ""
                             }`}
                         >
                             <WealthManagementGraph data={data} />
-                        </div>
+                        </section>
 
                         {wealthManagement ? (
-                            <div className="w-full sm:w-[50%] xl:w-[40%]">
+                            <section className="w-full sm:w-[50%] xl:w-[40%]">
                                 <WealthManagementSheet
                                     data={data}
                                     aiPrompt={viewPrompt}
@@ -176,7 +174,7 @@ export default function BankUserDashboard() {
                                     loading={loading}
                                     aiResponse={aiResponse}
                                 />
-                            </div>
+                            </section>
                         ) : null}
                     </div>
                 </section>
@@ -191,65 +189,39 @@ export default function BankUserDashboard() {
                             federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
                         }  `}
                     >
-                        <div className=" w-full rounded-xl">
-                            <div className="justify-center xl:justify-start">
-                                <h2 className="text-blue-600 font-sohne text-[24px] mb-6 sm:ml-6">
-                                    Account Summary
-                                </h2>
+                        <SectionTitle text="Account Summary" textColor="text-blue-600" />
 
-                                <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <CheckingAccount />
-                                    </motion.div>
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <CreditAccount />
-                                    </motion.div>
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <MorgtgageAccount />
-                                    </motion.div>
-                                </div>
-                            </div>
-                        </div>
+                        <CardRowWrapper>
+                            <>
+                                <MotionCardWrapper>
+                                    <CheckingAccount />
+                                </MotionCardWrapper>
+                                <MotionCardWrapper>
+                                    <CreditAccount />
+                                </MotionCardWrapper>
+                                <MotionCardWrapper>
+                                    <MorgtgageAccount />
+                                </MotionCardWrapper>
+                            </>
+                        </CardRowWrapper>
                     </section>
 
                     {federatedAccounts && (
                         <section className={`w-full h-full xl:w-[40%] `}>
-                            <div className=" w-full rounded-xl">
-                                <div className="justify-center xl:justify-start">
-                                    <h2 className="text-black text-[24px] mb-6">
-                                        Federated Account Access
-                                    </h2>
+                            <SectionTitle text="Federated Account Access" textColor="text-black" />
 
-                                    <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
-                                        {/* TODO: make this into a wrapper */}
-                                        <motion.div
-                                            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                            whileHover={{ scale: 1.1 }}
-                                        >
-                                            <FederatedCheckingAccount />
-                                        </motion.div>
-                                        <motion.div
-                                            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                            whileHover={{ scale: 1.1 }}
-                                        >
-                                            <FederatedCreditAccount />
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            </div>
+                            <CardRowWrapper>
+                                <>
+                                    <MotionCardWrapper>
+                                        <FederatedCheckingAccount />
+                                    </MotionCardWrapper>
+                                    <MotionCardWrapper>
+                                        <FederatedCreditAccount />
+                                    </MotionCardWrapper>
+                                </>
+                            </CardRowWrapper>
                         </section>
                     )}
-
-                    {/* {federatedAccounts ? <FederatedAccountModule /> : null} */}
                 </section>
 
                 <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
@@ -270,3 +242,22 @@ export default function BankUserDashboard() {
         </>
     );
 }
+
+const MotionCardWrapper = ({ children }: { children: ReactElement }) => {
+    return (
+        <motion.div
+            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
+            whileHover={{ scale: 1.1 }}
+        >
+            {children}
+        </motion.div>
+    );
+};
+
+const CardRowWrapper = ({ children }: { children: ReactElement }) => {
+    return <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">{children}</div>;
+};
+
+const SectionTitle = ({ textColor, text }: { textColor: string; text: string }) => {
+    return <h2 className={` text-2xl mb-6 ${textColor}`}>{text}</h2>;
+};

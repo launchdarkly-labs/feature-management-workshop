@@ -56,8 +56,8 @@ export function FederatedCheckingAccount() {
             <SheetTrigger className="h-full">
                 <BankDashboardAccountCard
                     cardIcon={<Landmark className="text-gray-700 h-8 w-8" />}
-                    cardTitle="External federated checking"
-                    balanceLabel="Total checking balance"
+                    cardTitle="External Federated Checking"
+                    balanceLabel="Total Checking Balance"
                     balanceNumber="$83,758.50"
                     cardIconColor="bg-gray-300/30"
                 />
