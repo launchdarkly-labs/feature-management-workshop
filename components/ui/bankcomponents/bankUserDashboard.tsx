@@ -93,7 +93,7 @@ export default function BankUserDashboard() {
                     height: "auto",
                 }}
             />
-            <main className="w-full px-4 xl:px-0 mx-auto max-w-7xl relative ">
+            <main className="w-full px-4 3xl:px-0 mx-auto max-w-7xl relative ">
                 <NavWrapper>
                     <>
                         <CSNavWrapper>
