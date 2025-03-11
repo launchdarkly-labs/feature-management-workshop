@@ -192,27 +192,31 @@ export default function BankUserDashboard() {
                     {federatedAccounts ? <FederatedAccountModule /> : null}
                 </section>
 
-                <p className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">Wealth Management</p>
-                <section className="flex flex-col xl:flex-row w-full gap-y-8 sm:gap-x-8 mb-10 h-full">
-                    <div className={`w-full  ${wealthManagement ? "xl:w-[60%]" : "sm:w-full"}`}>
-                        <AccountTrends data={data} />
-                    </div>
-
-                    {wealthManagement ? (
-                        <div className="w-full xl:w-[40%]">
-                            <WealthManagementSheet
-                                data={data}
-                                aiPrompt={viewPrompt}
-                                submitQuery={submitQuery}
-                                prompt={prompt}
-                                loading={loading}
-                                aiResponse={aiResponse}
-                            />
+                <section className="w-full mb-10">
+                    <h2 className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">
+                        Wealth Management
+                    </h2>
+                    <div className="flex flex-col xl:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
+                        <div className={`w-full  ${wealthManagement ? "xl:w-[60%]" : "sm:w-full"}`}>
+                            <AccountTrends data={data} />
                         </div>
-                    ) : null}
+
+                        {wealthManagement ? (
+                            <div className="w-full xl:w-[40%]">
+                                <WealthManagementSheet
+                                    data={data}
+                                    aiPrompt={viewPrompt}
+                                    submitQuery={submitQuery}
+                                    prompt={prompt}
+                                    loading={loading}
+                                    aiResponse={aiResponse}
+                                />
+                            </div>
+                        ) : null}
+                    </div>
                 </section>
 
-                <div className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
+                <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
                     <div className="w-full lg:w-1/2">
                         <img
                             src="banking/SpecialOffer-CC.svg"
@@ -225,7 +229,7 @@ export default function BankUserDashboard() {
                             className="shadow-xl rounded-xl w-full"
                         />
                     </div>
-                </div>
+                </section>
             </main>
         </>
     );
