@@ -97,7 +97,7 @@ const NavBarLoginInterface = () => {
 };
 
 const NavbarLogin = () => {
-    const { isLoggedIn, userObject } = useContext(LoginContext);
+    const { userObject } = useContext(LoginContext);
 
     const isMobile = useIsMobile();
 

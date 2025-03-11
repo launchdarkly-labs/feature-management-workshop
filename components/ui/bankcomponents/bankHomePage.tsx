@@ -36,7 +36,7 @@ export default function BankHomePage() {
 
   return (
     <motion.main
-      className={`relative min-w-screen min-h-screen overflow-hidden px-4 xl:px-0`}
+      className={`relative min-w-screen min-h-screen overflow-hidden px-4 3xl:px-0`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -96,7 +96,7 @@ export default function BankHomePage() {
       <header className={`w-full relative 3xl:mx-auto 3xl:max-w-7xl`}>
         <Image
           src={heroBackgroundCreditcard}
-          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg opacity-40 sm:opacity-100 z-[-100]"
+          className="absolute right-0 w-2/6 xl:w-2/6 min-w-lg max-w-lg opacity-40 sm:opacity-60 xl:opacity-100 z-[-100]"
           alt="Icon Background"
           priority
           style={{
@@ -107,7 +107,7 @@ export default function BankHomePage() {
         />
         <Image
           src={heroBackgroundDollarSign}
-          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg opacity-40 sm:opacity-100 z-[-100]"
+          className="absolute left-0 bottom-0 w-2/6 xl:w-2/6 max-w-lg opacity-40 sm:opacity-60 xl:opacity-100 z-[-100]"
           alt="Icon Background"
           priority
           style={{
@@ -118,7 +118,7 @@ export default function BankHomePage() {
         />
 
         <section className="w-full max-w-7xl py-14 sm:py-[8rem] xl:mx-auto flex flex-col sm:flex-row justify-between items-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 sm:flex flex-row sm:flex-col text-white w-full sm:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
+          <div className="flex flex-col text-white w-full xl:w-1/2 justify-start mb-4 pr-0 sm:pr-10 sm:mb-0 gap-y-10 z-10">
             <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-audimat col-span-1 sm:col-span-0 w-full bg-bank-gradient-text-color bg-clip-text text-transparent pr-2 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-8">
               Spend smart with Toggle Bank
             </h1>
@@ -144,14 +144,14 @@ export default function BankHomePage() {
         </h2>
 
         <section
-          className="w-full sm:w-3/4 grid grid-cols-2 sm:flex sm:flex-row font-sohnelight text-center justify-center mx-auto gap-y-8 
-            sm:gap-y-0 gap-x-8
-          sm:gap-x-12 lg:gap-x-24 py-8"
+          className="w-full xl:w-3/4 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 font-sohnelight text-center  mx-auto gap-y-8 
+            xl:gap-y-0 gap-x-8
+          sm:gap-x-12 xl:gap-x-24 py-8"
         >
           {bankHomePageValues?.bankingServicesArr.map((ele: any, i: number) => {
             return (
               <motion.div
-                className="grid items-center justify-items-center"
+                className="flex flex-col items-center"
                 key={i}
                 whileHover={{ scale: 1.2 }}
               >
@@ -174,7 +174,7 @@ export default function BankHomePage() {
           })}
         </section>
       </section>
-      <section className="w-full sm:w-3/4 mx-auto my-10 max-w-7xl flex flex-col gap-y-10">
+      <section className="w-full xl:w-3/4 mx-auto my-10 max-w-7xl flex flex-col gap-y-10">
         <AdContentRowWrapper
           leftChild={
             <div className="bg-bank-gradient-blue-background p-4 rounded-2xl h-full">
