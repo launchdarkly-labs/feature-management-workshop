@@ -9,10 +9,10 @@ import {
 } from "recharts";
 import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
 
-export function AccountTrends({ data }: { data: WealthManagementGraphDataType[] }) {
+export function WealthManagementGraph({ data }: { data: WealthManagementGraphDataType[] }) {
     return (
         <>
-            <p className="aiinsightstext pb-4">6-Month Account Trend</p>
+            <p className="text-gray-500 font-bold pb-4">6-Month Account Trend</p>
             <ResponsiveContainer className={"h-full"}>
                 <AreaChart
                     data={data}

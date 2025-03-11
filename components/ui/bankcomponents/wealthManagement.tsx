@@ -84,7 +84,7 @@ const WealthManagementSheet = ({
                   Wealth Management
                 </p>
 
-                <div className="flex flex-col xl:flex-row gap-y-4 sm:gap-x-4 accounttext">
+                <div className="flex flex-col xl:flex-row gap-y-4 sm:gap-x-4 text-gray-500">
                   <div className="px-6 pt-6 w-full flex-1 bg-white rounded-2xl">
                     <div className="flex justify-between">
                       <p className="  font-sohne font-bold text-lg">
@@ -126,7 +126,7 @@ const WealthManagementSheet = ({
                           </DialogTrigger>
                           <DialogContent className="">
                             <div className="m-4 fontsohnelight">
-                              <p className="aiinsightstext text-xl mb-4">
+                              <p className="text-gray-500 font-bold text-xl mb-4">
                                 AWS Bedrock Configured Prompt
                               </p>
                               {aiPrompt}
@@ -222,7 +222,7 @@ const WealthManagementSheet = ({
                       <div className="text-base font-sohnelight pb-2 text-zinc-500">
                         Total investment balance:{" "}
                       </div>
-                      <div className="moneytext text-6xl sm:text-6xl font-sohne pb-2">
+                      <div className="text-green-500 text-6xl sm:text-6xl font-sohne pb-2">
                         $184,278
                       </div>
                       <div className=" text-sm font-sohnelight text-zinc-500">

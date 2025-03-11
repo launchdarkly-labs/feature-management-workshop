@@ -6,7 +6,7 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { oldCheckingData } from "@/lib/oldCheckingData";
 import LoginContext from "@/utils/contexts/login";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
-import { AccountTrends } from "@/components/ui/bankcomponents/accounttrends";
+import { WealthManagementGraph } from "@/components/ui/bankcomponents/WealthManagementGraph";
 import FederatedAccountModule from "@/components/ui/bankcomponents/federatedAccountModule";
 import Image from "next/image";
 import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
@@ -27,6 +27,8 @@ import { CSNav } from "@/components/ui/csnav";
 import { NavbarSignUpButton } from "@/components/ui/NavComponent/NavbarSignUpInButton";
 import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
+import { FederatedCheckingAccount } from "@/components/ui/bankcomponents/federatedChecking";
+import { FederatedCreditAccount } from "@/components/ui/bankcomponents/federatedCredit";
 
 export default function BankUserDashboard() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +63,7 @@ export default function BankUserDashboard() {
         }
     }
 
-    const data:WealthManagementGraphDataType[] = [
+    const data: WealthManagementGraphDataType[] = [
         { month: "05/23", balance: 18427 },
         { month: "06/23", balance: 25345 },
         { month: "07/23", balance: 32647 },
@@ -156,8 +158,12 @@ export default function BankUserDashboard() {
                         Wealth Management
                     </h2>
                     <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
-                        <div className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl bg-white rounded-xl border border-zinc-200 ${wealthManagement ? "sm:w-[50%] xl:w-[60%]" : ""}`}>
-                            <AccountTrends data={data} />
+                        <div
+                            className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl bg-white rounded-xl border border-zinc-200 ${
+                                wealthManagement ? "sm:w-[50%] xl:w-[60%]" : ""
+                            }`}
+                        >
+                            <WealthManagementGraph data={data} />
                         </div>
 
                         {wealthManagement ? (
@@ -175,38 +181,37 @@ export default function BankUserDashboard() {
                     </div>
                 </section>
 
-
                 <section
-                    className={`flex flex-col xl:flex-row mb-8 ${
+                    className={`flex flex-col xl:flex-row mb-8 font-sohne  ${
                         federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
                     }`}
                 >
                     <section
                         className={`w-full h-full ${
                             federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
-                        } font-sohne  `}
+                        }  `}
                     >
                         <div className=" w-full rounded-xl">
                             <div className="justify-center xl:justify-start">
-                                <h1 className="text-blue-600 font-sohne text-[24px] mb-6 sm:ml-6">
+                                <h2 className="text-blue-600 font-sohne text-[24px] mb-6 sm:ml-6">
                                     Account Summary
-                                </h1>
+                                </h2>
 
                                 <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
                                     <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
+                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
                                     >
                                         <CheckingAccount />
                                     </motion.div>
                                     <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
+                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
                                     >
                                         <CreditAccount />
                                     </motion.div>
                                     <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
+                                        className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
                                         whileHover={{ scale: 1.1 }}
                                     >
                                         <MorgtgageAccount />
@@ -216,10 +221,37 @@ export default function BankUserDashboard() {
                         </div>
                     </section>
 
-                    {federatedAccounts ? <FederatedAccountModule /> : null}
+                    {federatedAccounts && (
+                        <section className={`w-full h-full xl:w-[40%] `}>
+                            <div className=" w-full rounded-xl">
+                                <div className="justify-center xl:justify-start">
+                                    <h2 className="text-black text-[24px] mb-6">
+                                        Federated Account Access
+                                    </h2>
+
+                                    <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
+                                        {/* TODO: make this into a wrapper */}
+                                        <motion.div
+                                            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
+                                            whileHover={{ scale: 1.1 }}
+                                        >
+                                            <FederatedCheckingAccount />
+                                        </motion.div>
+                                        <motion.div
+                                            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
+                                            whileHover={{ scale: 1.1 }}
+                                        >
+                                            <FederatedCreditAccount />
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* {federatedAccounts ? <FederatedAccountModule /> : null} */}
                 </section>
 
-               
                 <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
                     <div className="w-full lg:w-1/2">
                         <img
