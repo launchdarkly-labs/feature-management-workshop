@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
+import { cn } from "@/utils/utils";
 
-const NavWrapper = ({ children }: { children: ReactElement }) => {
+const NavWrapper = ({ children, className }: { children: ReactElement, className?: string }) => {
   return (
-    <nav className="w-full bg-transparent font-audimat transition-all duration-150 py-6">
+    <nav className={cn("w-full bg-transparent font-audimat transition-all duration-150 py-6", className)}>
       <div className=" xl:mx-auto max-w-7xl flex">{children}</div>
     </nav>
   );

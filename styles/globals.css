@@ -133,41 +133,6 @@
   src: url("/fonts/Audimat3000-Regulier.otf");
 }
 
-.aiinsightstext {
-  color: #58595b;
-  font-family: Sohne;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-}
-
-.accounttext {
-  color: var(--gray-700, #58595b);
-  font-family: Sohne;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-}
-
-.moneytext {
-  color: #00b969;
-  font-family: Sohne;
-  font-size: 44.127px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-.balance {
-  color: #282828;
-  font-family: Sohne;
-  font-size: 26.936px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
 /* PrismJS 1.29.0
 https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+clike+javascript */
 code[class*="language-"],

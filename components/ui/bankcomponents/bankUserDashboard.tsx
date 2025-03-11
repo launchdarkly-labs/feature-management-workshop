@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, ReactElement } from "react";
 import { CheckingAccount } from "@/components/ui/bankcomponents/checkingview";
 import { CreditAccount } from "@/components/ui/bankcomponents/creditview";
 import { MorgtgageAccount } from "@/components/ui/bankcomponents/mortgageview";
@@ -6,8 +6,7 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { oldCheckingData } from "@/lib/oldCheckingData";
 import LoginContext from "@/utils/contexts/login";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
-import { AccountTrends } from "@/components/ui/bankcomponents/accounttrends";
-import FederatedAccountModule from "@/components/ui/bankcomponents/federatedAccountModule";
+import { WealthManagementGraph } from "@/components/ui/bankcomponents/WealthManagementGraph";
 import Image from "next/image";
 import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
 import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
@@ -26,6 +25,9 @@ import { CSNav } from "@/components/ui/csnav";
 
 import { NavbarSignUpButton } from "@/components/ui/NavComponent/NavbarSignUpInButton";
 import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
+import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
+import { FederatedCheckingAccount } from "@/components/ui/bankcomponents/federatedChecking";
+import { FederatedCreditAccount } from "@/components/ui/bankcomponents/federatedCredit";
 
 export default function BankUserDashboard() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -60,7 +62,7 @@ export default function BankUserDashboard() {
         }
     }
 
-    const data = [
+    const data: WealthManagementGraphDataType[] = [
         { month: "05/23", balance: 18427 },
         { month: "06/23", balance: 25345 },
         { month: "07/23", balance: 32647 },
@@ -93,8 +95,8 @@ export default function BankUserDashboard() {
                     height: "auto",
                 }}
             />
-            <main className="w-full px-4 xl:px-0 mx-auto max-w-7xl relative ">
-                <NavWrapper>
+            <main className="w-full px-4 3xl:px-0 mx-auto max-w-7xl relative ">
+                <NavWrapper className="mb-0 sm:mb-8">
                     <>
                         <CSNavWrapper>
                             <CSNav />
@@ -149,70 +151,80 @@ export default function BankUserDashboard() {
                         </NavbarRightSideWrapper>
                     </>
                 </NavWrapper>
+
+                <section className="w-full mb-8">
+                    <SectionTitle text="Wealth Management" textColor="text-blue-600 font-bold" />
+
+                    <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
+                        <section
+                            className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl min-h-[400px] bg-white rounded-xl border border-zinc-200 ${
+                                wealthManagement ? "sm:w-[50%] xl:w-[60%]" : "lg:w-[99.9%]"
+                            }`}
+                        >
+                            <WealthManagementGraph data={data} />
+                        </section>
+
+                        {wealthManagement && (
+                            <section className="w-full sm:w-[50%] xl:w-[40%]">
+                                <WealthManagementSheet
+                                    data={data}
+                                    aiPrompt={viewPrompt}
+                                    submitQuery={submitQuery}
+                                    prompt={prompt}
+                                    loading={loading}
+                                    aiResponse={aiResponse}
+                                />
+                            </section>
+                        )}
+                    </div>
+                </section>
+
                 <section
-                    className={`flex flex-col xl:flex-row py-8 ${
+                    className={`flex flex-col xl:flex-row mb-8 font-sohne  ${
                         federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
                     }`}
                 >
                     <section
                         className={`w-full h-full ${
                             federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
-                        } font-sohne  `}
+                        }  `}
                     >
-                        <div className=" w-full rounded-xl">
-                            <div className="justify-center xl:justify-start">
-                                <h1 className="text-blue-600 font-sohne text-[24px] mb-6 sm:ml-6">
-                                    Account Summary
-                                </h1>
+                        <SectionTitle text="Account Summary" textColor="text-blue-600" />
 
-                                <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <CheckingAccount wealthManagement={wealthManagement} />
-                                    </motion.div>
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <CreditAccount />
-                                    </motion.div>
-                                    <motion.div
-                                        className="p-4 h-[300px] w-full sm:w-1/3 bg-white shadow-xl rounded-2xl cursor-pointer"
-                                        whileHover={{ scale: 1.1 }}
-                                    >
-                                        <MorgtgageAccount />
-                                    </motion.div>
-                                </div>
-                            </div>
-                        </div>
+                        <CardRowWrapper>
+                            <>
+                                <MotionCardWrapper>
+                                    <CheckingAccount />
+                                </MotionCardWrapper>
+                                <MotionCardWrapper>
+                                    <CreditAccount />
+                                </MotionCardWrapper>
+                                <MotionCardWrapper>
+                                    <MorgtgageAccount />
+                                </MotionCardWrapper>
+                            </>
+                        </CardRowWrapper>
                     </section>
 
-                    {federatedAccounts ? <FederatedAccountModule /> : null}
+                    {federatedAccounts && (
+                        <section className={`w-full h-full xl:w-[40%] `}>
+                            <SectionTitle text="Federated Account Access" textColor="text-black" />
+
+                            <CardRowWrapper>
+                                <>
+                                    <MotionCardWrapper>
+                                        <FederatedCheckingAccount />
+                                    </MotionCardWrapper>
+                                    <MotionCardWrapper>
+                                        <FederatedCreditAccount />
+                                    </MotionCardWrapper>
+                                </>
+                            </CardRowWrapper>
+                        </section>
+                    )}
                 </section>
 
-                <p className="text-blue-600 font-sohne mb-6 sm:ml-6 text-[24px]">Wealth Management</p>
-                <section className="flex flex-col xl:flex-row w-full gap-y-8 sm:gap-x-8 mb-10 h-full">
-                    <div className={`w-full  ${wealthManagement ? "xl:w-[60%]" : "sm:w-full"}`}>
-                        <AccountTrends data={data} />
-                    </div>
-
-                    {wealthManagement ? (
-                        <div className="w-full xl:w-[40%]">
-                            <WealthManagementSheet
-                                data={data}
-                                aiPrompt={viewPrompt}
-                                submitQuery={submitQuery}
-                                prompt={prompt}
-                                loading={loading}
-                                aiResponse={aiResponse}
-                            />
-                        </div>
-                    ) : null}
-                </section>
-
-                <div className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
+                <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
                     <div className="w-full lg:w-1/2">
                         <img
                             src="banking/SpecialOffer-CC.svg"
@@ -225,8 +237,27 @@ export default function BankUserDashboard() {
                             className="shadow-xl rounded-xl w-full"
                         />
                     </div>
-                </div>
+                </section>
             </main>
         </>
     );
 }
+
+const MotionCardWrapper = ({ children }: { children: ReactElement }) => {
+    return (
+        <motion.div
+            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
+            whileHover={{ scale: 1.1 }}
+        >
+            {children}
+        </motion.div>
+    );
+};
+
+const CardRowWrapper = ({ children }: { children: ReactElement }) => {
+    return <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">{children}</div>;
+};
+
+const SectionTitle = ({ textColor, text }: { textColor: string; text: string }) => {
+    return <h2 className={` text-2xl mb-6 ${textColor}`}>{text}</h2>;
+};

@@ -1,21 +1,14 @@
-export type UpdateContextFunction = () => Promise<void>;
-export type AddToCartFunction = (item: InventoryItem) => void;
+export type WealthManagementGraphDataType =  {
+  month: string;
+  balance: number;
+};
 
-export interface InventoryItem {
-  id: string | number;
-  item: string;
-  cost: string;
-  vendor: string;
-  image?: any;
-}
-
-export interface BookedTrips  {
-  airplane: string,
-  depart: string,
-  from: string,
-  fromCity: string,
-  id: number,
-  to: string,
-  toCity: string,
-  type: string,
-}
+export type TransactionType = {
+  id: number;
+  date: string;
+  merchant: string;
+  status: string;
+  amount: number;
+  accounttype: string;
+  user: string;
+};

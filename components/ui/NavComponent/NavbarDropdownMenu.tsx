@@ -11,9 +11,9 @@ import {
 const NavbarDropdownMenu = ({children}:{children:ReactElement}) => {
 
   return (
-    <DropdownMenu id="nav-link-dropdown-mobile">
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="ml-2 cursor-pointer block lg:hidden text-black mr-4 animate-pulse hover:animate-none">
+        <button className="ml-2 cursor-pointer block 2xl:hidden text-black mr-4 animate-pulse hover:animate-none">
           <PanelTopOpen size={24} />
         </button>
       </DropdownMenuTrigger>
