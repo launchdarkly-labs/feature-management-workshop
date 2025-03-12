@@ -13,7 +13,11 @@ import { PERSONA_ROLE_DEVELOPER, COHERE, ANTHROPIC, DEFAULT_AI_MODEL } from "@/u
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
-import { AIModelType, ChatbotMessageInterface, ChatBotAIApiResponseInterface } from "@/utils/typescriptTypesInterfaceIndustry";
+import {
+    AIModelInterface,
+    ChatBotMessageInterface,
+    ChatBotAIApiResponseInterface,
+} from "@/utils/typescriptTypesInterfaceIndustry";
 
 function ChatBotInterface({
     cardRef,
@@ -25,31 +29,19 @@ function ChatBotInterface({
     toggleSidebar: (boolean?: boolean) => void;
 }) {
     const client = useLDClient();
-    const aiNewModelChatbotFlag: AIModelType =
+    const aiNewModelChatbotFlag: AIModelInterface =
         useFlags()["ai-config--togglebot"] == undefined
             ? DEFAULT_AI_MODEL
             : useFlags()["ai-config--togglebot"];
     const aiConfigKey = "ai-config--togglebot";
 
-    const [messages, setMessages] = useState<ChatbotMessageInterface[]>([]);
+    const [messages, setMessages] = useState<ChatBotMessageInterface[]>([]);
+    const [userInput, setUserInput] = useState("");
 
-    const submitQuery = async () => {
-        const userInput = input;
-        setInput("");
+    const submitChatBotQuery = async () => {
         setIsLoading(true);
-        const userMessage = {
-            role: "user",
-            content: userInput,
-            id: uuidv4().slice(0, 4),
-        };
 
-        const loadingMessage = {
-            role: "loader",
-            content: "loading",
-            id: uuidv4().slice(0, 4),
-        };
-
-        setMessages([...messages, userMessage, loadingMessage]);
+        applyUserNewMessage();
 
         const response = await fetch("/api/chat", {
             method: "POST",
@@ -60,41 +52,12 @@ function ChatBotInterface({
         });
 
         const data: ChatBotAIApiResponseInterface = await response.json();
+
         console.log("data", data);
 
-        let aiAnswer: string = data.response || "I'm sorry. Please try again.";
+        applyChatBotNewMessage(data);
 
-        let assistantMessage:ChatbotMessageInterface = {
-            role: "assistant",
-            content: aiAnswer,
-            id: uuidv4().slice(0, 4),
-        };
-
-        if (aiAnswer === undefined && !userObject.personarole?.includes(PERSONA_ROLE_DEVELOPER)) {
-            assistantMessage.content = "I'm sorry. Please try again.";
-            setMessages([...messages, userMessage, assistantMessage]);
-        } else if (
-            aiAnswer === undefined &&
-            userObject.personarole?.includes(PERSONA_ROLE_DEVELOPER)
-        ) {
-            assistantMessage.content = data.error || "Error: we didn't get a response."; //error message
-            setMessages([...messages, userMessage, assistantMessage]);
-        } else {
-            setMessages([...messages, userMessage, assistantMessage]);
-        }
         setIsLoading(false);
-    };
-
-    const surveyResponseNotification = (surveyResponse: string) => {
-        client?.track(surveyResponse, client.getContext());
-
-        sendChatbotFeedback(surveyResponse);
-        logLDMetricSent(surveyResponse);
-        client?.flush();
-        toast({
-            title: `Thank you for your response!`,
-            wrapperStyle: "bg-green-600 text-white font-sohne text-base border-none",
-        });
     };
 
     const sendChatbotFeedback = async (feedback: string) => {
@@ -110,7 +73,64 @@ function ChatBotInterface({
 
     // BELOW IS CODE NOT RELATED TO AI CONFIG
 
-    const [input, setInput] = useState("");
+    const applyUserNewMessage = () => {
+        setUserInput("");
+
+        const userMessage: ChatBotMessageInterface = {
+            role: "user",
+            content: userInput,
+            id: uuidv4().slice(0, 4),
+        };
+
+        const loadingMessage: ChatBotMessageInterface = {
+            role: "loader",
+            content: "loading",
+            id: uuidv4().slice(0, 4),
+        };
+
+        setMessages([...messages, userMessage, loadingMessage]);
+    };
+
+    const applyChatBotNewMessage = (chatBotResponse:ChatBotAIApiResponseInterface) => {
+        const userMessage: ChatBotMessageInterface = {
+            role: "user",
+            content: userInput,
+            id: uuidv4().slice(0, 4),
+        };
+        let aiAnswer: string = chatBotResponse.response || "I'm sorry. Please try again.";
+
+        let assistantMessage: ChatBotMessageInterface = {
+            role: "assistant",
+            content: aiAnswer,
+            id: uuidv4().slice(0, 4),
+        };
+
+        if (aiAnswer === undefined && !userObject.personarole?.includes(PERSONA_ROLE_DEVELOPER)) {
+            assistantMessage.content = "I'm sorry. Please try again.";
+            setMessages([...messages, userMessage, assistantMessage]);
+        } else if (
+            aiAnswer === undefined &&
+            userObject.personarole?.includes(PERSONA_ROLE_DEVELOPER)
+        ) {
+            assistantMessage.content = chatBotResponse.error || "Error: we didn't get a response."; //error message
+            setMessages([...messages, userMessage, assistantMessage]);
+        } else {
+            setMessages([...messages, userMessage, assistantMessage]);
+        }
+    };
+
+    const surveyResponseNotification = (surveyResponse: string) => {
+        client?.track(surveyResponse, client.getContext());
+
+        sendChatbotFeedback(surveyResponse);
+        logLDMetricSent(surveyResponse);
+        client?.flush();
+        toast({
+            title: `Thank you for your response!`,
+            wrapperStyle: "bg-green-600 text-white font-sohne text-base border-none",
+        });
+    };
+
     const [isLoading, setIsLoading] = useState(false);
     const [chatHeaderHeight, setChatHeaderHeight] = useState(0);
     const [chatFooterHeight, setChatFooterHeight] = useState(0);
@@ -141,7 +161,7 @@ function ChatBotInterface({
     }, [chatFooterHeight]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInput(e.target.value);
+        setUserInput(e.target.value);
     };
 
     const aiModelName = () => {
@@ -308,13 +328,13 @@ function ChatBotInterface({
                                             placeholder="Type your message..."
                                             className="flex-1"
                                             autoComplete="off"
-                                            value={input}
+                                            value={userInput}
                                             onChange={handleInputChange}
                                         />
                                         <Button
                                             type="submit"
                                             size="icon"
-                                            onClick={() => submitQuery()}
+                                            onClick={() => submitChatBotQuery()}
                                             className="bg-airlinedarkblue"
                                         >
                                             <SendIcon className="h-4 w-4" />
@@ -332,7 +352,7 @@ function ChatBotInterface({
 }
 
 export default function Chatbot() {
-    const aiNewModelChatbotFlag: AIModelType =
+    const aiNewModelChatbotFlag: AIModelInterface =
         useFlags()["ai-config--togglebot"] == undefined
             ? DEFAULT_AI_MODEL
             : useFlags()["ai-config--togglebot"];

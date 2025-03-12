@@ -3,7 +3,7 @@ export type WealthManagementGraphDataType = {
     balance: number;
 };
 
-export type TransactionType = {
+export interface TransactionInterface {
     id: number;
     date: string;
     merchant: string;
@@ -13,13 +13,7 @@ export type TransactionType = {
     user: string;
 };
 
-export type ApiResponseType = {
-    response: string;
-    modelName: string;
-    enabled: boolean;
-};
-
-export type AIModelType = {
+export interface AIModelInterface {
     messages: [
         {
             content: string;
@@ -38,9 +32,9 @@ export type AIModelType = {
     };
 };
 
-export interface ChatbotMessageInterface {
+export interface ChatBotMessageInterface {
     id: string;
-    role: string | "assistant";
+    role: "assistant" | "user" | "loader";
     content: string;
 }
 export interface ChatBotAIApiResponseInterface {

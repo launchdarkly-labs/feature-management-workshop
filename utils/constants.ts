@@ -6,7 +6,7 @@ import architectureNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-archite
 import codeexamplesHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples-hover.svg";
 import codeexamplesNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples.svg";
 import curlyBrackets from "@/public/sidenav/curly-brackets.svg";
-import { AIModelType } from "./typescriptTypesInterfaceIndustry";
+import { AIModelInterface } from "./typescriptTypesInterfaceIndustry";
 
 export const ALERT_TYPES = {
     SUCCESS: "success",
@@ -37,7 +37,7 @@ export const COMPANY_LOGOS = {
     },
 };
 
-export const DEFAULT_AI_MODEL: AIModelType = {
+export const DEFAULT_AI_MODEL: AIModelInterface = {
     messages: [
         {
             content:
