@@ -53,8 +53,6 @@ function ChatBotInterface({
 
         const data: ChatBotAIApiResponseInterface = await response.json();
 
-        console.log("data", data);
-
         applyChatBotNewMessage(data);
 
         setIsLoading(false);
@@ -356,7 +354,6 @@ export default function Chatbot() {
         useFlags()["ai-config--togglebot"] == undefined
             ? DEFAULT_AI_MODEL
             : useFlags()["ai-config--togglebot"];
-    console.log(aiNewModelChatbotFlag);
 
     const isMobile = useIsMobile();
     const [isOpen, setIsOpen] = useState(false);
