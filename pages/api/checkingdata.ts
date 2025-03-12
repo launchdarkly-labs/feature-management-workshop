@@ -9,7 +9,6 @@ import { transactions } from "@/schema/schema";
 import { oldCheckingData } from "@/lib/oldCheckingData";
 import { newCheckingData } from "@/lib/newCheckingData";
 import * as ld from "@launchdarkly/node-server-sdk";
-import { check } from "drizzle-orm/pg-core";
 import { BankingDataInterface,UserContextInterface,MigrationTransactionsInterface } from "@/utils/apiTypesInterface";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { delay } from "@/utils/utils";

@@ -9,10 +9,6 @@ export interface Persona {
     personaEnrolledInLaunchClub: boolean
   }
 
- export interface VariantInterface {
-    variant: "bank" | "airlines" | "market" | "investment";
-  }
-
  export type LoginContextType = {
     userObject: Persona;
     isLoggedIn: boolean;

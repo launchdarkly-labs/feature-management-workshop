@@ -1,7 +1,6 @@
 import {
   BedrockRuntimeClient,
   ConverseCommand,
-  InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerClient } from "@/utils/ld-server";
