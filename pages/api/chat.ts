@@ -25,7 +25,7 @@ export default async function chatResponse(req: NextApiRequest, res: NextApiResp
 
         const ldClient: LDClient = await getServerClient(process.env.LD_SDK_KEY || "");
         const aiClient: LDAIClient = initAi(ldClient);
-
+        console.log(clientSideContext({ req, res }))
         const context: LoginContextInterface = clientSideContext({ req, res }) || {
             kind: "user",
             key: uuidv4(),
@@ -80,7 +80,7 @@ const bedrockClient = new BedrockRuntimeClient({
     },
 });
 
-const clientSideContext = ({ res, req }: { res: NextApiResponse; req: NextApiRequest }) =>
+const clientSideContext = ({ res, req }: { res: NextApiResponse; req: NextApiRequest }):LoginContextInterface =>
     JSON.parse(getCookie(LD_CONTEXT_COOKIE_KEY, { res, req }) || "{}");
 
 const mapPromptToConversation = (

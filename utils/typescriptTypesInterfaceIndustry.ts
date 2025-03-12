@@ -49,3 +49,8 @@ export interface UserChatInputResponseInterface {
     aiConfigKey: string;
     userInput: string;
 }
+
+export interface UserAIChatBotFeedbackResponseInterface {
+    aiConfigKey: string;
+    feedback: string;
+}

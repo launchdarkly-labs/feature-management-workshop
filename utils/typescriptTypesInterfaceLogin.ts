@@ -18,4 +18,7 @@ export interface LoginContextInterface {
     loginUser: LoginUserFunctionType;
     logoutUser: () => Promise<void>;
     allUsers: Persona[];
+    audience?: {
+        key:string
+    }
 }
