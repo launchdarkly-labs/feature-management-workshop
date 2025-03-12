@@ -17,15 +17,15 @@ import {
     TableRow,
 } from "../table";
 import { useEffect, useState } from "react";
-import { TransactionType } from "@/utils/typescriptTypesInterfaceIndustry";
+import { TransactionInterface } from "@/utils/typescriptTypesInterfaceIndustry";
 import BankDashboardAccountCard from "./BankDashboardAccountCard";
 
 export function FederatedCheckingAccount() {
-    const [transactions, setTransactions] = useState<TransactionType[]>([]);
+    const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
 
     async function getTransactions() {
         const response = await fetch("/api/checkingdata");
-        let transactionsJson: TransactionType[];
+        let transactionsJson: TransactionInterface[];
         if (response.status == 200) {
             const data = await response.json();
 

@@ -7,7 +7,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function bedrockCall(req: NextApiRequest, res: NextApiResponse) {
     const client = new BedrockRuntimeClient({ region: "us-west-2" });
-    const prompt = req.body;
+    const prompt = req.body; //TODO: need typescript here
 
     const input = {
         modelId: "anthropic.claude-instant-v1",

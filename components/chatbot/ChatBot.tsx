@@ -13,14 +13,13 @@ import { PERSONA_ROLE_DEVELOPER, COHERE, ANTHROPIC, DEFAULT_AI_MODEL } from "@/u
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
+import {
+    AIModelInterface,
+    ChatBotMessageInterface,
+    ChatBotAIApiResponseInterface,
+    UserChatInputResponseInterface,
+} from "@/utils/typescriptTypesInterfaceIndustry";
 
-type ApiResponse = {
-    response: string;
-    modelName: string;
-    enabled: boolean;
-};
-
-//https://sdk.vercel.ai/providers/legacy-providers/aws-bedrock
 function ChatBotInterface({
     cardRef,
     isOpen,
@@ -30,22 +29,39 @@ function ChatBotInterface({
     isOpen: boolean;
     toggleSidebar: (boolean?: boolean) => void;
 }) {
-    const [input, setInput] = useState("");
-    const startArray: object[] = [];
-    const [messages, setMessages] = useState(startArray);
-    const [isLoading, setIsLoading] = useState(false);
-    const [chatHeaderHeight, setChatHeaderHeight] = useState(0);
-    const [chatFooterHeight, setChatFooterHeight] = useState(0);
-    const isMobile = useIsMobile();
     const client = useLDClient();
-    const { toast } = useToast();
-    const aiConfigKey = "ai-config--togglebot";
-    const aiNewModelChatbotFlag =
+    const aiNewModelChatbotFlag: AIModelInterface =
         useFlags()["ai-config--togglebot"] == undefined
             ? DEFAULT_AI_MODEL
             : useFlags()["ai-config--togglebot"];
+    const aiConfigKey = "ai-config--togglebot";
 
-    async function sendChatbotFeedback(feedback: string) {
+    const [messages, setMessages] = useState<ChatBotMessageInterface[]>([]);
+    const [userInput, setUserInput] = useState("");
+
+    const submitChatBotQuery = async () => {
+        setIsLoading(true);
+
+        applyUserNewMessage();
+
+        const userInputRes: UserChatInputResponseInterface = {
+            aiConfigKey: aiConfigKey,
+            userInput: userInput,
+        };
+
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            body: JSON.stringify(userInputRes),
+        });
+
+        const data: ChatBotAIApiResponseInterface = await response.json();
+
+        applyChatBotNewMessage(data);
+
+        setIsLoading(false);
+    };
+
+    const sendChatbotFeedback = async (feedback: string) => {
         const response = await fetch("/api/chatbotfeedback", {
             method: "POST",
             body: JSON.stringify({
@@ -53,54 +69,38 @@ function ChatBotInterface({
                 aiConfigKey,
             }),
         });
-        const data = await response.json();
-    }
-
-    const { userObject } = useContext(LoginContext);
-    const { logLDMetricSent } = useContext(LiveLogsContext);
-    let apiResponse: ApiResponse = {
-        response: "",
-        modelName: "",
-        enabled: false,
+        return await response.json();
     };
 
-    const handleInputChange = (e: any) => {
-        setInput(e.target.value);
-    };
+    // BELOW IS CODE NOT RELATED TO AI CONFIG
 
-    async function submitQuery() {
-        const userInput = input;
-        setInput("");
-        setIsLoading(true);
-        const userMessage = {
+    const applyUserNewMessage = () => {
+        setUserInput("");
+
+        const userMessage: ChatBotMessageInterface = {
             role: "user",
             content: userInput,
             id: uuidv4().slice(0, 4),
         };
 
-        const loadingMessage = {
-            role: "loader",
+        const loadingMessage: ChatBotMessageInterface = {
+            role: "system",
             content: "loading",
             id: uuidv4().slice(0, 4),
         };
 
         setMessages([...messages, userMessage, loadingMessage]);
+    };
 
-        const response = await fetch("/api/chat", {
-            method: "POST",
-            body: JSON.stringify({
-                aiConfigKey,
-                userInput,
-            }),
-        });
+    const applyChatBotNewMessage = (chatBotResponse: ChatBotAIApiResponseInterface) => {
+        const userMessage: ChatBotMessageInterface = {
+            role: "user",
+            content: userInput,
+            id: uuidv4().slice(0, 4),
+        };
+        let aiAnswer: string = chatBotResponse.response || "I'm sorry. Please try again.";
 
-        //Data includes {response: "", "modelName": ""}
-        const data = await response.json();
-        apiResponse = data;
-
-        let aiAnswer = data.response || "I'm sorry. Please try again.";
-
-        let assistantMessage = {
+        let assistantMessage: ChatBotMessageInterface = {
             role: "assistant",
             content: aiAnswer,
             id: uuidv4().slice(0, 4),
@@ -113,13 +113,12 @@ function ChatBotInterface({
             aiAnswer === undefined &&
             userObject.personarole?.includes(PERSONA_ROLE_DEVELOPER)
         ) {
-            assistantMessage.content = data; //error message
+            assistantMessage.content = chatBotResponse.error || "Error: we didn't get a response."; //error message
             setMessages([...messages, userMessage, assistantMessage]);
         } else {
             setMessages([...messages, userMessage, assistantMessage]);
         }
-        setIsLoading(false);
-    }
+    };
 
     const surveyResponseNotification = (surveyResponse: string) => {
         client?.track(surveyResponse, client.getContext());
@@ -133,17 +132,16 @@ function ChatBotInterface({
         });
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [chatHeaderHeight, setChatHeaderHeight] = useState(0);
+    const [chatFooterHeight, setChatFooterHeight] = useState(0);
+    const isMobile = useIsMobile();
+    const { toast } = useToast();
+    const { userObject } = useContext(LoginContext);
+    const { logLDMetricSent } = useContext(LiveLogsContext);
     const chatContentRef = useRef<HTMLDivElement>(null);
     const chatHeaderRef = useRef<HTMLDivElement>(null);
     const chatFooterRef = useRef<HTMLDivElement>(null);
-
-    const aiModelName = () => {
-        if (aiNewModelChatbotFlag?.model?.name?.includes("cohere")) {
-            return "Cohere Command";
-        } else {
-            return "Anthropic Claude";
-        }
-    };
 
     useEffect(() => {
         if (chatContentRef.current) {
@@ -162,6 +160,16 @@ function ChatBotInterface({
             setChatFooterHeight(chatFooterRef?.current?.offsetHeight);
         }
     }, [chatFooterHeight]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserInput(e.target.value);
+    };
+
+    const aiModelName = () => {
+        return aiNewModelChatbotFlag?.model?.name?.includes("cohere")
+            ? "Cohere Command"
+            : "Anthropic Claude";
+    };
 
     return (
         <>
@@ -282,7 +290,11 @@ function ChatBotInterface({
                                             );
                                         }
 
-                                        if (m?.role === "loader" && isLoading) {
+                                        if (
+                                            m?.role === "system" &&
+                                            m?.content === "loading" &&
+                                            isLoading
+                                        ) {
                                             return (
                                                 <div
                                                     key={m?.id}
@@ -321,13 +333,13 @@ function ChatBotInterface({
                                             placeholder="Type your message..."
                                             className="flex-1"
                                             autoComplete="off"
-                                            value={input}
+                                            value={userInput}
                                             onChange={handleInputChange}
                                         />
                                         <Button
                                             type="submit"
                                             size="icon"
-                                            onClick={() => submitQuery()}
+                                            onClick={() => submitChatBotQuery()}
                                             className="bg-airlinedarkblue"
                                         >
                                             <SendIcon className="h-4 w-4" />
@@ -345,14 +357,15 @@ function ChatBotInterface({
 }
 
 export default function Chatbot() {
+    const aiNewModelChatbotFlag: AIModelInterface =
+        useFlags()["ai-config--togglebot"] == undefined
+            ? DEFAULT_AI_MODEL
+            : useFlags()["ai-config--togglebot"];
+
     const isMobile = useIsMobile();
     const [isOpen, setIsOpen] = useState(false);
     const [openMobile, setOpenMobile] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
-    const aiNewModelChatbotFlag =
-        useFlags()["ai-config--togglebot"] == undefined
-            ? DEFAULT_AI_MODEL
-            : useFlags()["ai-config--togglebot"];
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
