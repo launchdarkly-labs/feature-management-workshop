@@ -7,7 +7,7 @@ import { setCookie, getCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY, LAUNCH_CLUB_PLATINUM } from "../constants";
 import { STARTER_PERSONAS } from "./StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
-import type { LoginContextType } from "@/utils/typescriptTypesInterfaceLogin";
+import type { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { LDContext } from "launchdarkly-js-client-sdk";
 
 const startingUserObject = {
@@ -20,12 +20,9 @@ const startingUserObject = {
   personaEnrolledInLaunchClub: false,
 };
 
-const LoginContext = createContext<LoginContextType>({
+const LoginContext = createContext<LoginContextInterface>({
   userObject: startingUserObject,
   isLoggedIn: false,
-  async upgradeLaunchClubStatus() {},
-  // async setPlaneContext(),
-  async enrollInLaunchClub() {},
   async updateAudienceContext() {},
   async updateUserContext() {},
   async loginUser() {},
@@ -175,11 +172,7 @@ const [userObject, setUserObject] = useState<Persona | {}>({});
         timeZone: "America/New_York",
         country: "US",
       },
-      experience: {
-        key: "a380",
-        name: "a380",
-        airplane: "a380",
-      },
+
       audience: {
         key: existingAudienceKey,
       },
@@ -191,36 +184,15 @@ const [userObject, setUserObject] = useState<Persona | {}>({});
     console.log("Anonymous User", context);
   };
 
-  // const setPlaneContext = async (plane) => {
-  //   const context = await client?.getContext();
-  //   console.log("setPlaneContext", context);
-  //   context.experience.airplane = plane;
-  //   console.log("Plane context registered for trip as - " + plane);
-  //   client.identify(context);
-  // };
 
-  const upgradeLaunchClubStatus = async (): Promise<void> => {
-    const context = await client?.getContext();
-    console.log("upgradeLaunchClubStatus", context);
-    setUserObject((prevObj) => ({ ...prevObj, personalaunchclubstatus: LAUNCH_CLUB_PLATINUM }));
-    context.user.launchclub = LAUNCH_CLUB_PLATINUM;
-    console.log("User upgraded to " + LAUNCH_CLUB_PLATINUM + " status");
-    setAppMultiContext(context);
-    client.identify(context);
-    setCookie(LD_CONTEXT_COOKIE_KEY, context);
-  };
 
-  const enrollInLaunchClub = (): void => {
-    setUserObject((prevObj) => ({ ...prevObj, personaEnrolledInLaunchClub: true }));
-  };
 
   return (
     <LoginContext.Provider
       value={{
         userObject,
         isLoggedIn,
-        upgradeLaunchClubStatus,
-        enrollInLaunchClub,
+     
         updateAudienceContext,
         updateUserContext,
         updateUserContextWithUserId,

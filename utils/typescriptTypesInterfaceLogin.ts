@@ -1,22 +1,21 @@
 export type LoginUserFunctionType = (email: string) => Promise<void>;
 export interface Persona {
-    personaname: string,
-    personatier: string,
-    personaimage: string,
-    personaemail: string,
-    personarole: string,
-    personalaunchclubstatus: string,
-    personaEnrolledInLaunchClub: boolean
-  }
+    personaname: string;
+    personatier: string;
+    personaimage: string;
+    personaemail: string;
+    personarole: string;
+    personalaunchclubstatus: string;
+    personaEnrolledInLaunchClub: boolean;
+}
 
- export type LoginContextType = {
+export interface LoginContextInterface {
     userObject: Persona;
     isLoggedIn: boolean;
-    upgradeLaunchClubStatus: () => Promise<void>;
-    // setPlaneContext:()=> Promise<void>;
-    enrollInLaunchClub: () => void;
+    kind: string;
+    key: string;
     updateAudienceContext: () => Promise<void>;
     loginUser: LoginUserFunctionType;
     logoutUser: () => Promise<void>;
     allUsers: Persona[];
-  };
+}
