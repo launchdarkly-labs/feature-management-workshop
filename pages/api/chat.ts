@@ -1,11 +1,21 @@
-import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
+import {
+    BedrockRuntimeClient,
+    ConverseCommand,
+    ConverseCommandOutput,
+} from "@aws-sdk/client-bedrock-runtime";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerClient } from "@/utils/ld-server";
+import { LDClient } from "@launchdarkly/node-server-sdk";
 import { getCookie } from "cookies-next";
-import { initAi, LDAIConfig } from "@launchdarkly/server-sdk-ai";
+import { initAi, LDAIConfig, LDAIConfigTracker, LDAIClient } from "@launchdarkly/server-sdk-ai";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { v4 as uuidv4 } from "uuid";
 import { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
+import {
+    ChatBotAIApiResponseInterface,
+    UserChatInputResponseInterface,
+    ChatBotMessageInterface
+} from "@/utils/typescriptTypesInterfaceIndustry";
 
 export default async function chatResponse(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -13,17 +23,17 @@ export default async function chatResponse(req: NextApiRequest, res: NextApiResp
             throw new Error("AWS credentials are not set");
         }
 
-        const ldClient = await getServerClient(process.env.LD_SDK_KEY || "");
-        const aiClient = initAi(ldClient);
+        const ldClient: LDClient = await getServerClient(process.env.LD_SDK_KEY || "");
+        const aiClient: LDAIClient = initAi(ldClient);
 
         const context: LoginContextInterface = clientSideContext({ req, res }) || {
             kind: "user",
             key: uuidv4(),
         };
 
-        const body = JSON.parse(req.body);
-        const aiConfigKey = body?.aiConfigKey;
-        const userInput = body?.userInput;
+        const body: UserChatInputResponseInterface = JSON.parse(req.body);
+        const aiConfigKey: string = body?.aiConfigKey;
+        const userInput: string = body?.userInput;
 
         const aiConfig: LDAIConfig = await aiClient.config(
             aiConfigKey,
@@ -34,9 +44,9 @@ export default async function chatResponse(req: NextApiRequest, res: NextApiResp
 
         AIConfigErrorHandler(aiConfig);
 
-        const { tracker } = aiConfig;
+        const { tracker }: { tracker: LDAIConfigTracker } = aiConfig;
 
-        const completion = tracker.trackBedrockConverseMetrics(
+        const completion: ConverseCommandOutput = tracker.trackBedrockConverseMetrics(
             await bedrockClient.send(
                 new ConverseCommand({
                     modelId: aiConfig?.model?.name,
@@ -48,10 +58,10 @@ export default async function chatResponse(req: NextApiRequest, res: NextApiResp
                 })
             )
         );
-        const response = completion.output?.message?.content?.[0]?.text ?? "no-response";
-        const data = {
+        const response: string = completion.output?.message?.content?.[0]?.text ?? "no-response";
+        const data: ChatBotAIApiResponseInterface = {
             response: response,
-            modelName: aiConfig?.model?.name,
+            modelName: aiConfig?.model?.name || "",
             enabled: aiConfig.enabled,
         };
         tracker.trackSuccess();
@@ -74,7 +84,7 @@ const clientSideContext = ({ res, req }: { res: NextApiResponse; req: NextApiReq
     JSON.parse(getCookie(LD_CONTEXT_COOKIE_KEY, { res, req }) || "{}");
 
 const mapPromptToConversation = (
-    prompt: { role: "user" | "assistant" | "system"; content: string }[]
+    prompt: ChatBotMessageInterface[]
 ) => {
     return prompt.map((item) => ({
         role: item.role !== "system" ? item.role : "user",

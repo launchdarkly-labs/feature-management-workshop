@@ -32,9 +32,10 @@ export interface AIModelInterface {
     };
 };
 
+type AIChatBotConversationRole = "assistant" | "user" | "system";
 export interface ChatBotMessageInterface {
-    id: string;
-    role: "assistant" | "user" | "loader";
+    id?: string;
+    role: AIChatBotConversationRole;
     content: string;
 }
 export interface ChatBotAIApiResponseInterface {
@@ -42,4 +43,9 @@ export interface ChatBotAIApiResponseInterface {
     response: string;
     enabled: boolean;
     modelName: string;
+}
+
+export interface UserChatInputResponseInterface {
+    aiConfigKey: string;
+    userInput: string;
 }

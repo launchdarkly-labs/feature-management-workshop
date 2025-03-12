@@ -17,6 +17,7 @@ import {
     AIModelInterface,
     ChatBotMessageInterface,
     ChatBotAIApiResponseInterface,
+    UserChatInputResponseInterface,
 } from "@/utils/typescriptTypesInterfaceIndustry";
 
 function ChatBotInterface({
@@ -43,12 +44,14 @@ function ChatBotInterface({
 
         applyUserNewMessage();
 
+        const userInputRes: UserChatInputResponseInterface = {
+            aiConfigKey: aiConfigKey,
+            userInput: userInput,
+        };
+
         const response = await fetch("/api/chat", {
             method: "POST",
-            body: JSON.stringify({
-                aiConfigKey,
-                userInput,
-            }),
+            body: JSON.stringify(userInputRes),
         });
 
         const data: ChatBotAIApiResponseInterface = await response.json();
@@ -81,7 +84,7 @@ function ChatBotInterface({
         };
 
         const loadingMessage: ChatBotMessageInterface = {
-            role: "loader",
+            role: "system",
             content: "loading",
             id: uuidv4().slice(0, 4),
         };
@@ -89,7 +92,7 @@ function ChatBotInterface({
         setMessages([...messages, userMessage, loadingMessage]);
     };
 
-    const applyChatBotNewMessage = (chatBotResponse:ChatBotAIApiResponseInterface) => {
+    const applyChatBotNewMessage = (chatBotResponse: ChatBotAIApiResponseInterface) => {
         const userMessage: ChatBotMessageInterface = {
             role: "user",
             content: userInput,
@@ -287,7 +290,11 @@ function ChatBotInterface({
                                             );
                                         }
 
-                                        if (m?.role === "loader" && isLoading) {
+                                        if (
+                                            m?.role === "system" &&
+                                            m?.content === "loading" &&
+                                            isLoading
+                                        ) {
                                             return (
                                                 <div
                                                     key={m?.id}
