@@ -61,7 +61,7 @@ export function CreditAccount() {
 
     return (
         <Sheet>
-            <SheetTrigger className=" h-full">
+            <SheetTrigger className=" h-full  w-full">
                 <BankDashboardAccountCard
                     cardIcon={<CreditCard className="text-blue-700 h-8 w-8" />}
                     cardTitle="GSF Platinum Credit"

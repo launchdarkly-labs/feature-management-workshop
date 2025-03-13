@@ -70,7 +70,7 @@ export function CheckingAccount() {
 
     return (
         <Sheet>
-            <SheetTrigger className=" h-full" >
+            <SheetTrigger className=" h-full w-full" >
                 <BankDashboardAccountCard
                     cardIcon={<CiMoneyCheck1 className="text-blue-700 h-8 w-8" />}
                     cardTitle="Platinum Checking"

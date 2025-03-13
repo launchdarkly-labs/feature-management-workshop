@@ -29,7 +29,7 @@ const payments = [
 export function MorgtgageAccount() {
     return (
         <Sheet>
-            <SheetTrigger className="h-full">
+            <SheetTrigger className="h-full w-full">
                 <BankDashboardAccountCard
                     cardIcon={<MdHome className="text-blue-700 h-8 w-8" />}
                     cardTitle="Mortgage Account"
