@@ -27,15 +27,14 @@ export interface LDContextInterface {
     device: {
         key: string;
         name: string;
-
         operating_system: string;
         platform: string;
     };
     kind: string;
     location: {
-        country: string;
+        continent: string;
         key: string;
-        name: string;
+        city: string;
         timeZone: string;
     };
     user: {

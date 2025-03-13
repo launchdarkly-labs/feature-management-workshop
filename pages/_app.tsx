@@ -11,19 +11,19 @@ import { AppSidebar } from "@/components/ui/app-sidebar";
 let c;
 
 if (typeof window !== "undefined") {
-  const DynamicContextProvider = dynamic(() => import("@/components/ContextProvider"), {
+  const ContextProvider = dynamic(() => import("@/components/ContextProvider"), {
     ssr: false,
   });
 
-  const DynamicTelemetryProvider = dynamic(() => import("@/components/TelemetryProvider"), {
+  const TelemetryProvider = dynamic(() => import("@/components/TelemetryProvider"), {
     ssr: false,
   });
 
   c = ({ Component, pageProps }: AppProps) => {
     return (
       <NoSSRWrapper>
-        <DynamicContextProvider>
-          <DynamicTelemetryProvider>
+        <ContextProvider>
+          <TelemetryProvider>
             <LoginProvider>
               <LiveLogsProvider>
                 <SidebarProvider
@@ -53,8 +53,8 @@ if (typeof window !== "undefined") {
                 </SidebarProvider>
               </LiveLogsProvider>
             </LoginProvider>
-          </DynamicTelemetryProvider>
-        </DynamicContextProvider>
+          </TelemetryProvider>
+        </ContextProvider>
       </NoSSRWrapper>
     );
   };
