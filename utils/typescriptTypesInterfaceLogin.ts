@@ -1,6 +1,8 @@
-import { LDSingleKindContext, LDMultiKindContext } from "@launchdarkly/node-server-sdk";
+
 
 export type LoginUserFunctionType = (email: string) => Promise<void>;
+
+//TODO: need to extend user type or something into here or vice versa
 export interface Persona {
     personaname: string;
     personatier: string;
@@ -21,25 +23,36 @@ export interface LoginContextProviderInterface {
 }
 
 export interface LDContextInterface {
-    audience?: {
-        key: string;
-    };
-    device: {
-        key: string;
-        name: string;
-        operating_system: string;
-        platform: string;
-    };
-    kind: string;
-    location: {
-        continent: string;
-        key: string;
-        city: string;
-        timeZone: string;
-    };
-    user: {
-        anonymous?: boolean;
-        key: string;
-    };
+    audience: AudienceInterface;
+    device: DeviceInterface;
+    kind: "multi" | string;
+    location: LocationInterface;
+    user: UserInterface;
+}
 
+export interface LocationInterface {
+    continent: string;
+    key: string;
+    city: string;
+    timeZone: string;
+}
+
+export interface UserInterface {
+    anonymous: boolean;
+    key: string;
+    role: string;
+    tier: string;
+    name: string;
+    email: string;
+}
+
+export interface DeviceInterface {
+    key: string;
+    name: string;
+    operating_system: string;
+    platform: string;
+}
+
+export interface AudienceInterface{
+    key: string
 }

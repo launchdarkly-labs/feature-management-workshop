@@ -1,16 +1,15 @@
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "../constants";
 import { STARTER_PERSONAS } from "../StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
 import type { LoginContextProviderInterface } from "@/utils/typescriptTypesInterfaceLogin";
-import { LDContext } from "launchdarkly-js-client-sdk";
-import { getDeviceForContext, getLocation, getHashEmail, getExistingAudienceKey } from "../utils";
-import { StarterAnonymousContext } from "../StarterAnonymousContext";
+import { getDeviceForContext, getLocation, getExistingAudienceKey } from "../utils";
+import { MultiKindLDContext } from "../MultiKindLDContext";
 
-const startingUserObject = {
+const startingUserObject:Persona = {
     personaname: "",
     personatier: "",
     personaimage: "",
@@ -32,65 +31,58 @@ const LoginContext = createContext<LoginContextProviderInterface>({
 export default LoginContext;
 
 export const LoginProvider = ({ children }: { children: any }) => {
-    const client = useLDClient();
+    const ldClient = useLDClient();
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [userObject, setUserObject] = useState<Persona>(startingUserObject as Persona);
+    const [userObject, setUserObject] = useState<Persona>(startingUserObject);
     const [appMultiContext, setAppMultiContext] = useState({
-        ...client?.getContext(),
+        ...ldClient?.getContext(),
     });
     const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
     console.log("appMultiContext", appMultiContext);
-    const loginUser = async (email: string): Promise<void> => {
-        //need to keep this here in order to pull getcookie and get same audience key as you initialized it
-        const ldContextCookieKey: string | undefined = getCookie(LD_CONTEXT_COOKIE_KEY);
-        const existingAudienceKey: string =
-            ldContextCookieKey && JSON.parse(ldContextCookieKey)?.audience?.key;
 
+    const loginUser = async (email: string): Promise<void> => {
+        //TODO: what does this do
         if (Object.keys(userObject).length > 0) {
             setAllUsers((prevObj) => [
-                ...prevObj.filter(
-                    (persona) => persona.personaemail !== (userObject as Persona).personaemail
-                ),
+                ...getAllUsersLeft({ users: prevObj, userObject: userObject }),
                 userObject as Persona,
             ]);
         }
+       
+        const chosenPersona = getChosenPersona({ allUsers: allUsers, chosenEmail: email });
 
-        const context: LDContext | undefined = await client?.getContext();
+        await setUserObject(chosenPersona);
 
-        const foundPersona: Persona =
-            allUsers.find((persona) => persona.personaemail.includes(email)) || STARTER_PERSONAS[0];
+        const newContext = MultiKindLDContext({
+            audienceKey: getExistingAudienceKey(),
+            userEmail: chosenPersona.personaemail,
+            userName: chosenPersona.personaname,
+            isAnonymous: false,
+            userKey: uuidv4().slice(0, 10),
+            userRole: chosenPersona.personarole,
+            userTier: chosenPersona?.personatier,
+            newDevice: getDeviceForContext(),
+            newLocation: getLocation(),
+        });
 
-        await setUserObject(foundPersona);
-        context.user.name = foundPersona?.personaname;
-        context.user.email = foundPersona?.personaemail;
-        context.user.anonymous = false;
-        context.user.key = getHashEmail(email);
-        context.user.role = foundPersona?.personarole;
-        context.user.tier = foundPersona?.personatier;
-        context.audience.key = getExistingAudienceKey();
-        context.location = getLocation();
-        context.device = getDeviceForContext();
-
-        setAppMultiContext(context);
-        await client?.identify(context);
-        console.log("loginUser", context);
-
-        setCookie(LD_CONTEXT_COOKIE_KEY, context);
+        setAppMultiContext(newContext);
+        await ldClient?.identify(newContext);
+        setCookie(LD_CONTEXT_COOKIE_KEY, newContext);
         setIsLoggedIn(true);
     };
 
     const updateAudienceContext = async (): Promise<void> => {
-        const context = await client?.getContext();
+        const context = await ldClient?.getContext();
         console.log("updateAudienceContext", context);
         context.audience.key = uuidv4().slice(0, 10);
         setAppMultiContext(context);
         setCookie(LD_CONTEXT_COOKIE_KEY, context);
-        await client?.identify(context);
+        await ldClient?.identify(context);
     };
 
     const updateUserContext = async (): Promise<void> => {
-        const context = await client?.getContext();
+        const context = await ldClient?.getContext();
         context.user.key = uuidv4();
         context.user.device = Math.random() < 0.5 ? "Mobile" : "Desktop";
         const osOptions =
@@ -105,17 +97,17 @@ export const LoginProvider = ({ children }: { children: any }) => {
         context.user.anonymous = false;
         setAppMultiContext(context);
         setCookie(LD_CONTEXT_COOKIE_KEY, context);
-        await client?.identify(context);
+        await ldClient?.identify(context);
     };
 
     const logoutUser = async () => {
         setIsLoggedIn(false);
         setUserObject(startingUserObject);
         setAllUsers(STARTER_PERSONAS);
-        const context = StarterAnonymousContext({ audienceKey: getExistingAudienceKey() });
-        setAppMultiContext(context);
-        await client?.identify(context);
-        setCookie(LD_CONTEXT_COOKIE_KEY, context);
+        const newContext = MultiKindLDContext({ audienceKey: getExistingAudienceKey(), isAnonymous: true });
+        setAppMultiContext(newContext);
+        await ldClient?.identify(newContext);
+        setCookie(LD_CONTEXT_COOKIE_KEY, newContext);
     };
 
     return (
@@ -135,3 +127,21 @@ export const LoginProvider = ({ children }: { children: any }) => {
         </LoginContext.Provider>
     );
 };
+
+const getAllUsersLeft = ({ users, userObject }: { users: Persona[]; userObject: Persona }) => {
+    return users.filter((persona: Persona) => persona.personaemail !== userObject.personaemail);
+};
+
+const getChosenPersona = ({
+  allUsers,
+  chosenEmail,
+}: {
+  allUsers: Persona[];
+  chosenEmail: string;
+}): Persona => {
+  return (
+      allUsers.find((persona) => persona.personaemail.includes(chosenEmail)) ||
+      STARTER_PERSONAS[0]
+  );
+};
+

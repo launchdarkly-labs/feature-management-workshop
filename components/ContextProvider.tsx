@@ -1,19 +1,18 @@
 import { ElementType, useEffect, useState } from "react";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
-import { v4 as uuidv4 } from "uuid";
 import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { SyncLoader } from "react-spinners";
-import { StarterAnonymousContext } from "@/utils/StarterAnonymousContext";
+import { MultiKindLDContext } from "@/utils/MultiKindLDContext";
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [LDProviderComponent, setLDProviderComponent] = useState<ElementType>();
 
     useEffect(() => {
         const initializeLDProvider = async () => {
-            const context: LDContextInterface = StarterAnonymousContext({
-                audienceKey: uuidv4().slice(0, 10),
+            const context: LDContextInterface = MultiKindLDContext({
+                isAnonymous: true,
             });
 
             setCookie(LD_CONTEXT_COOKIE_KEY, context);

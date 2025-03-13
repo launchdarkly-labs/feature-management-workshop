@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from "react-device-detect";
 import { LD_CONTEXT_COOKIE_KEY } from "./constants";
 import { getCookie } from "cookies-next";
+import { LocationInterface, DeviceInterface } from "./typescriptTypesInterfaceLogin";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -88,7 +89,7 @@ export function delay(low: number, high: number) {
     return new Promise((resolve) => setTimeout(resolve, randomDelay));
 }
 
-export const getOperatingSystem = () => {
+export const getOperatingSystem = (): "Android" | "iOS" | "Windows" | "macOS" | "" => {
     if (isAndroid) return "Android";
     if (isIOS) return "iOS";
     if (isWindows) return "Windows";
@@ -96,13 +97,13 @@ export const getOperatingSystem = () => {
     return "";
 };
 
-export const getDevice = () => {
+export const getDevice = (): "" | "Mobile" | "Desktop" => {
     if (isMobile) return "Mobile";
     if (isBrowser) return "Desktop";
     return "";
 };
 
-export const getDeviceForContext = () => {
+export const getDeviceForContext = (): DeviceInterface => {
     return {
         key: getDevice(),
         name: getDevice(),
@@ -111,7 +112,7 @@ export const getDeviceForContext = () => {
     };
 };
 
-export const getLocation = () => {
+export const getLocation = (): LocationInterface => {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const continent = timeZone.split("/")[0];
     const city = timeZone.split("/")[timeZone.split("/").length - 1].replace("_", " ");
