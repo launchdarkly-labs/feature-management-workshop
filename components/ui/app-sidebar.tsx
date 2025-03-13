@@ -79,7 +79,7 @@ export function AppSidebar() {
               return (
                 <Card className="mb-2" key={index}>
                   <CardContent className="p-4 w-full overflow-x-auto">
-                    <div className={` ${log.color} rounded-md py-1 px-2 w-max mb-10 text-xs`}>
+                    <div className={` ${log.color} rounded-md py-1 px-2 w-max mb-10 text-xs mt-4`}>
                       {log.type}
                     </div>
                     <div className="flex justify-between items-center mb-4  text-xs text-gray-500">

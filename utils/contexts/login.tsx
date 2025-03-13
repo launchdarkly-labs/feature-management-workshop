@@ -1,11 +1,11 @@
-import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useLDClient, LDContext } from "launchdarkly-react-client-sdk";
 import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "../constants";
 import { STARTER_PERSONAS } from "../StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
-import type { LoginContextProviderInterface } from "@/utils/typescriptTypesInterfaceLogin";
+import type { LoginContextProviderInterface, LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { getDeviceForContext, getLocation, getExistingAudienceKey } from "../utils";
 import { MultiKindLDContext } from "../MultiKindLDContext";
 
@@ -21,7 +21,7 @@ const LoginContext = createContext<LoginContextProviderInterface>({
     userObject: startingUserObject,
     isLoggedIn: false,
     async updateAudienceContext() {},
-    async updateUserContext() {},
+    async updateRandomizedUserContext() {},
     async loginUser() {},
     async logoutUser() {},
     allUsers: [],
@@ -32,11 +32,10 @@ export default LoginContext;
 
 export const LoginProvider = ({ children }: { children: any }) => {
     const ldClient = useLDClient();
+    const starterLDContext:LDContextInterface = MultiKindLDContext({isAnonymous:true})
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userObject, setUserObject] = useState<Persona>(startingUserObject);
-    const [appMultiContext, setAppMultiContext] = useState({
-        ...ldClient?.getContext(),
-    });
+    const [appMultiContext, setAppMultiContext] = useState<LDContextInterface>(starterLDContext);
     const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
     console.log("appMultiContext", appMultiContext);
@@ -73,27 +72,53 @@ export const LoginProvider = ({ children }: { children: any }) => {
     };
 
     const updateAudienceContext = async (): Promise<void> => {
-        const context = await ldClient?.getContext();
-        console.log("updateAudienceContext", context);
-        context.audience.key = uuidv4().slice(0, 10);
-        setAppMultiContext(context);
-        setCookie(LD_CONTEXT_COOKIE_KEY, context);
-        await ldClient?.identify(context);
+        const existingContext = appMultiContext;
+
+        const newContext = MultiKindLDContext({
+          audienceKey: uuidv4().slice(0, 10),
+          userEmail: existingContext.user.email,
+          userName: existingContext.user.name,
+          isAnonymous: existingContext.user.anonymous,
+          userKey: existingContext.user.key,
+          userRole: existingContext.user.role,
+          userTier: existingContext.user.tier,
+          newDevice: existingContext.device,
+          newLocation: existingContext.location,
+      });
+        console.log("updateAudienceContext", newContext);
+  
+        setAppMultiContext(newContext);
+        setCookie(LD_CONTEXT_COOKIE_KEY, newContext);
+        await ldClient?.identify(newContext);
     };
 
-    const updateUserContext = async (): Promise<void> => {
+    const updateRandomizedUserContext = async (): Promise<void> => {
         const context = await ldClient?.getContext();
+        const existingContext = appMultiContext;
+
+        const newContext = MultiKindLDContext({
+          audienceKey: getExistingAudienceKey(),
+          userEmail: existingContext.user.email,
+          userName: existingContext.user.name,
+          isAnonymous: false,
+          userKey: uuidv4().slice(0, 10),
+          userRole: existingContext.user.role,
+          userTier: existingContext.user.tier,
+          newDevice: getDeviceForContext(),
+          newLocation: getLocation(),
+      });
+
         context.user.key = uuidv4();
-        context.user.device = Math.random() < 0.5 ? "Mobile" : "Desktop";
+        context.user.device = Math.random() < 0.5 ? "Mobile" : "Desktop"; //TODO: create randomized function
         const osOptions =
-            context.user.device === "Mobile" ? ["iOS", "Android"] : ["macOS", "Windows"];
-        context.user.operating_system = osOptions[Math.floor(Math.random() * osOptions.length)];
+            context.user.device === "Mobile" ? ["iOS", "Android"] : ["macOS", "Windows"]; //TODO: create randomized function
+        context.user.operating_system = osOptions[Math.floor(Math.random() * osOptions.length)];//TODO: create randomized function
         context.user.location = `America/${
-            ["New_York", "Chicago", "Los_Angeles", "Denver"][Math.floor(Math.random() * 4)]
+            ["New_York", "Chicago", "Los_Angeles", "Denver"][Math.floor(Math.random() * 4)]//TODO: create randomized function
         }`;
         context.user.tier = ["Gold", "Silver", "Platinum", "Standard"][
             Math.floor(Math.random() * 3)
-        ];
+        ];//TODO: create randomized function
         context.user.anonymous = false;
         setAppMultiContext(context);
         setCookie(LD_CONTEXT_COOKIE_KEY, context);
@@ -116,7 +141,7 @@ export const LoginProvider = ({ children }: { children: any }) => {
                 userObject,
                 isLoggedIn,
                 updateAudienceContext,
-                updateUserContext,
+                updateRandomizedUserContext,
                 loginUser,
                 logoutUser,
                 allUsers,

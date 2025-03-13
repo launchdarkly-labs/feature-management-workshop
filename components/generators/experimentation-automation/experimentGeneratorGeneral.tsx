@@ -30,7 +30,7 @@ export default function ExperimentGenerator({
   experimentationKey: string;
 }) {
   const client = useLDClient();
-  const { updateUserContext } = useContext(LoginContext);
+  const { updateRandomizedUserContext } = useContext(LoginContext);
   const [expGenerator, setExpGenerator] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [experimentTypeObj, setExperimentTypeObj] = useState<{
@@ -44,7 +44,7 @@ export default function ExperimentGenerator({
   }
 
   const updateContext = async (): Promise<void> => {
-    updateUserContext();
+    updateRandomizedUserContext();
   };
 
   useEffect(() => {

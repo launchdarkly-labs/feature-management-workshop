@@ -5,6 +5,8 @@ import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { SyncLoader } from "react-spinners";
 import { MultiKindLDContext } from "@/utils/MultiKindLDContext";
+import { getLocation, getDeviceForContext } from "@/utils/utils";
+import { v4 as uuidv4 } from "uuid";
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [LDProviderComponent, setLDProviderComponent] = useState<ElementType>();
@@ -13,6 +15,14 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
         const initializeLDProvider = async () => {
             const context: LDContextInterface = MultiKindLDContext({
                 isAnonymous: true,
+                audienceKey: uuidv4().slice(0, 10),
+                userRole: "",
+                userTier: "",
+                userName: "",
+                userEmail: "",
+                userKey: uuidv4().slice(0, 10),
+                newDevice: getDeviceForContext(),
+                newLocation: getLocation(),
             });
 
             setCookie(LD_CONTEXT_COOKIE_KEY, context);

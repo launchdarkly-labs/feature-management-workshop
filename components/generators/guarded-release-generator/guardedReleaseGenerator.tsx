@@ -6,7 +6,7 @@ import { Beaker } from "lucide-react";
 
 
 const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:string}) => {
-	const {  updateUserContext } = useContext(LoginContext);
+	const {  updateRandomizedUserContext } = useContext(LoginContext);
 	const releaseFlag = useFlags()[flagKey];
 	const client = useLDClient();
 	const [trueCounter, setTrueCounter] = useState(0);
@@ -36,7 +36,7 @@ const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:stri
 				setElapsedTime((prevTime) => {
 					const newTime = prevTime + 1;
 					if (newTime % 1 === 0) {
-						updateUserContext();
+						updateRandomizedUserContext();
 					}
 					return newTime;
 				});

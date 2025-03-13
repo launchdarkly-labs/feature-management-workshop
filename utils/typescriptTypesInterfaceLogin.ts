@@ -15,7 +15,7 @@ export interface LoginContextProviderInterface {
     userObject: Persona;
     isLoggedIn: boolean;
     updateAudienceContext: () => Promise<void>;
-    updateUserContext: () => Promise<void>;
+    updateRandomizedUserContext: () => Promise<void>;
     loginUser: LoginUserFunctionType;
     logoutUser: () => Promise<void>;
     allUsers: Persona[];
