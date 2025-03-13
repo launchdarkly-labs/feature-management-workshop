@@ -1,16 +1,12 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
 } from "@/components/ui/sidebar";
 import { PulseLoader } from "react-spinners";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -20,7 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { Clock, Eye, EyeOff } from "lucide-react";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { Highlight, themes } from "prism-react-renderer";
 

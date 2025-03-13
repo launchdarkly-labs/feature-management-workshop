@@ -17,21 +17,9 @@ import {
 } from "chart.js";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import LoginContext from "@/utils/contexts/login";
-
+import { StockDataInterface, StockInterface } from "@/utils/typescriptTypesInterfaceIndustry";
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-interface StockData {
-  time: string;
-  value: number;
-  direction: "up" | "down" | null;
-}
-
-interface Stock {
-  ticker: string;
-  name: string;
-  data: StockData[];
-  image: string;
-}
 
 export const StocksComponent: React.FC = () => {
   const client = useLDClient();
@@ -59,7 +47,7 @@ export const StocksComponent: React.FC = () => {
     return data;
   };
 
-  const generateChartData = (stockData: StockData[]) => {
+  const generateChartData = (stockData: StockDataInterface[]) => {
     const lastTenDataPoints = stockData.slice(-10);
     const secondLastValue =
       lastTenDataPoints.length > 1
@@ -88,7 +76,7 @@ export const StocksComponent: React.FC = () => {
     };
   };
 
-  const [stocks, setStocks] = useState<Stock[]>([
+  const [stocks, setStocks] = useState<StockInterface[]>([
     {
       ticker: "LD",
       name: "LaunchDarkly",
@@ -157,7 +145,7 @@ export const StocksComponent: React.FC = () => {
         }
         const direction = newValue > lastValue ? "up" : newValue < lastValue ? "down" : null;
         const newTime = new Date().toLocaleTimeString();
-        const newDataPoint: StockData = { time: newTime, value: newValue, direction };
+        const newDataPoint: StockDataInterface = { time: newTime, value: newValue, direction };
 
         return {
           ...stock,

@@ -7,24 +7,11 @@ import { BounceLoader } from "react-spinners";
 import { useAnimation } from "framer-motion";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { StocksComponent } from "@/components/ui/bankcomponents/stocksCard";
-
-interface WealthManagementSheetProps {
-  data: any;
-  aiPrompt: string;
-  submitQuery: (prompt: string) => void;
-  prompt: string;
-  loading: boolean;
-  aiResponse: string;
-}
+import { WealthManagementSheetInterface } from "@/utils/typescriptTypesInterfaceIndustry";
 
 const WealthManagementSheet = ({
   data,
@@ -33,7 +20,7 @@ const WealthManagementSheet = ({
   prompt,
   loading,
   aiResponse,
-}: WealthManagementSheetProps) => {
+}: WealthManagementSheetInterface) => {
   const variants = {
     hidden: { scaleY: 0, originY: 1 },
     visible: { scaleY: 1, originY: 1 },

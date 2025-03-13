@@ -4,7 +4,6 @@ import NoSSRWrapper from "@/components/no-ssr";
 import dynamic from "next/dynamic";
 import { TripsProvider } from "@/utils/contexts/TripContext";
 import { LoginProvider } from "@/utils/contexts/login";
-import KeyboardNavigation from "@/components/KeyboardNavigation";
 import Head from "next/head";
 import { QuickCommandDialog } from "@/components/quickcommand";
 import { LiveLogsProvider } from "@/utils/contexts/LiveLogsContext";
@@ -37,7 +36,7 @@ if (typeof window !== "undefined") {
                     }}
                   >
                     <QuickCommandDialog>
-                      <KeyboardNavigation />
+                
 
                       <Head>
                         <meta

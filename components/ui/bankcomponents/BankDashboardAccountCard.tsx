@@ -10,7 +10,7 @@ const BankDashboardAccountCard = ({
     bottomText = "",
     cardIconColor="bg-blue-300/30"
 }: {
-    cardIcon: any;
+    cardIcon: React.ReactNode;
     balanceNumber: string;
     balanceLabel: string;
     accountNumber?: string;

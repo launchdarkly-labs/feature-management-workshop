@@ -62,7 +62,7 @@ export function FederatedCreditAccount() {
 
     return (
         <Sheet>
-            <SheetTrigger className="h-full">
+            <SheetTrigger className="h-full w-full">
                 <BankDashboardAccountCard
                     cardIcon={<CreditCard className="text-gray-700 h-8 w-8" />}
                     cardTitle="External Federated Credit"
