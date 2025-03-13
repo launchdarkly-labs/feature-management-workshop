@@ -7,7 +7,7 @@ import { setCookie, getCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "../constants";
 import { STARTER_PERSONAS } from "./StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
-import type { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
+import type { LoginContextProviderInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { LDContext } from "launchdarkly-js-client-sdk";
 
 const startingUserObject = {
@@ -16,13 +16,10 @@ const startingUserObject = {
   personaimage: "",
   personaemail: "",
   personarole: "",
-  personalaunchclubstatus: "",
-  personaEnrolledInLaunchClub: false,
 };
 
-const LoginContext = createContext<LoginContextInterface>({
-  kind: "multi",
-  key: "",
+const LoginContext = createContext<LoginContextProviderInterface>({
+
   userObject: startingUserObject,
   isLoggedIn: false,
   async updateAudienceContext() {},
@@ -30,6 +27,7 @@ const LoginContext = createContext<LoginContextInterface>({
   async loginUser() {},
   async logoutUser() {},
   allUsers: [],
+  appMultiContext:{}
 });
 
 export default LoginContext;
@@ -54,26 +52,7 @@ const [userObject, setUserObject] = useState<Persona>(startingUserObject as Pers
   });
   const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
-  const hashEmail = async (email: string): Promise<string> => {
-    return CryptoJS.SHA256(email).toString();
-  };
-
-  const getLocation = async (): Promise<{
-    key: string;
-    name: string;
-    timeZone: string;
-    country: string;
-  }> => {
-    const options = Intl.DateTimeFormat().resolvedOptions();
-    const country = options.locale.split("-")[1] || "US"; // Default to "US" if country code is not available
-    return {
-      key: options.timeZone,
-      name: options.timeZone,
-      timeZone: options.timeZone,
-      country: country,
-    };
-  };
-
+  console.log("appMultiContext",appMultiContext)
   const loginUser = async (email: string): Promise<void> => {
     //need to keep this here in order to pull getcookie and get same audience key as you initialized it
     const ldContextCookieKey: string | undefined = getCookie(LD_CONTEXT_COOKIE_KEY);
@@ -142,8 +121,6 @@ const [userObject, setUserObject] = useState<Persona>(startingUserObject as Pers
     await client?.identify(context);
   };
 
-
-
   const logoutUser = async () => {
     const existingAudienceKey =
       getCookie(LD_CONTEXT_COOKIE_KEY) &&
@@ -182,18 +159,13 @@ const [userObject, setUserObject] = useState<Persona>(startingUserObject as Pers
     console.log("Anonymous User", context);
   };
 
-
-
-
   return (
     <LoginContext.Provider
       value={{
         userObject,
         isLoggedIn,
-     
         updateAudienceContext,
         updateUserContext,
- 
         loginUser,
         logoutUser,
         allUsers,
@@ -203,4 +175,24 @@ const [userObject, setUserObject] = useState<Persona>(startingUserObject as Pers
       {children}
     </LoginContext.Provider>
   );
+};
+
+const hashEmail = async (email: string): Promise<string> => {
+  return CryptoJS.SHA256(email).toString();
+};
+
+const getLocation = async (): Promise<{
+  key: string;
+  name: string;
+  timeZone: string;
+  country: string;
+}> => {
+  const options = Intl.DateTimeFormat().resolvedOptions();
+  const country = options.locale.split("-")[1] || "US"; // Default to "US" if country code is not available
+  return {
+    key: options.timeZone,
+    name: options.timeZone,
+    timeZone: options.timeZone,
+    country: country,
+  };
 };

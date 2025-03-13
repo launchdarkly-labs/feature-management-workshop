@@ -10,7 +10,7 @@ import { getCookie } from "cookies-next";
 import { initAi, LDAIConfig, LDAIConfigTracker, LDAIClient } from "@launchdarkly/server-sdk-ai";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { v4 as uuidv4 } from "uuid";
-import { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
+import { LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import {
     ChatBotAIApiResponseInterface,
     UserChatInputResponseInterface,
@@ -26,7 +26,7 @@ export default async function chatResponse(req: NextApiRequest, res: NextApiResp
         const ldClient: LDClient = await getServerClient(process.env.LD_SDK_KEY || "");
         const aiClient: LDAIClient = initAi(ldClient);
         console.log(clientSideContext({ req, res }))
-        const context: LoginContextInterface = clientSideContext({ req, res }) || {
+        const context: LDContextInterface = clientSideContext({ req, res }) || {
             kind: "user",
             key: uuidv4(),
         };
@@ -80,7 +80,7 @@ const bedrockClient = new BedrockRuntimeClient({
     },
 });
 
-const clientSideContext = ({ res, req }: { res: NextApiResponse; req: NextApiRequest }):LoginContextInterface =>
+const clientSideContext = ({ res, req }: { res: NextApiResponse; req: NextApiRequest }):LDContextInterface =>
     JSON.parse(getCookie(LD_CONTEXT_COOKIE_KEY, { res, req }) || "{}");
 
 const mapPromptToConversation = (

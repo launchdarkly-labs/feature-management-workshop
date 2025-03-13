@@ -1,28 +1,26 @@
 import { useEffect, useState } from 'react';
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import { v4 as uuidv4 } from "uuid";
-import CryptoJS from 'crypto-js';
 import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
 import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from 'react-device-detect';
-import { platform } from 'os';
+import { LDContextInterface } from '@/utils/typescriptTypesInterfaceLogin';
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [LDProvider, setLDProvider] = useState<any>(null);
 
   useEffect(() => {
     const initializeLDProvider = async () => {
+      //TODO: fix this syntax
       const operatingSystem = isAndroid ? 'Android' : isIOS ? 'iOS' : isWindows ? 'Windows' : isMacOs ? 'macOS' : '';
       const device = isMobile ? 'Mobile' : isBrowser ? 'Desktop' : '';
 
-      const context = {
+      const context:LDContextInterface = {
         kind: "multi",
+        key: uuidv4().slice(0, 10),
         user: {
           anonymous: true,
           key: uuidv4().slice(0, 10),
-          device: device,
-          operating_system: operatingSystem,
-          location: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
         device: {
           key: device,
@@ -51,7 +49,7 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
         },
         options: {
           application: {
-            id: "launch-investments",
+            id: "togglebank",
           },
           eventCapacity: 500,
           privateAttributes: ['email', 'name']

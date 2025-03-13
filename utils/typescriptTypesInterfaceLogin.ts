@@ -1,3 +1,5 @@
+import { LDSingleKindContext, LDMultiKindContext } from "@launchdarkly/node-server-sdk";
+
 export type LoginUserFunctionType = (email: string) => Promise<void>;
 export interface Persona {
     personaname: string;
@@ -5,22 +7,41 @@ export interface Persona {
     personaimage: string;
     personaemail: string;
     personarole: string;
-    personalaunchclubstatus: string;
-    personaEnrolledInLaunchClub: boolean;
 }
 
-export interface LoginContextInterface {
+export interface LoginContextProviderInterface {
     userObject: Persona;
     isLoggedIn: boolean;
-    kind: string;
-    key: string;
     updateAudienceContext: () => Promise<void>;
     updateUserContext: () => Promise<void>;
     loginUser: LoginUserFunctionType;
     logoutUser: () => Promise<void>;
-
     allUsers: Persona[];
+    appMultiContext: {};
+}
+
+export interface LDContextInterface {
     audience?: {
-        key:string
-    }
+        key: string;
+    };
+    device: {
+        key: string;
+        name: string;
+
+        operating_system: string;
+        platform: string;
+    };
+    kind: string;
+    location: {
+        country: string;
+        key: string;
+        name: string;
+        timeZone: string;
+    };
+    key: string;
+    user: {
+        anonymous?: boolean;
+        key: string;
+    };
+
 }

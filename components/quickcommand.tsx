@@ -8,11 +8,8 @@ import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import { toast } from "./ui/use-toast";
 import ExperimentGenerator from "@/components/generators/experimentation-automation/experimentGeneratorGeneral";
@@ -23,16 +20,6 @@ import {
   MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY,
   MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY,
 } from "@/components/generators/experimentation-automation/experimentationConstants";
-
-import {
-  generateSuggestedItemsFeatureExperimentResults,
-  generateAIChatBotFeatureExperimentResults,
-  generateNewSearchEngineFeatureExperimentResults,
-} from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
-import {
-  generateStoreHeaderFunnelExperimentResults,
-  generateShortenCollectionsPageFunnelExperimentResults,
-} from "@/components/generators/experimentation-automation/funnelExperimentGeneratorFunctions";
 import GuardedReleaseGenerator from "@/components/generators/guarded-release-generator/guardedReleaseGenerator";
 
 export function QuickCommandDialog({ children }: { children: any }) {
