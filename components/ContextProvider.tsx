@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
+import { asyncWithLDProvider, LDProvider } from "launchdarkly-react-client-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
@@ -7,17 +7,15 @@ import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from 'react
 import { LDContextInterface } from '@/utils/typescriptTypesInterfaceLogin';
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [LDProvider, setLDProvider] = useState<any>(null);
+  const [LDProviderComponent, setLDProviderComponent] = useState<any>(null);
 
   useEffect(() => {
     const initializeLDProvider = async () => {
-      //TODO: fix this syntax
       const operatingSystem = isAndroid ? 'Android' : isIOS ? 'iOS' : isWindows ? 'Windows' : isMacOs ? 'macOS' : '';
       const device = isMobile ? 'Mobile' : isBrowser ? 'Desktop' : '';
 
       const context:LDContextInterface = {
         kind: "multi",
-        key: uuidv4().slice(0, 10),
         user: {
           anonymous: true,
           key: uuidv4().slice(0, 10),
@@ -57,18 +55,18 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
         context: context
       });
 
-      setLDProvider(() => Provider);
+      setLDProviderComponent(()=>Provider);
     };
 
     initializeLDProvider();
   }, []);
 
-  if (!LDProvider) {
+  if (!LDProviderComponent) {
     // Return a loading indicator or null
     return <div>Loading LaunchDarkly...</div>;
   }
 
-  return <LDProvider>{children}</LDProvider>;
+  return <LDProviderComponent>{children}</LDProviderComponent>;
 };
 
 export default ContextProvider;

@@ -38,7 +38,6 @@ export interface LDContextInterface {
         name: string;
         timeZone: string;
     };
-    key: string;
     user: {
         anonymous?: boolean;
         key: string;
