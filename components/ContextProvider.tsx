@@ -58,7 +58,7 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
         initializeLDProvider();
     }, []);
 
-    if (true) {
+    if (!LDProviderComponent) {
         return <LoadingComponent />;
     }
 
@@ -66,6 +66,8 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ContextProvider;
+
+
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const continent = timeZone.split("/")[0];
 const city = timeZone.split("/")[timeZone.split("/").length - 1].replace("_", " ");
