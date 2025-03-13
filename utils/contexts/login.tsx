@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import CryptoJS from "crypto-js";
 import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from "react-device-detect";
 import { setCookie, getCookie } from "cookies-next";
-import { LD_CONTEXT_COOKIE_KEY, LAUNCH_CLUB_PLATINUM } from "../constants";
+import { LD_CONTEXT_COOKIE_KEY } from "../constants";
 import { STARTER_PERSONAS } from "./StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
 import type { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
@@ -21,6 +21,8 @@ const startingUserObject = {
 };
 
 const LoginContext = createContext<LoginContextInterface>({
+  kind: "multi",
+  key: "",
   userObject: startingUserObject,
   isLoggedIn: false,
   async updateAudienceContext() {},
@@ -46,7 +48,7 @@ const device = isMobile ? "Mobile" : isBrowser ? "Desktop" : "";
 export const LoginProvider = ({ children }: { children: any }) => {
   const client = useLDClient();
 const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-const [userObject, setUserObject] = useState<Persona | {}>({});
+const [userObject, setUserObject] = useState<Persona>(startingUserObject as Persona);
   const [appMultiContext, setAppMultiContext] = useState({
     ...client?.getContext(),
   });
@@ -81,16 +83,19 @@ const [userObject, setUserObject] = useState<Persona | {}>({});
     if (Object.keys(userObject).length > 0) {
       //to update the all personas array with the changes
       setAllUsers((prevObj) => [
-        ...prevObj.filter((persona) => persona?.personaemail !== userObject?.personaemail),
-        userObject,
+        ...prevObj.filter((persona) => persona.personaemail !== (userObject as Persona).personaemail),
+        userObject as Persona,
       ]);
     }
 
-    const context: LDContext | undefined = await client?.getContext();
+    const context = await client?.getContext();
     //don't know how to fix this without using undefined
     const foundPersona: Persona = allUsers?.find((persona) =>
       persona?.personaemail?.includes(email)
     );
+    // if (!foundPersona) {
+    //   throw new Error(`Persona with email ${email} not found`);
+    // }
     await setUserObject(foundPersona);
     context.user.name = foundPersona?.personaname;
     context.user.email = foundPersona?.personaemail;
@@ -137,14 +142,7 @@ const [userObject, setUserObject] = useState<Persona | {}>({});
     await client?.identify(context);
   };
 
-  const updateUserContextWithUserId = async (userId) => {
-    const context = await client?.getContext();
-    console.log("updateUserContext", context);
-    context.user.key = userId;
-    setAppMultiContext(context);
-    setCookie(LD_CONTEXT_COOKIE_KEY, context);
-    await client?.identify(context);
-  };
+
 
   const logoutUser = async () => {
     const existingAudienceKey =
@@ -195,7 +193,7 @@ const [userObject, setUserObject] = useState<Persona | {}>({});
      
         updateAudienceContext,
         updateUserContext,
-        updateUserContextWithUserId,
+ 
         loginUser,
         logoutUser,
         allUsers,

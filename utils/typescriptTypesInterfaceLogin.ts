@@ -15,8 +15,10 @@ export interface LoginContextInterface {
     kind: string;
     key: string;
     updateAudienceContext: () => Promise<void>;
+    updateUserContext: () => Promise<void>;
     loginUser: LoginUserFunctionType;
     logoutUser: () => Promise<void>;
+
     allUsers: Persona[];
     audience?: {
         key:string
