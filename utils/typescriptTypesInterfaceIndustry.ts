@@ -11,7 +11,7 @@ export interface TransactionInterface {
     amount: number;
     accounttype: string;
     user: string;
-};
+}
 
 export interface AIModelInterface {
     messages: [
@@ -30,7 +30,7 @@ export interface AIModelInterface {
         version?: number;
         versionKey?: string;
     };
-};
+}
 
 type AIChatBotConversationRole = "assistant" | "user" | "system";
 export interface ChatBotMessageInterface {
@@ -54,3 +54,25 @@ export interface UserAIChatBotFeedbackResponseInterface {
     aiConfigKey: string;
     feedback: string;
 }
+
+export interface StockDataInterface {
+    time: string;
+    value: number;
+    direction: "up" | "down" | null;
+}
+
+export interface StockInterface {
+    ticker: string;
+    name: string;
+    data: StockDataInterface[];
+    image: string;
+}
+
+export interface WealthManagementSheetInterface {
+    data: any;
+    aiPrompt: string;
+    submitQuery: (prompt: string) => void;
+    prompt: string;
+    loading: boolean;
+    aiResponse: string;
+  }

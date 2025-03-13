@@ -1,4 +1,4 @@
-import type { UpdateContextFunction } from "@/utils/typescriptTypesInterfaceIndustry";
+
 import { wait } from "@/utils/utils";
 
 const waitTime = 0.5;
