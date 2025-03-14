@@ -107,21 +107,22 @@ export const LoginProvider = ({ children }: { children: any }) => {
           newLocation: getLocation(),
       });
 
-        context.user.key = uuidv4();
-        context.user.device = Math.random() < 0.5 ? "Mobile" : "Desktop"; //TODO: create randomized function
-        const osOptions =
-            context.user.device === "Mobile" ? ["iOS", "Android"] : ["macOS", "Windows"]; //TODO: create randomized function
-        context.user.operating_system = osOptions[Math.floor(Math.random() * osOptions.length)];//TODO: create randomized function
+        // context.user.key = uuidv4();
+        // context.user.device = Math.random() < 0.5 ? "Mobile" : "Desktop"; //TODO: create randomized function
+        // const osOptions =
+        //     context.user.device === "Mobile" ? ["iOS", "Android"] : ["macOS", "Windows"]; //TODO: create randomized function
+        // context.user.operating_system = osOptions[Math.floor(Math.random() * osOptions.length)];//TODO: create randomized function
         context.user.location = `America/${
             ["New_York", "Chicago", "Los_Angeles", "Denver"][Math.floor(Math.random() * 4)]//TODO: create randomized function
         }`;
         context.user.tier = ["Gold", "Silver", "Platinum", "Standard"][
             Math.floor(Math.random() * 3)
         ];//TODO: create randomized function
-        context.user.anonymous = false;
-        setAppMultiContext(context);
+        // context.user.anonymous = false;
+        
+        setAppMultiContext(newContext);
         setCookie(LD_CONTEXT_COOKIE_KEY, context);
-        await ldClient?.identify(context);
+        await ldClient?.identify(newContext);
     };
 
     const logoutUser = async () => {
