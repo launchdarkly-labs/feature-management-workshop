@@ -85,7 +85,6 @@ export const LoginProvider = ({ children }: { children: any }) => {
           newDevice: existingContext.device,
           newLocation: existingContext.location,
       });
-        console.log("updateAudienceContext", newContext);
   
         setAppMultiContext(newContext);
         setCookie(LD_CONTEXT_COOKIE_KEY, newContext);
