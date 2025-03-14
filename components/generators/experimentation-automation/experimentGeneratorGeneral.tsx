@@ -43,17 +43,13 @@ export default function ExperimentGenerator({
     alert("Error in LaunchDarkly Client");
   }
 
-  const updateContext = async (): Promise<void> => {
-    updateRandomizedUserContext();
-  };
-
   useEffect(() => {
     if (expGenerator) {
       switch (experimentationKey) {
         case MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY:
           generateSuggestedItemsFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -62,7 +58,7 @@ export default function ExperimentGenerator({
         case TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY:
           generateAIChatBotFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -71,7 +67,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY:
           generateNewSearchEngineFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -80,7 +76,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY:
           generateStoreHeaderFunnelExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -89,7 +85,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY:
           generateShortenCollectionsPageFunnelExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,

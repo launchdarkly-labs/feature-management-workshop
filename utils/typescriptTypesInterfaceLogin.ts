@@ -1,5 +1,3 @@
-
-
 export type LoginUserFunctionType = (email: string) => Promise<void>;
 
 //TODO: need to extend user type or something into here or vice versa
@@ -47,12 +45,15 @@ export interface UserInterface {
 }
 
 export interface DeviceInterface {
-    key: string;
-    name: string;
-    operating_system: string;
-    platform: string;
+    key: DeviceType;
+    name: DeviceType;
+    operating_system: OperatingSystemType;
+    platform: DeviceType;
 }
 
 export interface AudienceInterface{
     key: string
 }
+
+export type DeviceType = "" | "Mobile" | "Desktop";
+export type OperatingSystemType = "Android" | "iOS" | "Windows" | "macOS" | "";

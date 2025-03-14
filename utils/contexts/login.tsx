@@ -6,7 +6,7 @@ import { LD_CONTEXT_COOKIE_KEY } from "../constants";
 import { STARTER_PERSONAS } from "../StarterUserPersonas";
 import { Persona } from "../typescriptTypesInterfaceLogin";
 import type { LoginContextProviderInterface, LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
-import { getDeviceForContext, getLocation, getExistingAudienceKey } from "../utils";
+import { getDeviceForContext, getLocation, getExistingAudienceKey, getRandomizedDeviceForContext } from "../utils";
 import { MultiKindLDContext } from "../MultiKindLDContext";
 
 const startingUserObject:Persona = {
@@ -96,14 +96,14 @@ export const LoginProvider = ({ children }: { children: any }) => {
         const existingContext = appMultiContext;
 
         const newContext = MultiKindLDContext({
-          audienceKey: getExistingAudienceKey(),
+          audienceKey: uuidv4().slice(0, 10),
           userEmail: existingContext.user.email,
           userName: existingContext.user.name,
           isAnonymous: false,
           userKey: uuidv4().slice(0, 10),
           userRole: existingContext.user.role,
           userTier: existingContext.user.tier,
-          newDevice: getDeviceForContext(),
+          newDevice: getRandomizedDeviceForContext(),
           newLocation: getLocation(),
       });
 

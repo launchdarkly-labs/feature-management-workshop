@@ -1,9 +1,14 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from "react-device-detect";
-import { LD_CONTEXT_COOKIE_KEY } from "./constants";
+import { LD_CONTEXT_COOKIE_KEY, ANDROID, IOS, DESKTOP, MOBILE, WINDOWS, MACOS } from "./constants";
 import { getCookie } from "cookies-next";
-import { LocationInterface, DeviceInterface } from "./typescriptTypesInterfaceLogin";
+import {
+    LocationInterface,
+    DeviceInterface,
+    DeviceType,
+    OperatingSystemType,
+} from "./typescriptTypesInterfaceLogin";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -89,26 +94,54 @@ export function delay(low: number, high: number) {
     return new Promise((resolve) => setTimeout(resolve, randomDelay));
 }
 
-export const getOperatingSystem = (): "Android" | "iOS" | "Windows" | "macOS" | "" => {
-    if (isAndroid) return "Android";
-    if (isIOS) return "iOS";
-    if (isWindows) return "Windows";
-    if (isMacOs) return "macOS";
+export const getOperatingSystem = (): OperatingSystemType => {
+    if (isAndroid) return ANDROID;
+    if (isIOS) return IOS;
+    if (isWindows) return WINDOWS;
+    if (isMacOs) return MACOS;
     return "";
 };
 
-export const getDevice = (): "" | "Mobile" | "Desktop" => {
-    if (isMobile) return "Mobile";
-    if (isBrowser) return "Desktop";
+export const getRandomizedOperatingSystem = (randomizedDevice: DeviceType): OperatingSystemType => {
+    const mobileOS: OperatingSystemType[] = [ANDROID, IOS];
+    const desktopOS: OperatingSystemType[] = [WINDOWS, MACOS];
+    if (randomizedDevice.includes(MOBILE)) {
+        return mobileOS[Math.floor(Math.random() * mobileOS.length)];
+    }
+
+    if (randomizedDevice.includes(DESKTOP)) {
+        return desktopOS[Math.floor(Math.random() * desktopOS.length)];
+    }
     return "";
+};
+
+export const getDevice = (): DeviceType => {
+    if (isMobile) return MOBILE;
+    if (isBrowser) return DESKTOP;
+    return "";
+};
+
+export const getRandomizedDevice = (): DeviceType => {
+    return Math.random() < 0.5 ? MOBILE : DESKTOP;
 };
 
 export const getDeviceForContext = (): DeviceInterface => {
+    const device = getDevice();
     return {
-        key: getDevice(),
-        name: getDevice(),
+        key: device,
+        name: device,
         operating_system: getOperatingSystem(),
-        platform: getDevice(),
+        platform: device,
+    };
+};
+
+export const getRandomizedDeviceForContext = (): DeviceInterface => {
+    const randomizedDevice = getRandomizedDevice();
+    return {
+        key: randomizedDevice,
+        name: randomizedDevice,
+        operating_system: getRandomizedOperatingSystem(randomizedDevice),
+        platform: randomizedDevice,
     };
 };
 
