@@ -266,7 +266,7 @@ export default function BankHomePage() {
     );
 }
 
-const bankHomePageValues: any = {
+const bankHomePageValues = {
     name: "ToggleBank",
     industryMessages: "More than 100,000 customers worldwide",
     gradiantColor: "bg-gradient-bank",

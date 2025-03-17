@@ -1,7 +1,20 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from "react-device-detect";
-import { LD_CONTEXT_COOKIE_KEY, ANDROID, IOS, DESKTOP, MOBILE, WINDOWS, MACOS } from "./constants";
+import {
+    LD_CONTEXT_COOKIE_KEY,
+    ANDROID,
+    IOS,
+    DESKTOP,
+    MOBILE,
+    WINDOWS,
+    MACOS,
+    PERSONA_TIER_PLATINUM,
+    PERSONA_TIER_STANARD,
+    PERSONA_ROLE_BETA,
+    PERSONA_ROLE_DEVELOPER,
+    PERSONA_ROLE_USER,
+} from "./constants";
 import { getCookie } from "cookies-next";
 import {
     LocationInterface,
@@ -9,6 +22,8 @@ import {
     DeviceType,
     OperatingSystemType,
 } from "./typescriptTypesInterfaceLogin";
+import { ALL_TIME_ZONES } from "./AllTimeZones";
+import { STARTER_PERSONAS } from "./StarterUserPersonas";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -115,6 +130,18 @@ export const getRandomizedOperatingSystem = (randomizedDevice: DeviceType): Oper
     return "";
 };
 
+export const getRandomizedUserTier = () => {
+    const userTierArr = [PERSONA_TIER_PLATINUM, PERSONA_TIER_STANARD];
+
+    return userTierArr[Math.floor(Math.random() * userTierArr.length)];
+};
+
+export const getRandomizedUserRole = () => {
+    const userRoleArr = [PERSONA_ROLE_BETA, PERSONA_ROLE_DEVELOPER, PERSONA_ROLE_USER];
+
+    return userRoleArr[Math.floor(Math.random() * userRoleArr.length)];
+};
+
 export const getDevice = (): DeviceType => {
     if (isMobile) return MOBILE;
     if (isBrowser) return DESKTOP;
@@ -155,6 +182,28 @@ export const getLocation = (): LocationInterface => {
         city: city,
         timeZone: timeZone,
         continent: continent,
+    };
+};
+
+export const getRandomizedLocation = (): LocationInterface => {
+    const timeZone = ALL_TIME_ZONES[Math.floor(Math.random() * ALL_TIME_ZONES.length)];
+    const continent = timeZone.split("/")[0];
+    const city = timeZone.split("/")[timeZone.split("/").length - 1].replace("_", " ");
+
+    return {
+        key: timeZone,
+        city: city,
+        timeZone: timeZone,
+        continent: continent,
+    };
+};
+
+export const getRandomizedUser = () => {
+    const randomizedUser = STARTER_PERSONAS[Math.floor(Math.random() * STARTER_PERSONAS.length)];
+
+    return {
+        name: randomizedUser.personaname,
+        email: randomizedUser.personaemail,
     };
 };
 
