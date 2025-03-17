@@ -6,7 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
-import { useSignup } from "@/components/signup-context";
+import { useSignup } from "@/components/SignUpProvider";
 
 const services = [
 	"Home Mortgage",

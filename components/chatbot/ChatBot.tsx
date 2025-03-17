@@ -31,9 +31,7 @@ function ChatBotInterface({
 }) {
     const client = useLDClient();
     const aiNewModelChatbotFlag: AIModelInterface =
-        useFlags()["ai-config--togglebot"] == undefined
-            ? DEFAULT_AI_MODEL
-            : useFlags()["ai-config--togglebot"];
+        useFlags()["ai-config--togglebot"] ?? DEFAULT_AI_MODEL;
     const aiConfigKey = "ai-config--togglebot";
 
     const [messages, setMessages] = useState<ChatBotMessageInterface[]>([]);

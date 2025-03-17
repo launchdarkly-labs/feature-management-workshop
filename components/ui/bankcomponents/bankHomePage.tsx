@@ -35,6 +35,7 @@ import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homep
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
 import { useRouter } from "next/router";
 import { StaticImageData } from "next/image";
+import WrapperMain from "../WrapperMain";
 
 export default function BankHomePage() {
 	const { isLoggedIn } = useContext(LoginContext);
@@ -56,12 +57,7 @@ export default function BankHomePage() {
 				className="fixed left-0 bottom-0 min-h-screen"
 				alt="Bank Home Page Background"
 			/>
-			<motion.main
-				className={`relative min-w-screen min-h-screen overflow-hidden px-4 3xl:px-0`}
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 0.5 }}
-			>
+			<WrapperMain className="min-w-full">
 				<NavWrapper>
 					<>
 						<CSNavWrapper>
@@ -152,7 +148,9 @@ export default function BankHomePage() {
 								Spend smart with Toggle Bank
 							</h1>
 							<p className="text-lg sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black pr-6 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-8 ">
-								{releaseNewSignUpPromoLDFlag ? "Sign Up for an account today to receieve 50,000 reward points!" : bankHomePageValues.industryMessages}
+								{releaseNewSignUpPromoLDFlag
+									? "Sign Up for an account today to receieve 50,000 reward points!"
+									: bankHomePageValues.industryMessages}
 							</p>
 							<div className="flex space-x-4 pr-6 sm:pr-2 md:pr-4 lg:pr-6 xl:pr-8">
 								<Button
@@ -181,7 +179,7 @@ export default function BankHomePage() {
           sm:gap-x-12 xl:gap-x-24 py-8"
 					>
 						{bankHomePageValues?.bankingServicesArr.map(
-							(ele: {imgSrc: StaticImageData; title: string;}, i: number) => {
+							(ele: { imgSrc: StaticImageData; title: string }, i: number) => {
 								return (
 									<motion.div
 										className="flex flex-col items-center"
@@ -279,7 +277,7 @@ export default function BankHomePage() {
 						}
 					/>
 				</section>
-			</motion.main>
+			</WrapperMain>
 		</>
 	);
 }

@@ -28,6 +28,7 @@ import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
 import { FederatedCheckingAccount } from "@/components/ui/bankcomponents/federatedChecking";
 import { FederatedCreditAccount } from "@/components/ui/bankcomponents/federatedCredit";
+import WrapperMain from "../WrapperMain";
 
 export default function BankUserDashboard() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -95,7 +96,7 @@ export default function BankUserDashboard() {
                     height: "auto",
                 }}
             />
-            <main className="w-full px-4 3xl:px-0 mx-auto max-w-7xl relative ">
+            <WrapperMain>
                 <NavWrapper className="mb-0 sm:mb-8">
                     <>
                         <CSNavWrapper>
@@ -238,7 +239,7 @@ export default function BankUserDashboard() {
                         />
                     </div>
                 </section>
-            </main>
+            </WrapperMain>
         </>
     );
 }

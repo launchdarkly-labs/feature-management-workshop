@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { CheckCircle } from "lucide-react"
-import { useSignup } from "@/components/signup-context"
+import { useSignup } from "@/components/SignUpProvider"
 import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants"
 import { wait } from "@/utils/utils"
 

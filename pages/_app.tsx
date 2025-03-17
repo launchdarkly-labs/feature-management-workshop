@@ -8,7 +8,7 @@ import { QuickCommandDialog } from "@/components/quickcommand";
 import { LiveLogsProvider } from "@/utils/contexts/LiveLogsContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
-import { SignupProvider } from "@/components/signup-context";
+import { SignupProvider } from "@/components/SignUpProvider";
 let c;
 
 if (typeof window !== "undefined") {

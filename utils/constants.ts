@@ -102,7 +102,7 @@ export const NAV_ELEMENTS_VARIANT = {
 };
 
 export const INITIAL_USER_SIGNUP_DATA: UserDataType = {
-  email: "user@launchmail.io",
+  email: "newUser@launchmail.io",
   password: "defaultPassword",
   firstName: "",
   lastName: "",
