@@ -1,7 +1,47 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { X, Check } from "lucide-react"
+import { useSignup } from "@/components/signup-context"
 
 export default function PersonalDetailsPage() {
+  const router = useRouter()
+  const { userData, updateUserData } = useSignup()
+
+  const [formData, setFormData] = useState({
+    firstName: userData.firstName || "Jane",
+    lastName: userData.lastName || "Wilson",
+    dob: userData.dob || "2/28/1978",
+    ssn: userData.ssn || "***-**-****",
+    phone: userData.phone || "220-415-9634",
+    address: userData.address || "390 Fort St",
+    apt: userData.apt || "245",
+    zip: userData.zip || "94572",
+  })
+
+  const [error, setError] = useState("")
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!formData.firstName || !formData.lastName || !formData.phone) {
+      setError("Please fill in all required fields")
+      return
+    }
+
+    updateUserData(formData)
+    router.push("/services")
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
       <div className="relative w-full max-w-2xl overflow-hidden rounded-xl bg-white p-8 shadow-xl">
@@ -28,7 +68,9 @@ export default function PersonalDetailsPage() {
         </div>
 
         {/* Form */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>}
+
           <div className="grid gap-4 md:grid-cols-2">
             {/* Email */}
             <div className="relative">
@@ -36,7 +78,7 @@ export default function PersonalDetailsPage() {
               <div className="relative">
                 <input
                   type="email"
-                  value="jane@email.com"
+                  value={userData.email}
                   readOnly
                   className="w-full rounded-md border border-gray-300 bg-gray-50 p-3 pr-10 focus:border-blue-500 focus:outline-none"
                 />
@@ -71,7 +113,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">First Name</label>
               <input
                 type="text"
-                defaultValue="Jane"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -81,7 +125,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Last Name</label>
               <input
                 type="text"
-                defaultValue="Wilson"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -91,7 +137,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">DOB</label>
               <input
                 type="text"
-                defaultValue="2/28/1978"
+                name="dob"
+                value={formData.dob}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -101,7 +149,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">SSN</label>
               <input
                 type="text"
-                defaultValue="***-**-****"
+                name="ssn"
+                value={formData.ssn}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -111,7 +161,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Phone</label>
               <input
                 type="tel"
-                defaultValue="220-415-9634"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -121,7 +173,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Address</label>
               <input
                 type="text"
-                defaultValue="390 Fort St"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -131,7 +185,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Apt</label>
               <input
                 type="text"
-                defaultValue="245"
+                name="apt"
+                value={formData.apt}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -141,7 +197,9 @@ export default function PersonalDetailsPage() {
               <label className="mb-1 block text-sm font-medium text-gray-700">Zip</label>
               <input
                 type="text"
-                defaultValue="94572"
+                name="zip"
+                value={formData.zip}
+                onChange={handleChange}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>

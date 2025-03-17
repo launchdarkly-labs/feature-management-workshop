@@ -8,6 +8,7 @@ import { QuickCommandDialog } from "@/components/quickcommand";
 import { LiveLogsProvider } from "@/utils/contexts/LiveLogsContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
+import { SignupProvider } from "@/components/signup-context";
 let c;
 
 if (typeof window !== "undefined") {
@@ -33,23 +34,25 @@ if (typeof window !== "undefined") {
                     "--sidebar-width-mobile": "100vw",
                   }}
                 >
-                  <QuickCommandDialog>
-              
+                  <SignupProvider>
+                    <QuickCommandDialog>
+                
 
-                    <Head>
-                      <meta
-                        name="viewport"
-                        content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
+                      <Head>
+                        <meta
+                          name="viewport"
+                          content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0"
+                        />
+                        <link rel="apple-touch-icon" href="/apple-icon.png" />
+                      </Head>
+                      <Component {...pageProps} />
+                      <AppSidebar />
+                      <SidebarTrigger
+                        className="bg-airlinedarkblue fixed bottom-4 left-4 h-12 w-12 hover:bg-airlinedarkblue z-10"
+                        title="Click to open sidebar to show server side calls"
                       />
-                      <link rel="apple-touch-icon" href="/apple-icon.png" />
-                    </Head>
-                    <Component {...pageProps} />
-                    <AppSidebar />
-                    <SidebarTrigger
-                      className="bg-airlinedarkblue fixed bottom-4 left-4 h-12 w-12 hover:bg-airlinedarkblue z-10"
-                      title="Click to open sidebar to show server side calls"
-                    />
-                  </QuickCommandDialog>
+                    </QuickCommandDialog>
+                  </SignupProvider>
                 </SidebarProvider>
               </LiveLogsProvider>
             </LoginProvider>

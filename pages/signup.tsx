@@ -1,7 +1,38 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { DollarSign, X } from "lucide-react"
+import { useSignup } from "@/components/signup-context"
 
 export default function SignUpPage() {
+  const router = useRouter()
+  const { userData, updateUserData } = useSignup()
+  const [email, setEmail] = useState(userData.email)
+  const [password, setPassword] = useState(userData.password)
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!email || !password) {
+      setError("Please fill in all fields")
+      return
+    }
+
+    if (!acceptedTerms) {
+      setError("Please accept the terms and conditions")
+      return
+    }
+
+    updateUserData({ email, password })
+    router.push("/personal-details")
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
       <div className="relative flex w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-xl">
@@ -39,11 +70,14 @@ export default function SignUpPage() {
           <h1 className="mb-8 text-2xl font-bold text-gray-800 md:text-3xl">Start banking in less than five minutes</h1>
 
           {/* Form */}
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <div className="rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</div>}
             <div>
               <input
                 type="email"
                 placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
@@ -51,11 +85,19 @@ export default function SignUpPage() {
               <input
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:outline-none"
               />
             </div>
             <div className="flex items-start">
-              <input type="checkbox" id="terms" className="mt-1 h-4 w-4 rounded border-gray-300" />
+              <input
+                type="checkbox"
+                id="terms"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-gray-300"
+              />
               <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                 I accept the{" "}
                 <Link href="#" className="text-blue-600 hover:underline">
@@ -67,12 +109,12 @@ export default function SignUpPage() {
                 </Link>
               </label>
             </div>
-            <Link
-              href="/personal-details"
-              className="block w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
+            <button
+              type="submit"
+              className="w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
             >
               Sign Up
-            </Link>
+            </button>
           </form>
 
           {/* Login link */}
