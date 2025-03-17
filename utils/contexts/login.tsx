@@ -50,8 +50,6 @@ export const LoginProvider = ({ children }: { children: any }) => {
     const [appMultiContext, setAppMultiContext] = useState<LDContextInterface>(starterLDContext);
     const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
-    console.log("appMultiContext", appMultiContext);
-
     const loginUser = async (email: string): Promise<void> => {
         //TODO: what does this do
         if (Object.keys(userObject).length > 0) {

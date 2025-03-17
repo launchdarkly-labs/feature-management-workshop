@@ -17,8 +17,8 @@ type UserData = {
 }
 
 const initialUserData: UserData = {
-  email: "",
-  password: "",
+  email: "user@launchmail.io",
+  password: "defaultPassword",
   firstName: "",
   lastName: "",
   dob: "",
