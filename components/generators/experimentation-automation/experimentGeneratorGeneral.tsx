@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import React, { useState, useEffect, useContext } from "react";
 import LoginContext from "@/utils/contexts/login";
-import { useLDClient } from "launchdarkly-react-client-sdk";
+import { LDClient, useLDClient } from "launchdarkly-react-client-sdk";
 import {
   generateSuggestedItemsFeatureExperimentResults,
   generateAIChatBotFeatureExperimentResults,
@@ -25,14 +25,12 @@ import { capitalizeFirstLetter } from "@/utils/utils";
 export default function ExperimentGenerator({
   title,
   experimentationKey,
-  functionGenerator,
 }: {
   title: string;
   experimentationKey: string;
-  functionGenerator: void;
 }) {
-  const client = useLDClient();
-  const { updateUserContext } = useContext(LoginContext);
+  const client: LDClient | undefined = useLDClient();
+  const { updateRandomizedUserContext } = useContext(LoginContext);
   const [expGenerator, setExpGenerator] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [experimentTypeObj, setExperimentTypeObj] = useState<{
@@ -45,17 +43,13 @@ export default function ExperimentGenerator({
     alert("Error in LaunchDarkly Client");
   }
 
-  const updateContext = async (): Promise<void> => {
-    updateUserContext();
-  };
-
   useEffect(() => {
     if (expGenerator) {
       switch (experimentationKey) {
         case MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY:
           generateSuggestedItemsFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -64,7 +58,7 @@ export default function ExperimentGenerator({
         case TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY:
           generateAIChatBotFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -73,7 +67,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY:
           generateNewSearchEngineFeatureExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -82,7 +76,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY:
           generateStoreHeaderFunnelExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,
@@ -91,7 +85,7 @@ export default function ExperimentGenerator({
         case MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY:
           generateShortenCollectionsPageFunnelExperimentResults({
             client: client,
-            updateContext: updateContext,
+            updateContext: updateRandomizedUserContext,
             setProgress: setProgress,
             setExpGenerator: setExpGenerator,
             experimentTypeObj: experimentTypeObj,

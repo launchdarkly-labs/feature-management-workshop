@@ -30,6 +30,13 @@ export const ANTHROPIC = "anthropic";
 export const COHERE = "cohere";
 export const META = "meta";
 
+export const MOBILE = "Mobile";
+export const DESKTOP = "Desktop";
+export const ANDROID = "Android";
+export const IOS = "iOS";
+export const WINDOWS = "Windows";
+export const MACOS = "macOS";
+
 export const COMPANY_LOGOS = {
     bank: {
         vertical: toggleBankVerticalLogo,

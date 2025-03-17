@@ -9,9 +9,8 @@ import {
     LDAIConfigTracker,
     LDFeedbackKind,
 } from "@launchdarkly/server-sdk-ai";
-import { LDClient } from "@launchdarkly/node-server-sdk";
+import { LDClient, LDSingleKindContext } from "@launchdarkly/node-server-sdk";
 import { v4 as uuidv4 } from "uuid";
-import { LoginContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
 import { UserAIChatBotFeedbackResponseInterface } from "@/utils/typescriptTypesInterfaceIndustry";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -55,4 +54,4 @@ const clientSideContext = ({
 }: {
     res: NextApiResponse;
     req: NextApiRequest;
-}): LoginContextInterface => JSON.parse(getCookie(LD_CONTEXT_COOKIE_KEY, { res, req }) || "{}");
+}): LDSingleKindContext => JSON.parse(getCookie(LD_CONTEXT_COOKIE_KEY, { res, req }) || "{}");

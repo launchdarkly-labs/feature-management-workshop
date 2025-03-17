@@ -1,81 +1,75 @@
-import { useEffect, useState } from 'react';
+import { ElementType, useEffect, useState } from "react";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
-import { v4 as uuidv4 } from "uuid";
-import CryptoJS from 'crypto-js';
 import { setCookie } from "cookies-next";
 import { LD_CONTEXT_COOKIE_KEY } from "@/utils/constants";
-import { isAndroid, isIOS, isBrowser, isMobile, isMacOs, isWindows } from 'react-device-detect';
-import { platform } from 'os';
+import { LDContextInterface } from "@/utils/typescriptTypesInterfaceLogin";
+import { SyncLoader } from "react-spinners";
+import { MultiKindLDContext } from "@/utils/MultiKindLDContext";
+import { getLocation, getDeviceForContext } from "@/utils/utils";
+import { v4 as uuidv4 } from "uuid";
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [LDProvider, setLDProvider] = useState<any>(null);
+    const [LDProviderComponent, setLDProviderComponent] = useState<ElementType>();
 
-  useEffect(() => {
-    const initializeLDProvider = async () => {
-      const operatingSystem = isAndroid ? 'Android' : isIOS ? 'iOS' : isWindows ? 'Windows' : isMacOs ? 'macOS' : '';
-      const device = isMobile ? 'Mobile' : isBrowser ? 'Desktop' : '';
+    useEffect(() => {
+        const initializeLDProvider = async () => {
+            const context: LDContextInterface = MultiKindLDContext({
+                isAnonymous: true,
+                audienceKey: uuidv4().slice(0, 10),
+                userRole: "",
+                userTier: "",
+                userName: "",
+                userEmail: "",
+                userKey: uuidv4().slice(0, 10),
+                newDevice: getDeviceForContext(),
+                newLocation: getLocation(),
+            });
 
-      const context = {
-        kind: "multi",
-        user: {
-          anonymous: true,
-          key: uuidv4().slice(0, 10),
-          device: device,
-          operating_system: operatingSystem,
-          location: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        },
-        device: {
-          key: device,
-          name: device,
-          operating_system: operatingSystem,
-          platform: device,
-        },
-        location: {
-          key: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          name: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          country: "US",
-        },
-        experience: {
-          key: "a380",
-          name: "a380",
-          airplane: "a380",
-        },
-        audience: {
-          key: uuidv4().slice(0, 10),
-        }
-      };
+            setCookie(LD_CONTEXT_COOKIE_KEY, context);
 
-      setCookie(LD_CONTEXT_COOKIE_KEY, context);
-      console.log(context);
+            const FetchedProvider = await asyncWithLDProvider({
+                clientSideID: process.env.NEXT_PUBLIC_LD_CLIENT_KEY || "",
+                reactOptions: {
+                    useCamelCaseFlagKeys: false,
+                },
+                options: {
+                    application: {
+                        id: "togglebank",
+                    },
+                    eventCapacity: 500,
+                    privateAttributes: ["email", "name"],
+                },
+                context: context,
+            });
 
-      const Provider = await asyncWithLDProvider({
-        clientSideID: process.env.NEXT_PUBLIC_LD_CLIENT_KEY || "",
-        reactOptions: {
-          useCamelCaseFlagKeys: false,
-        },
-        options: {
-          application: {
-            id: "launch-investments",
-          },
-          eventCapacity: 500,
-          privateAttributes: ['email', 'name']
-        },
-        context: context
-      });
+            setLDProviderComponent(() => FetchedProvider);
+        };
 
-      setLDProvider(() => Provider);
-    };
+        initializeLDProvider();
+    }, []);
 
-    initializeLDProvider();
-  }, []);
+    if (!LDProviderComponent) {
+        return <LoadingComponent />;
+    }
 
-  if (!LDProvider) {
-    // Return a loading indicator or null
-    return <div>Loading LaunchDarkly...</div>;
-  }
-
-  return <LDProvider>{children}</LDProvider>;
+    return <LDProviderComponent>{children}</LDProviderComponent>;
 };
 
 export default ContextProvider;
+
+const LoadingComponent = () => {
+    return (
+        <div className="w-[100vw] h-[100vh] flex items-center justify-center">
+            <div className="flex flex-col gap-y-8 items-center px-4">
+                <h1 className="text-4xl text-center">Loading LaunchDarkly...</h1>
+                <SyncLoader
+                    className=""
+                    size={30}
+                    margin={20}
+                    speedMultiplier={0.8}
+                    color={"#405BFF"}
+                />
+            </div>
+        </div>
+    );
+};

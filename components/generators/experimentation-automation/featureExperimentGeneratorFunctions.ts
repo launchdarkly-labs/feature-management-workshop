@@ -1,6 +1,6 @@
-import type { UpdateContextFunction } from "@/utils/typescriptTypesInterfaceIndustry";
 import { COHERE, ANTHROPIC } from "@/utils/constants";
 import { wait } from "@/utils/utils";
+import { LDClient } from "launchdarkly-react-client-sdk";
 
 const waitTime = .5;
 
@@ -26,8 +26,8 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setExpGenerator,
 	experimentTypeObj,
 }: {
-	client: any;
-	updateContext: UpdateContextFunction;
+	client: LDClient | undefined;
+	updateContext: ()=>void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
 	setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
 	experimentTypeObj: { experimentType: string; numOfRuns: number };
@@ -83,8 +83,8 @@ export const generateSuggestedItemsFeatureExperimentResults = async ({
 	setExpGenerator,
 	experimentTypeObj,
 }: {
-	client: any;
-	updateContext: UpdateContextFunction;
+	client: LDClient | undefined;
+	updateContext: ()=>void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
 	setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
 	experimentTypeObj: { experimentType: string; numOfRuns: number };
@@ -143,8 +143,8 @@ export const generateNewSearchEngineFeatureExperimentResults = async ({
 	setExpGenerator,
 	experimentTypeObj,
 }: {
-	client: any;
-	updateContext: UpdateContextFunction;
+	client: LDClient | undefined;
+	updateContext: ()=>void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
 	setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
 	experimentTypeObj: { experimentType: string; numOfRuns: number };

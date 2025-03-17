@@ -1,6 +1,5 @@
-import Script from "next/script";
+//import Script from "next/script";
 import Bank from "./bank";
-import Head from "next/head";
 
 export default function Home() {
   return (
