@@ -1,47 +1,22 @@
 "use client"
 
 import { createContext, useContext, useState, type ReactNode } from "react"
+import { UserDataType } from "@/utils/typescriptTypesInterfaceIndustry"
+import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants"
 
-type UserData = {
-  email: string
-  password: string
-  firstName: string
-  lastName: string
-  dob: string
-  ssn: string
-  phone: string
-  address: string
-  apt: string
-  zip: string
-  selectedServices: string[]
-}
-
-const initialUserData: UserData = {
-  email: "user@launchmail.io",
-  password: "defaultPassword",
-  firstName: "",
-  lastName: "",
-  dob: "",
-  ssn: "",
-  phone: "",
-  address: "",
-  apt: "",
-  zip: "",
-  selectedServices: [],
-}
 
 type SignupContextType = {
-  userData: UserData
-  updateUserData: (data: Partial<UserData>) => void
+  userData: UserDataType
+  updateUserData: (data: Partial<UserDataType>) => void
   toggleService: (service: string) => void
 }
 
 const SignupContext = createContext<SignupContextType | undefined>(undefined)
 
 export function SignupProvider({ children }: { children: ReactNode }) {
-  const [userData, setUserData] = useState<UserData>(initialUserData)
+  const [userData, setUserData] = useState<UserDataType>(INITIAL_USER_SIGNUP_DATA)
 
-  const updateUserData = (data: Partial<UserData>) => {
+  const updateUserData = (data: Partial<UserDataType>) => {
     setUserData((prev) => ({ ...prev, ...data }))
   }
 

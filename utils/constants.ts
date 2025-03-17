@@ -6,7 +6,7 @@ import architectureNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-archite
 import codeexamplesHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples-hover.svg";
 import codeexamplesNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples.svg";
 import curlyBrackets from "@/public/sidenav/curly-brackets.svg";
-import { AIModelInterface } from "./typescriptTypesInterfaceIndustry";
+import { AIModelInterface, UserDataType } from "./typescriptTypesInterfaceIndustry";
 
 export const ALERT_TYPES = {
     SUCCESS: "success",
@@ -100,3 +100,17 @@ export const NAV_ELEMENTS_VARIANT = {
         logoImg: COMPANY_LOGOS["bank"].horizontal,
     },
 };
+
+export const INITIAL_USER_SIGNUP_DATA: UserDataType = {
+  email: "user@launchmail.io",
+  password: "defaultPassword",
+  firstName: "",
+  lastName: "",
+  dob: "",
+  ssn: "",
+  phone: "",
+  address: "",
+  apt: "",
+  zip: "",
+  selectedServices: [	"Checking Accounts"],
+}

@@ -11,7 +11,7 @@ import { useSignup } from "@/components/signup-context"
 export default function PersonalDetailsPage() {
   const router = useRouter()
   const { userData, updateUserData } = useSignup()
-
+//TODO: also add livelogs context
   const [formData, setFormData] = useState({
     firstName: userData.firstName || "Jane",
     lastName: userData.lastName || "Wilson",
@@ -43,12 +43,12 @@ export default function PersonalDetailsPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
+    <div className="flex min-h-screen w-full items-center justify-center bg-gray-900 p-4">
       <div className="relative w-full max-w-2xl overflow-hidden rounded-xl bg-white p-8 shadow-xl">
         {/* Close button */}
-        <button className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
+        {/* <button className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
           <X className="h-6 w-6" />
-        </button>
+        </button> */}
 
         {/* Progress indicator */}
         <div className="mb-10 flex items-center justify-center">
@@ -213,7 +213,7 @@ export default function PersonalDetailsPage() {
             >
               Confirm details
             </button>
-            <Link href="/" className="mt-4 text-sm text-gray-500 hover:text-gray-700">
+            <Link href="/signup" className="mt-4 text-sm text-gray-500 hover:text-gray-700">
               Back
             </Link>
           </div>

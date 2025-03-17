@@ -43,7 +43,7 @@ export default function BankHomePage() {
 	const releaseNewSignUpPromoLDFlag =
 		useFlags()["release-new-signup-promo"] ??
 		bankHomePageValues.industryMessages;
-	console.log(releaseNewSignUpPromoLDFlag);
+
 	return (
 		<>
 			<Image

@@ -3,12 +3,14 @@
 import Link from "next/link"
 import { CheckCircle } from "lucide-react"
 import { useSignup } from "@/components/signup-context"
+import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants"
+import { wait } from "@/utils/utils"
 
 export default function SuccessPage() {
-  const { userData } = useSignup()
+  const { userData, updateUserData } = useSignup()
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
+    <div className="flex min-h-screen w-full items-center justify-center bg-gray-900 p-4">
       <div className="w-full max-w-md overflow-hidden rounded-xl bg-white p-8 shadow-xl">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -38,6 +40,10 @@ export default function SuccessPage() {
           <Link
             href="/"
             className="mt-4 w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
+            onClick={async()=>{
+              await wait(.5)
+              updateUserData(INITIAL_USER_SIGNUP_DATA)
+            }}
           >
             Go to Dashboard
           </Link>

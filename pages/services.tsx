@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import { useSignup } from "@/components/signup-context";
+
 const services = [
 	"Home Mortgage",
 	"Checking Accounts",
@@ -31,9 +32,6 @@ export default function ServicesPage() {
 			return;
 		}
 
-		// In a real app, you would submit the data to your backend here
-		console.log("Form submitted with data:", userData);
-
 		// Navigate to a success page or dashboard
 		router.push("/success");
 	};
@@ -43,12 +41,12 @@ export default function ServicesPage() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gray-900 p-4">
+		<div className="flex min-h-screen w-full items-center justify-center bg-gray-900 p-4">
 			<div className="relative w-full max-w-2xl overflow-hidden rounded-xl bg-white p-8 shadow-xl">
 				{/* Close button */}
-				<button className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
+				{/* <button className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
 					<X className="h-6 w-6" />
-				</button>
+				</button> */}
 
 				{/* Progress indicator */}
 				<div className="mb-10 flex items-center justify-center">

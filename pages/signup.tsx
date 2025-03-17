@@ -116,12 +116,17 @@ export default function SignUpPage() {
                 </Link>
               </label>
             </div>
+            <div className="mt-8 flex flex-col items-center">
             <button
               type="submit"
               className="w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
             >
               Sign Up
             </button>
+            <Link href="/" className="mt-4 text-sm text-gray-500 hover:text-gray-700">
+              Back
+            </Link>
+            </div>
           </form>
 
           {/* Login link */}
