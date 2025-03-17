@@ -1,4 +1,5 @@
 import { useContext, ReactElement } from "react";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { motion } from "framer-motion";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
 import heroBackgroundDollarSign from "@/public/banking/backgrounds/bank-hero-background-dollarsign.svg";
@@ -32,10 +33,15 @@ import LoginContext from "@/utils/contexts/login";
 import { Button } from "../button";
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
+import { useRouter } from "next/router";
+import Link from "next/link"
 
 export default function BankHomePage() {
     const { isLoggedIn } = useContext(LoginContext);
-
+    const router = useRouter();
+    const releaseHeroMarketingCampaign =
+        useFlags()["release-hero-marketing-campaign"] ?? bankHomePageValues.industryMessages;
+    console.log(releaseHeroMarketingCampaign);
     return (
         <>
             <Image
@@ -100,7 +106,12 @@ export default function BankHomePage() {
                             <>
                                 {!isLoggedIn && (
                                     <>
-                                        <NavbarSignUpButton backgroundColor="bg-gradient-bank hidden sm:block" />
+                                        <NavbarSignUpButton
+                                            backgroundColor="bg-gradient-bank hidden sm:block"
+                                            onClick={() => {
+                                                router.push("/signup");
+                                            }}
+                                        />
                                     </>
                                 )}
 
@@ -139,7 +150,7 @@ export default function BankHomePage() {
                                 Spend smart with Toggle Bank
                             </h1>
                             <p className="text-lg sm:text-md md:text-xl lg:text-xl col-span-2 sm:col-span-0 font-sohnelight w-full text-black pr-6 sm:pr-6 md:pr-8 lg:pr-10 xl:pr-8 ">
-                                {bankHomePageValues?.industryMessages}
+                                {releaseHeroMarketingCampaign}
                             </p>
                             <div className="flex space-x-4 pr-6 sm:pr-2 md:pr-4 lg:pr-6 xl:pr-8">
                                 <Button className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl">
