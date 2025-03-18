@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useSignup } from "@/components/SignUpProvider";
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
+import WrapperMain from "@/components/ui/WrapperMain";
 
 export default function SignUpPage() {
 	const router = useRouter();
@@ -36,15 +37,30 @@ export default function SignUpPage() {
 	};
 
 	return (
-		<main className="relative flex w-full min-h-screen overflow-hidden bg-white mx-auto max-w-7xl px-4 3xl:px-0">
+		<WrapperMain
+			className={`flex ${
+				releaseNewSignUpPromoLDFlag
+					? " max-w-none p-0"
+					: " items-center justify-center"
+			}`}
+		>
 			{/* Left side - Sign up form */}
-			<div className={`flex w-full flex-col p-8  ${releaseNewSignUpPromoLDFlag && "md:w-7/12 md:p-12"}`}>
+			<div
+				className={`flex items-center justify-center w-full flex-col p-8  ${
+					releaseNewSignUpPromoLDFlag && "md:w-7/12 md:p-12"
+				}`}
+			>
 				<Link href="/" title="Go Home">
 					<Image
 						src={COMPANY_LOGOS[BANK].horizontal}
 						alt="ToggleBank Logo"
-						className="h-full"
+						className="h-full mb-16 "
 						height={40}
+						// style={{
+						// 	maxWidth: "100%",
+						// 	width: "auto",
+						// 	height: "auto",
+						// }}
 					/>
 				</Link>
 
@@ -60,7 +76,7 @@ export default function SignUpPage() {
           </div> */}
 
 				{/* Heading */}
-				<h1 className="mb-8 text-2xl font-bold text-gray-800 md:text-3xl">
+				<h1 className="mb-8 text-2xl text-center font-bold text-gray-800 md:text-3xl">
 					Start banking in less than five minutes
 				</h1>
 
@@ -143,46 +159,60 @@ export default function SignUpPage() {
 			</div>
 
 			{/* Right side - Promo */}
-			{releaseNewSignUpPromoLDFlag && <div className={`hidden w-5/12 bg-blue-50 p-12 md:block`}>
-				<div className="flex h-full flex-col justify-between">
-					<div>
-						<h2 className="text-2xl font-bold text-blue-600">
-							Sign up for an account today to receive
-						</h2>
-						<p className="text-3xl font-bold text-purple-600">
-							50,000 reward points
-						</p>
-						<p className="mt-2 text-sm text-gray-600">Offer ends 12/31</p>
-					</div>
+			{releaseNewSignUpPromoLDFlag && (
+				<div className={`hidden w-5/12 bg-white  md:block`}>
+                    <Image
+					src={"/banking/offerBanner.svg"}
+					alt="Banking Offer Banner"
+					width={100}
+					height={100}
+					priority
+					className={`hidden w-full h-[100vh] bg-white md:flex`}
+				/>
+					{/* <div className="flex h-full flex-col justify-between">
+						<div>
+							<h2 className="text-2xl font-bold text-blue-600">
+								Sign up for an account today to receive
+							</h2>
+							<p className="text-3xl font-bold text-purple-600">
+								50,000 reward points
+							</p>
+							<p className="mt-2 text-sm text-gray-600">Offer ends 12/31</p>
+						</div>
 
-					{/* Credit card image */}
-					<div className="relative mt-8 h-48 w-full overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-4 shadow-lg">
-						<div className="absolute bottom-4 right-4">
-							<div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-								<span className="text-xl font-bold text-white">$</span>
+				
+						<div className="relative mt-8 h-48 w-full overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 p-4 shadow-lg">
+							<div className="absolute bottom-4 right-4">
+								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+									<span className="text-xl font-bold text-white">$</span>
+								</div>
+							</div>
+							<div className="absolute right-4 top-4 flex items-center">
+								<div className="mr-1 h-3 w-6 rounded-full bg-white/50"></div>
+								<span className="text-xs font-medium text-white">
+									ToggleBank
+								</span>
+							</div>
+							<div className="absolute bottom-12 left-4 text-lg font-medium tracking-widest text-white">
+								4562 7710 2321
+							</div>
+							<div className="absolute bottom-4 left-4 text-xs text-white">
+								02/30
+							</div>
+							<div className="absolute bottom-4 right-12">
+								<div className="grid h-6 w-10 grid-cols-2 gap-1">
+									<div className="rounded-sm bg-white/30"></div>
+									<div className="rounded-sm bg-white/30"></div>
+									<div className="rounded-sm bg-white/30"></div>
+									<div className="rounded-sm bg-white/30"></div>
+								</div>
 							</div>
 						</div>
-						<div className="absolute right-4 top-4 flex items-center">
-							<div className="mr-1 h-3 w-6 rounded-full bg-white/50"></div>
-							<span className="text-xs font-medium text-white">ToggleBank</span>
-						</div>
-						<div className="absolute bottom-12 left-4 text-lg font-medium tracking-widest text-white">
-							4562 7710 2321
-						</div>
-						<div className="absolute bottom-4 left-4 text-xs text-white">
-							02/30
-						</div>
-						<div className="absolute bottom-4 right-12">
-							<div className="grid h-6 w-10 grid-cols-2 gap-1">
-								<div className="rounded-sm bg-white/30"></div>
-								<div className="rounded-sm bg-white/30"></div>
-								<div className="rounded-sm bg-white/30"></div>
-								<div className="rounded-sm bg-white/30"></div>
-							</div>
-						</div>
-					</div>
+					</div> */}
 				</div>
-			</div>}
-		</main>
+
+				
+			)}
+		</WrapperMain>
 	);
 }
