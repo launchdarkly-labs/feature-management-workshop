@@ -1,264 +1,213 @@
-import { useContext, useState, ReactElement } from "react";
+import { useState, ReactElement } from "react";
 import { CheckingAccount } from "@/components/ui/bankcomponents/checkingview";
 import { CreditAccount } from "@/components/ui/bankcomponents/creditview";
 import { MorgtgageAccount } from "@/components/ui/bankcomponents/mortgageview";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { oldCheckingData } from "@/lib/oldCheckingData";
-import LoginContext from "@/utils/contexts/login";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
 import { WealthManagementGraph } from "@/components/ui/bankcomponents/WealthManagementGraph";
 import Image from "next/image";
 import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
 import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
 import { motion } from "framer-motion";
-import { BANK } from "@/utils/constants";
-import NavWrapper from "@/components/ui/NavComponent/NavWrapper";
-import CSNavWrapper from "@/components/ui/NavComponent/CSNavWrapper";
-import NavLogo from "@/components/ui/NavComponent/NavLogo";
-import NavbarLeftSideWrapper from "@/components/ui/NavComponent/NavbarLeftSideWrapper";
-import NavLinkButton from "@/components/ui/NavComponent/NavLinkButton";
-import NavbarRightSideWrapper from "@/components/ui/NavComponent/NavbarRightSideWrapper";
-import NavbarLogin from "@/components/ui/NavComponent/NavbarLogin";
-import NavbarDropdownMenu from "@/components/ui/NavComponent/NavbarDropdownMenu";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { CSNav } from "@/components/ui/csnav";
-
-import { NavbarSignUpButton } from "@/components/ui/NavComponent/NavbarSignUpInButton";
-import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
 import { FederatedCheckingAccount } from "@/components/ui/bankcomponents/federatedChecking";
 import { FederatedCreditAccount } from "@/components/ui/bankcomponents/federatedCredit";
 import WrapperMain from "../WrapperMain";
+import BankNav from "../NavComponent/BankNav";
 
 export default function BankUserDashboard() {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [aiResponse, setAIResponse] = useState<string>("");
-    const { isLoggedIn } = useContext(LoginContext);
-    const { wealthManagement, federatedAccounts } = useFlags();
-    const money = JSON.stringify(oldCheckingData);
-    const prompt: string = `Playing the role of a financial analyst, using the data contained within this information set: ${money}, write me 50 word of an analysis of the data and highlight the item I spend most on. Skip any unnecessary explanations. Summarize the mostly costly area im spending at. Your response should be tuned to talking directly to the requestor.`;
-    const viewPrompt: string =
-        "Playing the role of a financial analyst, write me 50 word of an analysis of the data and highlight the item I spend most on. Skip any unnecessary explanations. Summarize the mostly costly area im spending at. Your response should be personalized for the user requesting the information.";
+	const [loading, setLoading] = useState<boolean>(false);
+	const [aiResponse, setAIResponse] = useState<string>("");
+	const { wealthManagement, federatedAccounts } = useFlags();
+	const money = JSON.stringify(oldCheckingData);
+	const prompt: string = `Playing the role of a financial analyst, using the data contained within this information set: ${money}, write me 50 word of an analysis of the data and highlight the item I spend most on. Skip any unnecessary explanations. Summarize the mostly costly area im spending at. Your response should be tuned to talking directly to the requestor.`;
+	const viewPrompt: string =
+		"Playing the role of a financial analyst, write me 50 word of an analysis of the data and highlight the item I spend most on. Skip any unnecessary explanations. Summarize the mostly costly area im spending at. Your response should be personalized for the user requesting the information.";
 
-    async function submitQuery(query: any) {
-        try {
-            setLoading(true);
-            const response = await fetch("/api/bedrock", {
-                method: "POST",
-                body: JSON.stringify({ prompt: prompt }),
-            });
+	async function submitQuery(query: any) {
+		try {
+			setLoading(true);
+			const response = await fetch("/api/bedrock", {
+				method: "POST",
+				body: JSON.stringify({ prompt: prompt }),
+			});
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}. Check API Server Logs.`);
-            }
+			if (!response.ok) {
+				throw new Error(
+					`HTTP error! status: ${response.status}. Check API Server Logs.`
+				);
+			}
 
-            const data = await response.json();
-            setAIResponse(data.completion);
+			const data = await response.json();
+			setAIResponse(data.completion);
 
-            return data.completion;
-        } catch (error) {
-            console.error("An error occurred:", error);
-        } finally {
-            setLoading(false);
-        }
-    }
+			return data.completion;
+		} catch (error) {
+			console.error("An error occurred:", error);
+		} finally {
+			setLoading(false);
+		}
+	}
 
-    const data: WealthManagementGraphDataType[] = [
-        { month: "05/23", balance: 18427 },
-        { month: "06/23", balance: 25345 },
-        { month: "07/23", balance: 32647 },
-        { month: "08/23", balance: 47954 },
-        { month: "09/23", balance: 64234 },
-        { month: "10/23", balance: 83758 },
-    ];
+	const data: WealthManagementGraphDataType[] = [
+		{ month: "05/23", balance: 18427 },
+		{ month: "06/23", balance: 25345 },
+		{ month: "07/23", balance: 32647 },
+		{ month: "08/23", balance: 47954 },
+		{ month: "09/23", balance: 64234 },
+		{ month: "10/23", balance: 83758 },
+	];
 
-    return (
-        <>
-            <Image
-                src={bankDashboardBackgroundRight}
-                className="fixed right-0 top-0 bottom-0 min-h-screen"
-                alt="Bank Home Page Background"
-                priority
-                style={{
-                    maxWidth: "100%",
-                    width: "auto",
-                    height: "auto",
-                }}
-            />
-            <Image
-                src={bankDashboardBackgroundLeft}
-                className="fixed left-0 bottom-0 m-h-screen"
-                alt="Bank Home Page Background"
-                priority
-                style={{
-                    maxWidth: "100%",
-                    width: "auto",
-                    height: "auto",
-                }}
-            />
-            <WrapperMain>
-                <NavWrapper className="mb-0 sm:mb-8">
-                    <>
-                        <CSNavWrapper>
-                            <CSNav />
-                        </CSNavWrapper>
+	return (
+		<>
+			<Image
+				src={bankDashboardBackgroundRight}
+				className="fixed right-0 top-0 bottom-0 min-h-screen"
+				alt="Bank Home Page Background"
+				priority
+				style={{
+					maxWidth: "100%",
+					width: "auto",
+					height: "auto",
+				}}
+			/>
+			<Image
+				src={bankDashboardBackgroundLeft}
+				className="fixed left-0 bottom-0 m-h-screen"
+				alt="Bank Home Page Background"
+				priority
+				style={{
+					maxWidth: "100%",
+					width: "auto",
+					height: "auto",
+				}}
+			/>
+			<WrapperMain>
+				<BankNav />
 
-                        <NavLogo
-                            srcHref={NAV_ELEMENTS_VARIANT[BANK]?.logoImg?.src}
-                            altText={BANK}
-                        />
+				<section className="w-full mb-8 mt-0 sm:mt-8 ">
+					<SectionTitle
+						text="Wealth Management"
+						textColor="text-blue-600 font-bold"
+					/>
 
-                        <NavbarDropdownMenu>
-                            <>
-                                {NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
-                                    return (
-                                        <DropdownMenuItem href={navLink?.href} key={index}>
-                                            {navLink?.text}
-                                        </DropdownMenuItem>
-                                    );
-                                })}
-                            </>
-                        </NavbarDropdownMenu>
+					<div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
+						<section
+							className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl min-h-[400px] bg-white rounded-xl border border-zinc-200 ${
+								wealthManagement ? "sm:w-[50%] xl:w-[60%]" : "lg:w-[99.9%]"
+							}`}
+						>
+							<WealthManagementGraph data={data} />
+						</section>
 
-                        {/* left side navbar template */}
+						{wealthManagement && (
+							<section className="w-full sm:w-[50%] xl:w-[40%]">
+								<WealthManagementSheet
+									data={data}
+									aiPrompt={viewPrompt}
+									submitQuery={submitQuery}
+									prompt={prompt}
+									loading={loading}
+									aiResponse={aiResponse}
+								/>
+							</section>
+						)}
+					</div>
+				</section>
 
-                        <NavbarLeftSideWrapper>
-                            <>
-                                {NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
-                                    return (
-                                        <NavLinkButton
-                                            text={navLink?.text}
-                                            href={navLink?.href}
-                                            navLinkColor={NAV_ELEMENTS_VARIANT[BANK]?.navLinkColor}
-                                            index={index}
-                                            key={index}
-                                        />
-                                    );
-                                })}
-                            </>
-                        </NavbarLeftSideWrapper>
+				<section
+					className={`flex flex-col xl:flex-row mb-8 font-sohne  ${
+						federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
+					}`}
+				>
+					<section
+						className={`w-full h-full ${
+							federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
+						}  `}
+					>
+						<SectionTitle text="Account Summary" textColor="text-blue-600" />
 
-                        {/* right side navbar template */}
-                        <NavbarRightSideWrapper>
-                            <>
-                                {!isLoggedIn && (
-                                    <>
-                                        <NavbarSignUpButton backgroundColor="bg-gradient-bank" />
-                                    </>
-                                )}
+						<CardRowWrapper>
+							<>
+								<MotionCardWrapper>
+									<CheckingAccount />
+								</MotionCardWrapper>
+								<MotionCardWrapper>
+									<CreditAccount />
+								</MotionCardWrapper>
+								<MotionCardWrapper>
+									<MorgtgageAccount />
+								</MotionCardWrapper>
+							</>
+						</CardRowWrapper>
+					</section>
 
-                                <NavbarLogin />
-                            </>
-                        </NavbarRightSideWrapper>
-                    </>
-                </NavWrapper>
+					{federatedAccounts && (
+						<section className={`w-full h-full xl:w-[40%] `}>
+							<SectionTitle
+								text="Federated Account Access"
+								textColor="text-black"
+							/>
 
-                <section className="w-full mb-8">
-                    <SectionTitle text="Wealth Management" textColor="text-blue-600 font-bold" />
+							<CardRowWrapper>
+								<>
+									<MotionCardWrapper>
+										<FederatedCheckingAccount />
+									</MotionCardWrapper>
+									<MotionCardWrapper>
+										<FederatedCreditAccount />
+									</MotionCardWrapper>
+								</>
+							</CardRowWrapper>
+						</section>
+					)}
+				</section>
 
-                    <div className="flex flex-col sm:flex-row w-full gap-y-8 sm:gap-x-8 h-full">
-                        <section
-                            className={`w-full flex flex-col px-6 py-8 xl:p-10 shadow-xl min-h-[400px] bg-white rounded-xl border border-zinc-200 ${
-                                wealthManagement ? "sm:w-[50%] xl:w-[60%]" : "lg:w-[99.9%]"
-                            }`}
-                        >
-                            <WealthManagementGraph data={data} />
-                        </section>
-
-                        {wealthManagement && (
-                            <section className="w-full sm:w-[50%] xl:w-[40%]">
-                                <WealthManagementSheet
-                                    data={data}
-                                    aiPrompt={viewPrompt}
-                                    submitQuery={submitQuery}
-                                    prompt={prompt}
-                                    loading={loading}
-                                    aiResponse={aiResponse}
-                                />
-                            </section>
-                        )}
-                    </div>
-                </section>
-
-                <section
-                    className={`flex flex-col xl:flex-row mb-8 font-sohne  ${
-                        federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
-                    }`}
-                >
-                    <section
-                        className={`w-full h-full ${
-                            federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
-                        }  `}
-                    >
-                        <SectionTitle text="Account Summary" textColor="text-blue-600" />
-
-                        <CardRowWrapper>
-                            <>
-                                <MotionCardWrapper>
-                                    <CheckingAccount />
-                                </MotionCardWrapper>
-                                <MotionCardWrapper>
-                                    <CreditAccount />
-                                </MotionCardWrapper>
-                                <MotionCardWrapper>
-                                    <MorgtgageAccount />
-                                </MotionCardWrapper>
-                            </>
-                        </CardRowWrapper>
-                    </section>
-
-                    {federatedAccounts && (
-                        <section className={`w-full h-full xl:w-[40%] `}>
-                            <SectionTitle text="Federated Account Access" textColor="text-black" />
-
-                            <CardRowWrapper>
-                                <>
-                                    <MotionCardWrapper>
-                                        <FederatedCheckingAccount />
-                                    </MotionCardWrapper>
-                                    <MotionCardWrapper>
-                                        <FederatedCreditAccount />
-                                    </MotionCardWrapper>
-                                </>
-                            </CardRowWrapper>
-                        </section>
-                    )}
-                </section>
-
-                <section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
-                    <div className="w-full lg:w-1/2">
-                        <img
-                            src="banking/SpecialOffer-CC.svg"
-                            className="shadow-xl rounded-xl w-full"
-                        />
-                    </div>
-                    <div className="w-full lg:w-1/2 flex justify-end ">
-                        <img
-                            src="banking/SpecialOffer-CarLoan.svg"
-                            className="shadow-xl rounded-xl w-full"
-                        />
-                    </div>
-                </section>
-            </WrapperMain>
-        </>
-    );
+				<section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
+					<div className="w-full lg:w-1/2">
+						<img
+							src="banking/SpecialOffer-CC.svg"
+							className="shadow-xl rounded-xl w-full"
+						/>
+					</div>
+					<div className="w-full lg:w-1/2 flex justify-end ">
+						<img
+							src="banking/SpecialOffer-CarLoan.svg"
+							className="shadow-xl rounded-xl w-full"
+						/>
+					</div>
+				</section>
+			</WrapperMain>
+		</>
+	);
 }
 
 const MotionCardWrapper = ({ children }: { children: ReactElement }) => {
-    return (
-        <motion.div
-            className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
-            whileHover={{ scale: 1.1 }}
-        >
-            {children}
-        </motion.div>
-    );
+	return (
+		<motion.div
+			className="p-4 h-[300px] w-full flex-1 bg-white shadow-xl rounded-2xl cursor-pointer"
+			whileHover={{ scale: 1.1 }}
+		>
+			{children}
+		</motion.div>
+	);
 };
 
 const CardRowWrapper = ({ children }: { children: ReactElement }) => {
-    return <div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">{children}</div>;
+	return (
+		<div className="flex flex-col sm:flex-row gap-y-8 sm:gap-x-4">
+			{children}
+		</div>
+	);
 };
 
-const SectionTitle = ({ textColor, text }: { textColor: string; text: string }) => {
-    return <h2 className={` text-2xl mb-6 ${textColor}`}>{text}</h2>;
+const SectionTitle = ({
+	textColor,
+	text,
+}: {
+	textColor: string;
+	text: string;
+}) => {
+	return <h2 className={` text-2xl mb-6 ${textColor}`}>{text}</h2>;
 };

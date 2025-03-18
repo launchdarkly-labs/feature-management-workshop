@@ -1,55 +1,58 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { CheckCircle } from "lucide-react"
-import { useSignup } from "@/components/SignUpProvider"
-import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants"
-import { wait } from "@/utils/utils"
+import Link from "next/link";
+import { CheckCircle } from "lucide-react";
+import { useSignup } from "@/components/SignUpProvider";
+import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants";
+import { wait } from "@/utils/utils";
+import WrapperMain from "@/components/ui/WrapperMain";
 
 export default function SuccessPage() {
-  const { userData, updateUserData } = useSignup()
+	const { userData, updateUserData } = useSignup();
 
-  return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-gray-900 p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-xl bg-white p-8 shadow-xl">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-            <CheckCircle className="h-10 w-10 text-green-600" />
-          </div>
+	return (
+		<WrapperMain className="flex flex-col items-center justify-center py-4">
+			<div className="flex flex-col items-center justify-center space-y-4 text-center">
+				<div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+					<CheckCircle className="h-10 w-10 text-green-600" />
+				</div>
 
-          <h1 className="text-2xl font-bold text-gray-800">Account Created Successfully!</h1>
+				<h1 className="text-2xl font-bold text-gray-800">
+					Account Created Successfully!
+				</h1>
 
-          <p className="text-gray-600">
-            Welcome to ToggleBank, {userData.firstName}! Your account has been created and you're ready to start
-            banking.
-          </p>
+				<p className="text-gray-600">
+					Welcome to ToggleBank, {userData.firstName}! Your account has been
+					created and you're ready to start banking.
+				</p>
 
-          <div className="mt-4 w-full rounded-lg bg-blue-50 p-4 text-left">
-            <h2 className="mb-2 font-semibold text-blue-800">Selected Services:</h2>
-            <ul className="list-inside list-disc text-blue-700">
-              {userData.selectedServices.map((service) => (
-                <li key={service}>{service}</li>
-              ))}
-            </ul>
-          </div>
+				<div className="mt-4 w-full rounded-lg bg-blue-50 p-4 text-left">
+					<h2 className="mb-2 font-semibold text-blue-800">
+						Selected Services:
+					</h2>
+					<ul className="list-inside list-disc text-blue-700">
+						{userData.selectedServices.map((service) => (
+							<li key={service}>{service}</li>
+						))}
+					</ul>
+				</div>
 
-          <p className="text-sm text-gray-500">
-            You'll receive a confirmation email at {userData.email} with your account details.
-          </p>
+				<p className="text-sm text-gray-500">
+					You'll receive a confirmation email at {userData.email} with your
+					account details.
+				</p>
 
-          <Link
-            href="/"
-            className="mt-4 w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
-            onClick={async()=>{
-              await wait(.5)
-              updateUserData(INITIAL_USER_SIGNUP_DATA)
-            }}
-          >
-            Go to Dashboard
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
+				<Link
+					href="/"
+					className="mt-4 w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
+					onClick={async () => {
+						await wait(0.5);
+						updateUserData(INITIAL_USER_SIGNUP_DATA);
+					}}
+				>
+					Go to Dashboard
+				</Link>
+			</div>
+		</WrapperMain>
+	);
 }
-

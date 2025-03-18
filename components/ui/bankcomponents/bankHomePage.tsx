@@ -1,4 +1,4 @@
-import { useContext, ReactElement } from "react";
+import { ReactElement } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { motion } from "framer-motion";
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
@@ -15,30 +15,16 @@ import savings from "@/public/banking/icons/savings.svg";
 import savingsOnHover from "@/public/banking/icons/savings-on-hover.svg";
 import retirementBackground from "@/public/banking/backgrounds/bank-homepage-retirment-card-background.svg";
 import specialOfferBackground from "@/public/banking/backgrounds/bank-homepage-specialoffer-background.svg";
-import NavWrapper from "@/components/ui/NavComponent/NavWrapper";
-import CSNavWrapper from "@/components/ui/NavComponent/CSNavWrapper";
-import NavLogo from "@/components/ui/NavComponent/NavLogo";
-import NavbarLeftSideWrapper from "@/components/ui/NavComponent/NavbarLeftSideWrapper";
-import NavLinkButton from "@/components/ui/NavComponent/NavLinkButton";
-import NavbarRightSideWrapper from "@/components/ui/NavComponent/NavbarRightSideWrapper";
-import NavbarLogin from "@/components/ui/NavComponent/NavbarLogin";
-import NavbarDropdownMenu from "@/components/ui/NavComponent/NavbarDropdownMenu";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { CSNav } from "@/components/ui/csnav";
-import { NavbarSignUpButton } from "@/components/ui/NavComponent/NavbarSignUpInButton";
-import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import Image from "next/image";
-import { BANK } from "@/utils/constants";
-import LoginContext from "@/utils/contexts/login";
 import { Button } from "../button";
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
 import { useRouter } from "next/router";
 import { StaticImageData } from "next/image";
 import WrapperMain from "../WrapperMain";
+import BankNav from "../NavComponent/BankNav";
 
 export default function BankHomePage() {
-	const { isLoggedIn } = useContext(LoginContext);
 	const router = useRouter();
 
 	const releaseNewSignUpPromoLDFlag =
@@ -58,66 +44,7 @@ export default function BankHomePage() {
 				alt="Bank Home Page Background"
 			/>
 			<WrapperMain className="min-w-full">
-				<NavWrapper>
-					<>
-						<CSNavWrapper>
-							<CSNav />
-						</CSNavWrapper>
-
-						<NavLogo
-							srcHref={NAV_ELEMENTS_VARIANT[BANK]?.logoImg?.src}
-							altText={BANK}
-						/>
-
-						{/* left side navbar template */}
-
-						<NavbarLeftSideWrapper>
-							<>
-								{NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
-									return (
-										<NavLinkButton
-											text={navLink?.text}
-											href={navLink?.href}
-											navLinkColor={NAV_ELEMENTS_VARIANT[BANK]?.navLinkColor}
-											index={index}
-											key={index}
-										/>
-									);
-								})}
-							</>
-						</NavbarLeftSideWrapper>
-
-						<NavbarDropdownMenu>
-							<>
-								{NAV_ELEMENTS_VARIANT[BANK]?.navLinks.map((navLink, index) => {
-									return (
-										<DropdownMenuItem key={index}>
-											<a href={navLink?.href}> {navLink?.text}</a>
-										</DropdownMenuItem>
-									);
-								})}
-							</>
-						</NavbarDropdownMenu>
-
-						{/* right side navbar template */}
-						<NavbarRightSideWrapper>
-							<>
-								{!isLoggedIn && (
-									<>
-										<NavbarSignUpButton
-											backgroundColor="bg-gradient-bank hidden sm:block"
-											onClick={() => {
-												router.push("/signup");
-											}}
-										/>
-									</>
-								)}
-
-								<NavbarLogin />
-							</>
-						</NavbarRightSideWrapper>
-					</>
-				</NavWrapper>
+				<BankNav />
 				<header className={`w-full relative 3xl:mx-auto 3xl:max-w-7xl`}>
 					<Image
 						src={heroBackgroundCreditcard}
