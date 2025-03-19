@@ -14,6 +14,7 @@ import {
     PERSONA_ROLE_BETA,
     PERSONA_ROLE_DEVELOPER,
     PERSONA_ROLE_USER,
+    STARTER_PERSONAS
 } from "./constants";
 import { getCookie } from "cookies-next";
 import {
@@ -23,7 +24,6 @@ import {
     OperatingSystemType,
 } from "./typescriptTypesInterfaceLogin";
 import { ALL_TIME_ZONES } from "./AllTimeZones";
-import { STARTER_PERSONAS } from "./StarterUserPersonas";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

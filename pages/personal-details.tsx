@@ -18,9 +18,9 @@ export default function PersonalDetailsPage() {
 	const { userData, updateUserData } = useSignup();
 	const ldClient = useLDClient();
 	const [formData, setFormData] = useState({
-		firstName: userData.firstName || "Jane",
+		firstName: userData.firstName || "Christine",
 		lastName: userData.lastName || "Wilson",
-		dob: userData.dob || "2/28/1978",
+		dob: userData.dob || "2/28/1998",
 		ssn: userData.ssn || "***-**-****",
 		phone: userData.phone || "220-415-9634",
 		address: userData.address || "390 Fort St",

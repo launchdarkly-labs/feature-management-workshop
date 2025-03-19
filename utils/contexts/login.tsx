@@ -1,9 +1,8 @@
-import { useLDClient, LDContext } from "launchdarkly-react-client-sdk";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie } from "cookies-next";
-import { LD_CONTEXT_COOKIE_KEY } from "../constants";
-import { STARTER_PERSONAS } from "../StarterUserPersonas";
+import { LD_CONTEXT_COOKIE_KEY, STARTER_PERSONAS } from "../constants";
 import { Persona } from "../typescriptTypesInterfaceLogin";
 import type {
     LoginContextProviderInterface,

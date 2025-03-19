@@ -9,18 +9,18 @@ import { NAV_ELEMENTS_VARIANT } from "@/utils/constants";
 import { useIsMobile } from "@/components/hooks/use-mobile";
 import { Sheet, SheetContent, SheetClose, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { COMPANY_LOGOS } from "@/utils/constants";
+import { COMPANY_LOGOS, STARTER_PERSONAS } from "@/utils/constants";
 
 const NavBarLoginInterface = () => {
     const { isLoggedIn, userObject, logoutUser, loginUser } = useContext(LoginContext);
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const [defaultEmail, setDefaultEmail] = useState<string>("user@launchmail.io");
+    const [defaultEmail, setDefaultEmail] = useState<string>(STARTER_PERSONAS[0].personaemail);
 
     function handleLogin(): void {
         if (!defaultEmail) return;
 
-        loginUser("user@launchmail.io");
+        loginUser(defaultEmail);
     }
 
     return (

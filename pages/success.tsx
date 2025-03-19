@@ -1,16 +1,18 @@
 "use client";
-
+import {useContext } from "react";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 import { useSignup } from "@/components/SignUpProvider";
 import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants";
 import { wait } from "@/utils/utils";
 import WrapperMain from "@/components/ui/WrapperMain";
-import { COMPANY_LOGOS, BANK } from "@/utils/constants";
+import { COMPANY_LOGOS, BANK, STARTER_PERSONAS } from "@/utils/constants";
 import Image from "next/image";
+import LoginContext from "@/utils/contexts/login";
 
 export default function SuccessPage() {
 	const { userData, updateUserData } = useSignup();
+    const { isLoggedIn, loginUser } = useContext(LoginContext);
 
 	return (
 		<WrapperMain className="flex flex-col items-center justify-center py-4">
@@ -67,6 +69,7 @@ export default function SuccessPage() {
 					href="/"
 					className="mt-4 w-full rounded-full bg-blue-500 py-3 text-center font-medium text-white transition-colors hover:bg-blue-600"
 					onClick={async () => {
+						!isLoggedIn && loginUser(STARTER_PERSONAS[0].personaemail);
 						await wait(0.5);
 						updateUserData(INITIAL_USER_SIGNUP_DATA);
 					}}
