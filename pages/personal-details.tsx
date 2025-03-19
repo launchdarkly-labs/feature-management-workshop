@@ -13,7 +13,6 @@ import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 
-
 export default function PersonalDetailsPage() {
 	const router = useRouter();
 	const { userData, updateUserData } = useSignup();
@@ -57,13 +56,11 @@ export default function PersonalDetailsPage() {
 				<Image
 					src={COMPANY_LOGOS[BANK].horizontal}
 					alt="ToggleBank Logo"
-					className="h-full mb-16 "
-					height={40}
+					className=" mb-10 h-10"
 					priority
 					style={{
 						maxWidth: "100%",
 						width: "auto",
-						height: "auto",
 					}}
 				/>
 			</Link>
@@ -80,7 +77,7 @@ export default function PersonalDetailsPage() {
 			</div>
 
 			{/* Form */}
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit} className="space-y-4 w-full lg:w-[60%]">
 				{error && (
 					<div className="rounded-md bg-red-50 p-3 text-sm text-red-600">
 						{error}

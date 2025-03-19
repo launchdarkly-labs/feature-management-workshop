@@ -26,12 +26,11 @@ export default function SuccessPage() {
 					<Image
 						src={COMPANY_LOGOS[BANK].horizontal}
 						alt="ToggleBank Logo"
-						className="h-full mb-16 "
-						height={40}
+						className=" mb-10 h-10"
+						priority
 						style={{
 							maxWidth: "100%",
 							width: "auto",
-							height: "auto",
 						}}
 					/>
 				</Link>

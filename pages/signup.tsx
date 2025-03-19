@@ -59,13 +59,11 @@ export default function SignUpPage() {
 					<Image
 						src={COMPANY_LOGOS[BANK].horizontal}
 						alt="ToggleBank Logo"
-						className="h-full mb-16 "
-						height={40}
+						className=" mb-10 h-10"
 						priority
 						style={{
 							maxWidth: "100%",
 							width: "auto",
-							height: "auto",
 						}}
 					/>
 				</Link>
@@ -156,14 +154,14 @@ export default function SignUpPage() {
 			{/* Right side - Promo */}
 			{releaseNewSignUpPromoLDFlag && (
 				<div className={`hidden w-5/12 bg-white  md:block`}>
-                    <Image
-					src={"/banking/offerBanner.svg"}
-					alt="Banking Offer Banner"
-					width={100}
-					height={100}
-					priority
-					className={`hidden w-full h-[100vh] bg-white md:flex`}
-				/>
+					<Image
+						src={"/banking/offerBanner.svg"}
+						alt="Banking Offer Banner"
+						width={100}
+						height={100}
+						priority
+						className={`hidden w-full h-[100vh] bg-white md:flex`}
+					/>
 					{/* <div className="flex h-full flex-col justify-between">
 						<div>
 							<h2 className="text-2xl font-bold text-blue-600">
@@ -205,8 +203,6 @@ export default function SignUpPage() {
 						</div>
 					</div> */}
 				</div>
-
-				
 			)}
 		</WrapperMain>
 	);

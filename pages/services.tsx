@@ -54,13 +54,11 @@ export default function ServicesPage() {
 				<Image
 					src={COMPANY_LOGOS[BANK].horizontal}
 					alt="ToggleBank Logo"
-					className="h-full mb-16 "
-					height={40}
+					className=" mb-10 h-10"
 					priority
 					style={{
 						maxWidth: "100%",
 						width: "auto",
-						height: "auto",
 					}}
 				/>
 			</Link>
@@ -76,7 +74,7 @@ export default function ServicesPage() {
 			</div>
 
 			{/* Form */}
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} className="w-full ">
 				{error && (
 					<div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
 						{error}
