@@ -28,11 +28,11 @@ export default function SuccessPage() {
 						alt="ToggleBank Logo"
 						className="h-full mb-16 "
 						height={40}
-						// style={{
-						// 	maxWidth: "100%",
-						// 	width: "auto",
-						// 	height: "auto",
-						// }}
+						style={{
+							maxWidth: "100%",
+							width: "auto",
+							height: "auto",
+						}}
 					/>
 				</Link>
 				<div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100">

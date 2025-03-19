@@ -54,11 +54,12 @@ export default function PersonalDetailsPage() {
 					alt="ToggleBank Logo"
 					className="h-full mb-16 "
 					height={40}
-					// style={{
-					// 	maxWidth: "100%",
-					// 	width: "auto",
-					// 	height: "auto",
-					// }}
+					priority
+					style={{
+						maxWidth: "100%",
+						width: "auto",
+						height: "auto",
+					}}
 				/>
 			</Link>
 			{/* Progress indicator */}

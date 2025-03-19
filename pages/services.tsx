@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React, { useContext } from "react";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 import { useState } from "react";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import WrapperMain from "@/components/ui/WrapperMain";
 import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgressIndicator";
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 
 const services = [
 	"Home Mortgage",
@@ -27,6 +28,7 @@ export default function ServicesPage() {
 	const { userData, toggleService } = useSignup();
 	const [error, setError] = useState("");
 	const ldClient = useLDClient();
+	const { logLDMetricSent } = useContext(LiveLogsContext);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -35,6 +37,8 @@ export default function ServicesPage() {
 			setError("Please select at least one service");
 			return;
 		}
+
+		logLDMetricSent({ metricKey: "signup_completed" });
 
 		// Navigate to a success page or dashboard
 		router.push("/success");
@@ -52,11 +56,12 @@ export default function ServicesPage() {
 					alt="ToggleBank Logo"
 					className="h-full mb-16 "
 					height={40}
-					// style={{
-					// 	maxWidth: "100%",
-					// 	width: "auto",
-					// 	height: "auto",
-					// }}
+					priority
+					style={{
+						maxWidth: "100%",
+						width: "auto",
+						height: "auto",
+					}}
 				/>
 			</Link>
 			{/* Progress indicator */}
