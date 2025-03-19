@@ -50,13 +50,8 @@ export const LoginProvider = ({ children }: { children: any }) => {
     const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
     const loginUser = async (email: string): Promise<void> => {
-        //TODO: what does this do
-        if (Object.keys(userObject).length > 0) {
-            setAllUsers((prevObj) => [
-                ...getAllUsersLeft({ users: prevObj, userObject: userObject }),
-                userObject as Persona,
-            ]);
-        }
+
+        updateAllUsersArray({ userObject, setAllUsers });
 
         const chosenPersona = getChosenPersona({ allUsers: allUsers, chosenEmail: email });
 
@@ -149,6 +144,15 @@ export const LoginProvider = ({ children }: { children: any }) => {
 
 const getAllUsersLeft = ({ users, userObject }: { users: Persona[]; userObject: Persona }) => {
     return users.filter((persona: Persona) => persona.personaemail !== userObject.personaemail);
+};
+
+const updateAllUsersArray = ({userObject,setAllUsers}:{userObject: Persona; setAllUsers: React.Dispatch<React.SetStateAction<Persona[]>>})=>{
+    if (userObject.personaemail !== "") {
+        setAllUsers((prevObj) => [
+            ...getAllUsersLeft({ users: prevObj, userObject: userObject }),
+            userObject as Persona,
+        ]);
+    }
 };
 
 const getChosenPersona = ({
