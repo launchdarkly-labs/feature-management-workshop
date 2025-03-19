@@ -1,5 +1,6 @@
 import { useRef, useState, useContext } from "react";
 import { AvatarImage, Avatar } from "../avatar";
+import { User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 import LoginContext from "@/utils/contexts/login";
 import { Button } from "@/components/ui/button";
@@ -99,7 +100,7 @@ const NavBarLoginInterface = () => {
 };
 
 const NavbarLogin = () => {
-    const { userObject } = useContext(LoginContext);
+    const { userObject, isLoggedIn } = useContext(LoginContext);
 
     const isMobile = useIsMobile();
 
@@ -107,8 +108,8 @@ const NavbarLogin = () => {
         return (
             <Sheet>
                 <SheetTrigger>
-                    <Avatar className="shadow-xl">
-                        <AvatarImage src={userObject?.personaimage} className="" />
+                    <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue">
+                        {isLoggedIn ? <AvatarImage src={userObject?.personaimage} className="" /> : <User className="text-white"/>}
                     </Avatar>
                 </SheetTrigger>
                 <SheetContent
@@ -132,8 +133,8 @@ const NavbarLogin = () => {
     return (
         <Popover>
             <PopoverTrigger>
-                <Avatar className="shadow-xl">
-                    <AvatarImage src={userObject?.personaimage} className="" />
+                <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue">
+                {isLoggedIn ? <AvatarImage src={userObject?.personaimage} className="" /> : <User className="text-white" />}
                 </Avatar>
             </PopoverTrigger>
 
