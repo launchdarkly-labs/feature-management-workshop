@@ -7,8 +7,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 import WrapperMain from "@/components/ui/WrapperMain";
-
 import { useSignup } from "@/components/SignUpProvider";
+import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgressIndicator";
+import { COMPANY_LOGOS, BANK } from "@/utils/constants";
+import Image from "next/image";
 
 export default function PersonalDetailsPage() {
 	const router = useRouter();
@@ -46,23 +48,21 @@ export default function PersonalDetailsPage() {
 
 	return (
 		<WrapperMain className="flex flex-col items-center justify-center py-4">
+			<Link href="/" title="Go Home">
+				<Image
+					src={COMPANY_LOGOS[BANK].horizontal}
+					alt="ToggleBank Logo"
+					className="h-full mb-16 "
+					height={40}
+					// style={{
+					// 	maxWidth: "100%",
+					// 	width: "auto",
+					// 	height: "auto",
+					// }}
+				/>
+			</Link>
 			{/* Progress indicator */}
-			<div className="mb-10 flex items-center justify-center">
-				<div className="flex items-center">
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-						1
-					</div>
-					<div className="w-16 h-1 bg-blue-600"></div>
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-						2
-					</div>
-					<div className="w-16 h-1 bg-gray-200"></div>
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-500">
-						3
-					</div>
-				</div>
-			</div>
-
+			<SignUpProgressIndicator pageNumber={2} />
 			{/* Heading */}
 			<div className="mb-8 text-center">
 				<h1 className="mb-2 text-2xl font-bold text-gray-800">

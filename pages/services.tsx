@@ -1,12 +1,15 @@
 "use client";
 
 import type React from "react";
-
+import { useLDClient } from "launchdarkly-react-client-sdk";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSignup } from "@/components/SignUpProvider";
 import WrapperMain from "@/components/ui/WrapperMain";
+import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgressIndicator";
+import { COMPANY_LOGOS, BANK } from "@/utils/constants";
+import Image from "next/image";
 
 const services = [
 	"Home Mortgage",
@@ -23,6 +26,7 @@ export default function ServicesPage() {
 	const router = useRouter();
 	const { userData, toggleService } = useSignup();
 	const [error, setError] = useState("");
+	const ldClient = useLDClient();
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -42,22 +46,21 @@ export default function ServicesPage() {
 
 	return (
 		<WrapperMain className="flex flex-col items-center justify-center py-4">
+			<Link href="/" title="Go Home">
+				<Image
+					src={COMPANY_LOGOS[BANK].horizontal}
+					alt="ToggleBank Logo"
+					className="h-full mb-16 "
+					height={40}
+					// style={{
+					// 	maxWidth: "100%",
+					// 	width: "auto",
+					// 	height: "auto",
+					// }}
+				/>
+			</Link>
 			{/* Progress indicator */}
-			<div className="mb-10 flex items-center justify-center">
-				<div className="flex items-center">
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-						1
-					</div>
-					<div className="w-16 h-1 bg-blue-600"></div>
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-						2
-					</div>
-					<div className="w-16 h-1 bg-blue-600"></div>
-					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-						3
-					</div>
-				</div>
-			</div>
+			<SignUpProgressIndicator pageNumber={3} />
 
 			{/* Heading */}
 			<div className="mb-8 text-center">

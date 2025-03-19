@@ -29,7 +29,7 @@ function ChatBotInterface({
     isOpen: boolean;
     toggleSidebar: (boolean?: boolean) => void;
 }) {
-    const client = useLDClient();
+    const ldClient = useLDClient();
     const aiNewModelChatbotFlag: AIModelInterface =
         useFlags()["ai-config--togglebot"] ?? DEFAULT_AI_MODEL;
     const aiConfigKey = "ai-config--togglebot";
@@ -119,11 +119,11 @@ function ChatBotInterface({
     };
 
     const surveyResponseNotification = (surveyResponse: string) => {
-        client?.track(surveyResponse, client.getContext());
+        ldClient?.track(surveyResponse, ldClient.getContext());
 
         sendChatbotFeedback(surveyResponse);
         logLDMetricSent(surveyResponse);
-        client?.flush();
+        ldClient?.flush();
         toast({
             title: `Thank you for your response!`,
             wrapperStyle: "bg-green-600 text-white font-sohne text-base border-none",

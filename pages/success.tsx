@@ -6,6 +6,8 @@ import { useSignup } from "@/components/SignUpProvider";
 import { INITIAL_USER_SIGNUP_DATA } from "@/utils/constants";
 import { wait } from "@/utils/utils";
 import WrapperMain from "@/components/ui/WrapperMain";
+import { COMPANY_LOGOS, BANK } from "@/utils/constants";
+import Image from "next/image";
 
 export default function SuccessPage() {
 	const { userData, updateUserData } = useSignup();
@@ -13,6 +15,26 @@ export default function SuccessPage() {
 	return (
 		<WrapperMain className="flex flex-col items-center justify-center py-4">
 			<div className="flex flex-col items-center justify-center space-y-4 text-center">
+				<Link
+					href="/"
+					title="Go Home"
+					onClick={async () => {
+						await wait(0.5);
+						updateUserData(INITIAL_USER_SIGNUP_DATA);
+					}}
+				>
+					<Image
+						src={COMPANY_LOGOS[BANK].horizontal}
+						alt="ToggleBank Logo"
+						className="h-full mb-16 "
+						height={40}
+						// style={{
+						// 	maxWidth: "100%",
+						// 	width: "auto",
+						// 	height: "auto",
+						// }}
+					/>
+				</Link>
 				<div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
 					<CheckCircle className="h-10 w-10 text-green-600" />
 				</div>

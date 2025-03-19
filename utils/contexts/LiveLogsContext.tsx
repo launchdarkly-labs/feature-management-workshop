@@ -11,7 +11,7 @@ export const LiveLogsProvider = ({ children }) => {
   const [liveLogs, setLiveLogs] = useState([]);
   const [currentLDFlagEnvValues, setCurrentLDFlagEnvValues] = useState([]);
   const allLDFlags = useFlags();
-  const client = useLDClient();
+  const ldClient = useLDClient();
   const { appMultiContext } = useContext(LoginContext);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const LiveLogsProvider = ({ children }) => {
   }, [allLDFlags]);
 
   useEffect(() => {
-    client.on("change", (settings) => {
+    ldClient.on("change", (settings) => {
       const time = new Date();
 
       setLiveLogs((prevLogs) => {
@@ -38,7 +38,7 @@ export const LiveLogsProvider = ({ children }) => {
         ];
       });
     });
-  }, [client]);
+  }, [ldClient]);
 
   useEffect(() => {
     const time = new Date();
@@ -63,7 +63,7 @@ export const LiveLogsProvider = ({ children }) => {
         ...prevLogs,
         {
           date: time,
-          log: `client?.track(${metricKey}, client.getContext() ${
+          log: `ldClient?.track(${metricKey}, ldClient.getContext() ${
             metricValue !== undefined ? `, ${metricValue}` : ""
           });`,
           type: "New LD Metric Sent",
