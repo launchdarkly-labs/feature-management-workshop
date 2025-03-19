@@ -1,8 +1,8 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
+import { useLDClient } from "launchdarkly-react-client-sdk";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
@@ -11,11 +11,13 @@ import { useSignup } from "@/components/SignUpProvider";
 import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgressIndicator";
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
+
 
 export default function PersonalDetailsPage() {
 	const router = useRouter();
 	const { userData, updateUserData } = useSignup();
-	//TODO: also add livelogs context
+	const ldClient = useLDClient();
 	const [formData, setFormData] = useState({
 		firstName: userData.firstName || "Jane",
 		lastName: userData.lastName || "Wilson",
@@ -28,6 +30,7 @@ export default function PersonalDetailsPage() {
 	});
 
 	const [error, setError] = useState("");
+	const { logLDMetricSent } = useContext(LiveLogsContext);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -43,6 +46,8 @@ export default function PersonalDetailsPage() {
 		}
 
 		updateUserData(formData);
+		ldClient?.track("personal_detail_completed");
+		logLDMetricSent({ metricKey: "personal_detail_completed" });
 		router.push("/services");
 	};
 

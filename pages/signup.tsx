@@ -1,23 +1,26 @@
 "use client";
 
 import type React from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
-import { useState } from "react";
+import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSignup } from "@/components/SignUpProvider";
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
 import WrapperMain from "@/components/ui/WrapperMain";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 
 export default function SignUpPage() {
 	const router = useRouter();
+	const ldClient = useLDClient();
 	const { userData, updateUserData } = useSignup();
 	const [email, setEmail] = useState(userData.email);
 	const [password, setPassword] = useState(userData.password);
 	const [acceptedTerms, setAcceptedTerms] = useState(true);
 	const [error, setError] = useState("");
 	const releaseNewSignUpPromoLDFlag = useFlags()["release-new-signup-promo"];
+	const { logLDMetricSent } = useContext(LiveLogsContext);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -33,6 +36,8 @@ export default function SignUpPage() {
 		}
 
 		updateUserData({ email, password });
+		ldClient?.track("initial_sign_up_completed");
+		logLDMetricSent({ metricKey: "initial_sign_up_completed" });
 		router.push("/personal-details");
 	};
 
@@ -64,17 +69,6 @@ export default function SignUpPage() {
 						}}
 					/>
 				</Link>
-
-				{/* Progress indicator */}
-				{/* <div className="mb-8 flex items-center justify-center">
-            <div className="flex items-center">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">1</div>
-              <div className="w-16 h-1 bg-gray-200"></div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-500">2</div>
-              <div className="w-16 h-1 bg-gray-200"></div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-500">3</div>
-            </div>
-          </div> */}
 
 				{/* Heading */}
 				<h1 className="mb-8 text-2xl text-center font-bold text-gray-800 md:text-3xl">

@@ -19,6 +19,7 @@ import { Clock, Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { Highlight, themes } from "prism-react-renderer";
+import { cn } from "@/utils/utils";
 
 export function AppSidebar() {
   const { currentLDFlagEnvValues, liveLogs } = useContext(LiveLogsContext);
@@ -79,7 +80,7 @@ export function AppSidebar() {
               return (
                 <Card className="mb-2" key={index}>
                   <CardContent className="p-4 w-full overflow-x-auto">
-                    <div className={` ${log.color} rounded-md py-1 px-2 w-max mb-10 text-xs mt-4`}>
+                    <div className={cn(`rounded-md py-1 px-2 w-max mb-10 text-xs mt-4`, log.color)}>
                       {log.type}
                     </div>
                     <div className="flex justify-between items-center mb-4  text-xs text-gray-500">

@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 import NavWrapper from "@/components/ui/NavComponent/NavWrapper";
 import CSNavWrapper from "@/components/ui/NavComponent/CSNavWrapper";
 import NavLogo from "@/components/ui/NavComponent/NavLogo";
@@ -14,10 +15,13 @@ import { NAV_ELEMENTS_VARIANT, BANK } from "@/utils/constants";
 import { useRouter } from "next/router";
 import LoginContext from "@/utils/contexts/login";
 import Link from "next/link";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 
 const BankNav = () => {
 	const { isLoggedIn } = useContext(LoginContext);
 	const router = useRouter();
+	const { logLDMetricSent } = useContext(LiveLogsContext);
+	const ldClient = useLDClient();
 
 	return (
 		<NavWrapper>
@@ -71,6 +75,8 @@ const BankNav = () => {
 								<NavbarSignUpButton
 									backgroundColor="bg-gradient-bank hidden sm:block"
 									onClick={() => {
+										ldClient?.track("sign_up_started");
+										logLDMetricSent({ metricKey: "sign_up_started" });
 										router.push("/signup");
 									}}
 								/>

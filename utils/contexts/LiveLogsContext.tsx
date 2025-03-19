@@ -90,7 +90,7 @@ export const LiveLogsProvider = ({ children }: { children: ReactNode }) => {
 						metricValue && `, ${metricValue}`
 					});`,
 					type: "New LD Metric Sent",
-					color: "text-white bg-logsPurple",
+					color: "text-white bg-purple-500",
 				},
 			];
 		});

@@ -122,7 +122,7 @@ function ChatBotInterface({
         ldClient?.track(surveyResponse, ldClient.getContext());
 
         sendChatbotFeedback(surveyResponse);
-        logLDMetricSent(surveyResponse);
+        logLDMetricSent({metricKey: surveyResponse});
         ldClient?.flush();
         toast({
             title: `Thank you for your response!`,

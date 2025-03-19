@@ -37,7 +37,7 @@ export default function ServicesPage() {
 			setError("Please select at least one service");
 			return;
 		}
-
+		ldClient?.track("signup_completed");
 		logLDMetricSent({ metricKey: "signup_completed" });
 
 		// Navigate to a success page or dashboard
