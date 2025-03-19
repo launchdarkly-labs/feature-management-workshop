@@ -108,7 +108,7 @@ const NavbarLogin = () => {
         return (
             <Sheet>
                 <SheetTrigger>
-                    <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue">
+                    <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue animate-pulse">
                         {isLoggedIn ? <AvatarImage src={userObject?.personaimage} className="" /> : <User className="text-white"/>}
                     </Avatar>
                 </SheetTrigger>
@@ -133,7 +133,7 @@ const NavbarLogin = () => {
     return (
         <Popover>
             <PopoverTrigger>
-                <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue">
+                <Avatar className="shadow-xl flex items-center justify-center bg-bankdarkblue animate-pulse">
                 {isLoggedIn ? <AvatarImage src={userObject?.personaimage} className="" /> : <User className="text-white" />}
                 </Avatar>
             </PopoverTrigger>
