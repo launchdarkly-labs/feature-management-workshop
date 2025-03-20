@@ -45,9 +45,7 @@ export default function SignUpPage() {
 	};
 
 	return (
-		<WrapperMain
-			className={`flex flex-col px-0`}
-		>
+		<WrapperMain className={`flex flex-col px-0`}>
 			<ThinBanner
 				text={`Sign up for an account today to receive 50,000 reward points. Offer ends on ${currentDatePlus30}`}
 				variant="default"
@@ -56,12 +54,14 @@ export default function SignUpPage() {
 				image={{
 					src: "/banking/offerBanner/bankCard.svg",
 					alt: "Discount icon",
-				  }}
-				  imageSize={50}
+				}}
+				imageSize={50}
 			/>
-			<div className={`flex px-4 sm:px-0 h-full ${
-				releaseNewSignUpPromoLDFlag ? " p-0" : " items-center justify-center"
-			}`}>
+			<div
+				className={`flex px-4 sm:px-0 h-full ${
+					releaseNewSignUpPromoLDFlag ? " p-0" : " items-center justify-center"
+				}`}
+			>
 				{/* Left side - Sign up form */}
 				<div
 					className={`flex items-center justify-center w-full flex-col p-8  ${
@@ -186,7 +186,7 @@ export default function SignUpPage() {
 									width={100}
 									height={100}
 									priority
-									className={` absolute bottom-[18%] lg:bottom-[10%] left-0 w-[80%]`}
+									className={` absolute bottom-[10%] lg:bottom-[5%] left-0 w-[80%]`}
 								/>
 								<Image
 									src={"/banking/offerBanner/bankCircle.svg"}
@@ -194,7 +194,7 @@ export default function SignUpPage() {
 									width={100}
 									height={100}
 									priority
-									className={`absolute bottom-[26%] lg:bottom-[18%] left-[40%] lg:left-[40%] w-[60%]`}
+									className={`absolute bottom-[18%] lg:bottom-[18%] left-[40%] lg:left-[40%] w-[60%]`}
 								/>
 							</div>
 						</div>
