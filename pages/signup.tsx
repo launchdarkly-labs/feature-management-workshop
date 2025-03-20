@@ -153,7 +153,7 @@ export default function SignUpPage() {
 
 			{/* Right side - Promo */}
 			{releaseNewSignUpPromoLDFlag && (
-				<div className={`relative hidden w-5/12   md:block`}>
+				<div className={`relative hidden w-5/12 h-[100vh]  md:block`}>
 					<div className="w-full aspect-[9/16] bg-gradient-to-br from-white via-[#E2E6FF] to-[#CCD3FF] h-full p-4 shadow-lg">
 						<div className="absolute bottom-[30rem] left-[3rem]  text-start z-10">
 							<h2 className="text-3xl text-blue-600">
