@@ -94,7 +94,7 @@ module.exports = {
         navblue: "#405BFF",
         navlink: "#6D6E71",
         loginComponentBlue: "#405BFF",
-        airlinepurple: "#A34FDE",
+        logsPurple: "#A34FDE",
         airlinepink: "#FF386B",
         airlinetext: "#D1D3D4",
         airlinegray: "#939598",

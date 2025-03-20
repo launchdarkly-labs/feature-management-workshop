@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
-import { wait, randomLatency } from "@/utils/utils";
+import { LDClient, useFlags, useLDClient } from "launchdarkly-react-client-sdk";
+import { randomLatency } from "@/utils/utils";
 import LoginContext from "@/utils/contexts/login";
 import { Beaker } from "lucide-react";
 
@@ -8,7 +8,7 @@ import { Beaker } from "lucide-react";
 const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:string}) => {
 	const {  updateRandomizedUserContext } = useContext(LoginContext);
 	const releaseFlag = useFlags()[flagKey];
-	const client = useLDClient();
+	const ldClient = useLDClient();
 	const [trueCounter, setTrueCounter] = useState(0);
 
 	useEffect(() => {
@@ -43,13 +43,13 @@ const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:stri
 			}, 100);
 
 			errorInterval = setInterval(async () => {
-				if (client) {
+				if (ldClient) {
 					if (releaseFlag) {
 						// Simulate metrics for the release flag being enabled
-						await simulateMetrics(client, true);
+						await simulateMetrics(ldClient, true);
 					} else {
 						// Simulate metrics for the release flag being disabled
-						await simulateMetrics(client, false);
+						await simulateMetrics(ldClient, false);
 					}
 				}
 				setElapsedTime((prevTime) => prevTime + 1);
@@ -62,9 +62,9 @@ const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:stri
 				if (errorInterval !== null) clearInterval(errorInterval);
 			}
 		};
-	}, [client, releaseFlag, runDemo]);
+	}, [ldClient, releaseFlag, runDemo]);
 
-	const simulateMetrics = async (client: any, isEnabled: boolean) => {
+	const simulateMetrics = async (client: LDClient, isEnabled: boolean) => {
 		let latency = 0;
 		let errorRate = 0; 
 		let errorMetric = "";

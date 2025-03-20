@@ -22,7 +22,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 
 export const StocksComponent: React.FC = () => {
-  const client = useLDClient();
+  const ldClient = useLDClient();
   const [elapsedTime, setElapsedTime] = useState(0);
   const { loginUser, userObject, updateAudienceContext } = useContext(LoginContext);
   const [runDemo, setRunDemo] = useState(false);
@@ -163,7 +163,7 @@ export const StocksComponent: React.FC = () => {
         if (errorInterval !== null) clearInterval(errorInterval);
       }
     };
-  }, [client, runDemo]);
+  }, [ldClient, runDemo]);
 
   const toggleRunDemo = () => {
     setRunDemo((prev) => !prev);

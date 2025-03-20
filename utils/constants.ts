@@ -6,7 +6,8 @@ import architectureNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-archite
 import codeexamplesHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples-hover.svg";
 import codeexamplesNoHoverCSNAV from "@/public/sidenav/card-demo-sidenav-codeexamples.svg";
 import curlyBrackets from "@/public/sidenav/curly-brackets.svg";
-import { AIModelInterface } from "./typescriptTypesInterfaceIndustry";
+import { AIModelInterface, UserDataType } from "./typescriptTypesInterfaceIndustry";
+import { Persona } from "@/utils/typescriptTypesInterfaceLogin";
 
 export const ALERT_TYPES = {
     SUCCESS: "success",
@@ -90,9 +91,9 @@ export const NAV_ELEMENTS_VARIANT = {
                 text: "Summary",
                 href: "/bank",
             },
-            { text: "Transfers", href: "/bank" },
+            // { text: "Transfers", href: "/bank" },
             { text: "Deposits", href: "/bank" },
-            { text: "External Accounts", href: "/bank" },
+            // { text: "External Accounts", href: "/bank" },
             { text: "Statements", href: "/bank" },
         ],
         navLinkColor: "gradient-bank",
@@ -100,3 +101,56 @@ export const NAV_ELEMENTS_VARIANT = {
         logoImg: COMPANY_LOGOS["bank"].horizontal,
     },
 };
+
+export const STARTER_PERSONAS: Persona[] = [
+    {
+        personaname: "Christine",
+        personatier: PERSONA_TIER_STANARD,
+        personaimage: "/personas/persona3.png",
+        personaemail: "user@launchmail.io",
+        personarole: PERSONA_ROLE_USER,
+    },
+    {
+        personaname: "Angela",
+        personatier: PERSONA_TIER_PLATINUM,
+        personaimage: "/personas/persona6.jpg",
+        personaemail: "angela@launchmail.io",
+        personarole: PERSONA_ROLE_USER,
+    },
+    {
+        personaname: "Alysha",
+        personatier: PERSONA_TIER_STANARD,
+        personaimage: "personas/beta.png",
+        personaemail: "alysha@launchmail.io",
+        personarole: PERSONA_ROLE_BETA,
+    },
+    {
+        personaname: "Jenn",
+        personatier: PERSONA_TIER_STANARD,
+        personaimage: "personas/woman.png",
+        personaemail: "jenn@launchmail.io",
+        personarole: PERSONA_ROLE_DEVELOPER,
+    },
+    {
+        personaname: "Cody",
+        personatier: PERSONA_TIER_STANARD,
+        personaimage: "personas/standard.jpg",
+        personaemail: "cody@launchmail.io",
+        personarole: PERSONA_ROLE_USER,
+    },
+];
+
+
+export const INITIAL_USER_SIGNUP_DATA: UserDataType = {
+  email: STARTER_PERSONAS[0].personaemail,
+  password: "defaultPassword",
+  firstName: STARTER_PERSONAS[0].personaname,
+  lastName: "Wilson",
+  dob: "2/28/1998",
+  ssn: "***-**-****",
+  phone: "220-415-9634",
+  address: "390 Fort St",
+  apt: "245",
+  zip: "94572",
+  selectedServices: ["Checking Accounts"],
+}

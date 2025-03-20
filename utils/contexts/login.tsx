@@ -1,9 +1,8 @@
-import { useLDClient, LDContext } from "launchdarkly-react-client-sdk";
+import { useLDClient } from "launchdarkly-react-client-sdk";
 import { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { setCookie } from "cookies-next";
-import { LD_CONTEXT_COOKIE_KEY } from "../constants";
-import { STARTER_PERSONAS } from "../StarterUserPersonas";
+import { LD_CONTEXT_COOKIE_KEY, STARTER_PERSONAS } from "../constants";
 import { Persona } from "../typescriptTypesInterfaceLogin";
 import type {
     LoginContextProviderInterface,
@@ -50,16 +49,9 @@ export const LoginProvider = ({ children }: { children: any }) => {
     const [appMultiContext, setAppMultiContext] = useState<LDContextInterface>(starterLDContext);
     const [allUsers, setAllUsers] = useState<Persona[]>(STARTER_PERSONAS);
 
-    console.log("appMultiContext", appMultiContext);
-
     const loginUser = async (email: string): Promise<void> => {
-        //TODO: what does this do
-        if (Object.keys(userObject).length > 0) {
-            setAllUsers((prevObj) => [
-                ...getAllUsersLeft({ users: prevObj, userObject: userObject }),
-                userObject as Persona,
-            ]);
-        }
+
+        updateAllUsersArray({ userObject, setAllUsers });
 
         const chosenPersona = getChosenPersona({ allUsers: allUsers, chosenEmail: email });
 
@@ -152,6 +144,15 @@ export const LoginProvider = ({ children }: { children: any }) => {
 
 const getAllUsersLeft = ({ users, userObject }: { users: Persona[]; userObject: Persona }) => {
     return users.filter((persona: Persona) => persona.personaemail !== userObject.personaemail);
+};
+
+const updateAllUsersArray = ({userObject,setAllUsers}:{userObject: Persona; setAllUsers: React.Dispatch<React.SetStateAction<Persona[]>>})=>{
+    if (userObject.personaemail !== "") {
+        setAllUsers((prevObj) => [
+            ...getAllUsersLeft({ users: prevObj, userObject: userObject }),
+            userObject as Persona,
+        ]);
+    }
 };
 
 const getChosenPersona = ({
