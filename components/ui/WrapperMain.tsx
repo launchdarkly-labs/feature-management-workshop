@@ -12,7 +12,7 @@ const WrapperMain = ({
 	return (
 		<motion.main
 			className={cn(
-				"relative w-full min-h-screen overflow-hidden mx-auto max-w-7xl px-4 3xl:px-0",
+				"relative w-full min-h-screen overflow-hidden mx-auto max-w-7xl px-4 sm:px-0",
 				className
 			)}
 			initial={{ opacity: 0 }}
