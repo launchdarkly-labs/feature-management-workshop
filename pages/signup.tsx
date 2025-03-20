@@ -21,7 +21,9 @@ export default function SignUpPage() {
 	const [error, setError] = useState("");
 	const releaseNewSignUpPromoLDFlag = useFlags()["release-new-signup-promo"];
 	const { logLDMetricSent } = useContext(LiveLogsContext);
-
+	const currentDatePlus30 = new Date(
+		new Date().setDate(new Date().getDate() + 30)
+	).toLocaleDateString();
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -44,9 +46,7 @@ export default function SignUpPage() {
 	return (
 		<WrapperMain
 			className={`flex ${
-				releaseNewSignUpPromoLDFlag
-					? " max-w-none p-0"
-					: " items-center justify-center"
+				releaseNewSignUpPromoLDFlag ? " p-0" : " items-center justify-center"
 			}`}
 		>
 			{/* Left side - Sign up form */}
@@ -153,15 +153,37 @@ export default function SignUpPage() {
 
 			{/* Right side - Promo */}
 			{releaseNewSignUpPromoLDFlag && (
-				<div className={`hidden w-5/12 bg-white  md:block`}>
-					<Image
-						src={"/banking/offerBanner.svg"}
-						alt="Banking Offer Banner"
-						width={100}
-						height={100}
-						priority
-						className={`hidden w-full h-[100vh] bg-white md:flex`}
-					/>
+				<div className={`relative hidden w-5/12   md:block`}>
+					<div className="w-full aspect-[9/16] bg-gradient-to-br from-white via-[#E2E6FF] to-[#CCD3FF] h-full p-4 shadow-lg">
+						<div className="absolute bottom-[30rem] left-[3rem]  text-start z-10">
+							<h2 className="text-3xl text-blue-600">
+								Sign up for an account today to receive
+							</h2>
+							<p className="text-3xl font-semibold text-purple-600">
+								50,000 reward points
+							</p>
+							<p className="mt-6 text-sm text-gray-600">
+								Offer ends {currentDatePlus30}
+							</p>
+						</div>
+						<Image
+							src={"/banking/offerBanner/bankCard.svg"}
+							alt="Banking Offer Banner"
+							width={100}
+							height={100}
+							priority
+							className={` absolute bottom-0 left-0 w-[80%]`}
+						/>
+						<Image
+							src={"/banking/offerBanner/bankCircle.svg"}
+							alt="Banking Offer Banner"
+							width={100}
+							height={100}
+							priority
+							className={`absolute bottom-[6rem] left-[14rem] w-[60%]`}
+						/>
+					</div>
+
 					{/* <div className="flex h-full flex-col justify-between">
 						<div>
 							<h2 className="text-2xl font-bold text-blue-600">
