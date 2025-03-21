@@ -62,7 +62,7 @@ def createAIChatbotPositiveFeedbackMetric(ld_api_key, createMetricURL):
     
     metricPayload = {
         "name": "AI Chatbot Positive Feedback",
-        "eventKey": "AI chatbot good service",
+        "eventKey": "AI Chatbot Good Service",
         "Description": "This metric will track positive feedback given to AI Model used in chatbot for the good responses provided.",
         "isNumeric": False,
         "key": "ai-chatbot-good-service",
