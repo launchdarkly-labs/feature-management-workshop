@@ -35,6 +35,7 @@ import { useSidebar } from "../ui/sidebar";
 import { cn } from "@/utils/utils";
 import { motion } from "framer-motion";
 import { AI_CHATBOT_BAD_SERVICE,AI_CHATBOT_GOOD_SERVICE } from "../generators/experimentation-automation/experimentationConstants";
+import { AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
 
 function ChatBotInterface({
 	cardRef,
@@ -47,8 +48,8 @@ function ChatBotInterface({
 }) {
 	const ldClient = useLDClient();
 	const aiNewModelChatbotFlag: AIModelInterface =
-		useFlags()["ai-config--togglebot"] ?? DEFAULT_AI_MODEL;
-	const aiConfigKey = "ai-config--togglebot";
+		useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY] ?? DEFAULT_AI_MODEL;
+	const aiConfigKey = AI_CONFIG_TOGGLEBOT_LDFLAG_KEY;
 	const { open } = useSidebar();
 
 	const [messages, setMessages] = useState<ChatBotMessageInterface[]>([]);
@@ -383,9 +384,9 @@ function ChatBotInterface({
 
 export default function Chatbot() {
 	const aiNewModelChatbotFlag: AIModelInterface =
-		useFlags()["ai-config--togglebot"] == undefined
+		useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY] == undefined
 			? DEFAULT_AI_MODEL
-			: useFlags()["ai-config--togglebot"];
+			: useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY];
 
 	const isMobile = useIsMobile();
 	const [isOpen, setIsOpen] = useState(false);

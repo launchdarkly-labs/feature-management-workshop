@@ -12,6 +12,7 @@ import WrapperMain from "@/components/ui/WrapperMain";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { ThinBanner } from "@/components/ui/thin-banner";
 import { INITIAL_SIGN_UP_COMPLETED } from "@/components/generators/experimentation-automation/experimentationConstants";
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
 export default function SignUpPage() {
 	const router = useRouter();
@@ -21,7 +22,7 @@ export default function SignUpPage() {
 	const [password, setPassword] = useState(userData.password);
 	const [acceptedTerms, setAcceptedTerms] = useState(true);
 	const [error, setError] = useState("");
-	const releaseNewSignUpPromoLDFlag = useFlags()["release-new-signup-promo"];
+	const releaseNewSignUpPromoLDFlag = useFlags()[RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY];
 	const { logLDMetricSent } = useContext(LiveLogsContext);
 	const currentDatePlus30 = new Date(
 		new Date().setDate(new Date().getDate() + 30)

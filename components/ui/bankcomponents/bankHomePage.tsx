@@ -26,14 +26,14 @@ import retirementBackground from "@/public/banking/backgrounds/bank-homepage-ret
 import specialOfferBackground from "@/public/banking/backgrounds/bank-homepage-specialoffer-background.svg";
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
-
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
 export default function BankHomePage() {
 	const router = useRouter();
 	const ldClient = useLDClient();
 	const { logLDMetricSent } = useContext(LiveLogsContext);
 	const releaseNewSignUpPromoLDFlag =
-		useFlags()["release-new-signup-promo"] ??
+		useFlags()[RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY] ??
 		bankHomePageValues.industryMessages;
 
 	return (
