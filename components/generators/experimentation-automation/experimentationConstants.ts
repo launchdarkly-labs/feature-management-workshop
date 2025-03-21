@@ -8,3 +8,8 @@ export const SIGNUP_COMPLETED = "signup-completed";
 
 export const AI_CHATBOT_GOOD_SERVICE = "AI chatbot good service";   
 export const AI_CHATBOT_BAD_SERVICE = "AI Chatbot Bad Service";
+
+export const STOCK_API_ERROR_RATES = "stocks-api-error-rates";
+export const STOCK_API_LATENCY = "stocks-api-latency";
+export const RECENT_TRADES_DB_ERRORS = "recent-trades-db-errors";
+export const RECENT_TRADES_DB_LATENCY = "recent-trades-db-latency";
