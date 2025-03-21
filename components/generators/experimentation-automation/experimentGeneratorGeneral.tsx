@@ -11,13 +11,14 @@ import {
 } from "@/components/generators/experimentation-automation/experimentationConstants";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY, AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
 
 export default function ExperimentGenerator({
 	title,
-	experimentationKey,
+	flagKey,
 }: {
 	title: string;
-	experimentationKey: string;
+	flagKey: string;
 }) {
 	const client: LDClient | undefined = useLDClient();
 	const { updateRandomizedUserContext } = useContext(LoginContext);
@@ -35,8 +36,8 @@ export default function ExperimentGenerator({
 
 	useEffect(() => {
 		if (expGenerator) {
-			switch (experimentationKey) {
-				case TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY:
+			switch (flagKey) {
+				case AI_CONFIG_TOGGLEBOT_LDFLAG_KEY:
 					generateAIChatBotFeatureExperimentResults({
 						client: client,
 						updateContext: updateRandomizedUserContext,
@@ -46,7 +47,7 @@ export default function ExperimentGenerator({
 					});
 					break;
 
-				case TOGGLEBANK_SIGNUP_FLOW_EXPERIMENTATION_KEY:
+				case RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY:
 					generateSignUpFlowFunnelExperimentResults({
 						client: client,
 						updateContext: updateRandomizedUserContext,
@@ -68,7 +69,7 @@ export default function ExperimentGenerator({
 
 	return (
 		<>
-			{experimentationKey?.includes("funnel") ? (
+			{flagKey?.includes("signup") ? (
 				<FlaskConical className="mr-2 h-4 w-4" />
 			) : (
 				<Beaker className="mr-2 h-4 w-4" />
