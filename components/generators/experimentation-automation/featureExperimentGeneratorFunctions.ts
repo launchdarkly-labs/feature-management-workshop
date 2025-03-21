@@ -1,6 +1,7 @@
 import { COHERE, ANTHROPIC } from "@/utils/constants";
 import { wait } from "@/utils/utils";
 import { LDClient } from "launchdarkly-react-client-sdk";
+import { AI_CHATBOT_BAD_SERVICE, AI_CHATBOT_GOOD_SERVICE } from "./experimentationConstants";
 
 const waitTime = .5;
 
@@ -37,10 +38,10 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 						probablity <
 						probablityExperimentTypeAI[experimentType as keyof typeof probablityExperimentTypeAI][ANTHROPIC]
 					) {
-						await client?.track("AI chatbot good service");
+						await client?.track(AI_CHATBOT_GOOD_SERVICE);
             await client?.flush();
 					} else {
-						await client?.track("AI Chatbot Bad Service");
+						await client?.track(AI_CHATBOT_BAD_SERVICE);
             await client?.flush();
 					}
 				} else {
@@ -50,10 +51,10 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 						probablity <
 						probablityExperimentTypeAI[experimentType as keyof typeof probablityExperimentTypeAI][COHERE]
 					) {
-						await client?.track("AI chatbot good service");
+						await client?.track(AI_CHATBOT_GOOD_SERVICE);
             await client?.flush();
 					} else {
-						await client?.track("AI Chatbot Bad Service");
+						await client?.track(AI_CHATBOT_BAD_SERVICE);
             await client?.flush();
 					}
 				}

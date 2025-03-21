@@ -1,6 +1,15 @@
 import { ReactElement, useContext } from "react";
 import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "../button";
+import { useRouter } from "next/router";
+import { StaticImageData } from "next/image";
+import WrapperMain from "../WrapperMain";
+import BankNav from "../NavComponent/BankNav";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
+import { SIGN_UP_STARTED } from "@/components/generators/experimentation-automation/experimentationConstants";
+
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
 import heroBackgroundDollarSign from "@/public/banking/backgrounds/bank-hero-background-dollarsign.svg";
 import checking from "@/public/banking/icons/checking.svg";
@@ -15,16 +24,9 @@ import savings from "@/public/banking/icons/savings.svg";
 import savingsOnHover from "@/public/banking/icons/savings-on-hover.svg";
 import retirementBackground from "@/public/banking/backgrounds/bank-homepage-retirment-card-background.svg";
 import specialOfferBackground from "@/public/banking/backgrounds/bank-homepage-specialoffer-background.svg";
-import Image from "next/image";
-import { Button } from "../button";
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
-import { useRouter } from "next/router";
-import { StaticImageData } from "next/image";
-import WrapperMain from "../WrapperMain";
-import BankNav from "../NavComponent/BankNav";
-import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
-import { SIGN_UP_STARTED } from "@/components/generators/experimentation-automation/experimentationConstants";
+
 
 export default function BankHomePage() {
 	const router = useRouter();
