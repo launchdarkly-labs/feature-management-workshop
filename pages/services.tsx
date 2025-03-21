@@ -11,6 +11,7 @@ import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgre
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
+import { SIGNUP_COMPLETED } from "@/components/generators/experimentation-automation/experimentationConstants";
 
 const services = [
 	"Home Mortgage",
@@ -37,8 +38,8 @@ export default function ServicesPage() {
 			setError("Please select at least one service");
 			return;
 		}
-		ldClient?.track("signup_completed");
-		logLDMetricSent({ metricKey: "signup_completed" });
+		ldClient?.track(SIGNUP_COMPLETED);
+		logLDMetricSent({ metricKey: SIGNUP_COMPLETED });
 
 		// Navigate to a success page or dashboard
 		router.push("/success");

@@ -16,7 +16,7 @@ import { Button } from "./button";
 
 export function CSNav() {
 	const router = useRouter();
-	const { setOpen } = useQuickCommandDialog();//this doesn't work for some reason
+	const { open, setOpen } = useQuickCommandDialog();//this doesn't work for some reason
 
 	function goHome() {
 		router.push("/");
@@ -44,14 +44,14 @@ export function CSNav() {
 							<h3 className="font-sohnelight tracking-widest text-sm">
 								EXPLORE MORE
 							</h3>
-							<Button
+							{/* <Button
 								className="cursor-pointer bg-transparent rounded-none  text-ldlightgray hover:bg-transparent"
 								title="Go to Generator"
 								onClick={() => setOpen((open) => !open)}
                 
 							>
 								<Settings />
-							</Button>
+							</Button> */}
 						</div>
 
 						{CSNAV_ITEMS.map((item, index: number) => {

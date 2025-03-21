@@ -3,11 +3,11 @@ import React, { useState, useEffect, useContext } from "react";
 import LoginContext from "@/utils/contexts/login";
 import { LDClient, useLDClient } from "launchdarkly-react-client-sdk";
 import { generateAIChatBotFeatureExperimentResults } from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
-import { generateStoreHeaderFunnelExperimentResults } from "@/components/generators/experimentation-automation/funnelExperimentGeneratorFunctions";
+import { generateSignUpFlowFunnelExperimentResults } from "@/components/generators/experimentation-automation/funnelExperimentGeneratorFunctions";
 import { Beaker, FlaskConical } from "lucide-react";
 import {
 	TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY,
-	MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY,
+	TOGGLEBANK_SIGNUP_FLOW_EXPERIMENTATION_KEY,
 } from "@/components/generators/experimentation-automation/experimentationConstants";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
@@ -46,8 +46,8 @@ export default function ExperimentGenerator({
 					});
 					break;
 
-				case MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY:
-					generateStoreHeaderFunnelExperimentResults({
+				case TOGGLEBANK_SIGNUP_FLOW_EXPERIMENTATION_KEY:
+					generateSignUpFlowFunnelExperimentResults({
 						client: client,
 						updateContext: updateRandomizedUserContext,
 						setProgress: setProgress,

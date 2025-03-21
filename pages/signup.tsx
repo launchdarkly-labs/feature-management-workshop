@@ -11,6 +11,7 @@ import Image from "next/image";
 import WrapperMain from "@/components/ui/WrapperMain";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { ThinBanner } from "@/components/ui/thin-banner";
+import { INITIAL_SIGN_UP_COMPLETED } from "@/components/generators/experimentation-automation/experimentationConstants";
 
 export default function SignUpPage() {
 	const router = useRouter();
@@ -39,8 +40,8 @@ export default function SignUpPage() {
 		}
 
 		updateUserData({ email, password });
-		ldClient?.track("initial_sign_up_completed");
-		logLDMetricSent({ metricKey: "initial_sign_up_completed" });
+		ldClient?.track(INITIAL_SIGN_UP_COMPLETED);
+		logLDMetricSent({ metricKey: INITIAL_SIGN_UP_COMPLETED });
 		router.push("/personal-details");
 	};
 
