@@ -4,7 +4,7 @@ import NoSSRWrapper from "@/components/no-ssr";
 import dynamic from "next/dynamic";
 import { LoginProvider } from "@/utils/contexts/login";
 import Head from "next/head";
-import { QuickCommandDialog } from "@/components/quickcommand";
+import { QuickCommandDialog } from "@/components/generators/experimentation-automation/quickcommand";
 import { LiveLogsProvider } from "@/utils/contexts/LiveLogsContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
@@ -36,8 +36,6 @@ if (typeof window !== "undefined") {
                 >
                   <SignupProvider>
                     <QuickCommandDialog>
-                
-
                       <Head>
                         <meta
                           name="viewport"

@@ -11,49 +11,55 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { toast } from "./ui/use-toast";
+import { toast } from "../../ui/use-toast";
 import ExperimentGenerator from "@/components/generators/experimentation-automation/experimentGeneratorGeneral";
 import {
   TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY,
   MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY,
-  MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY,
-  MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY,
-  MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY,
 } from "@/components/generators/experimentation-automation/experimentationConstants";
 import GuardedReleaseGenerator from "@/components/generators/guarded-release-generator/guardedReleaseGenerator";
 
-export function QuickCommandDialog({ children }: { children: any }) {
-  const [open, setOpen] = React.useState(false);
+
+function useQuickCommandDialog() {
+  const [open, setOpen] = React.useState(false); 
+  console.log("open", open)
+  console.log("triggered")
+  return { open, setOpen };
+}
+
+
+function QuickCommandDialog({ children }: { children: React.ReactNode }) {
+  const { open, setOpen } = useQuickCommandDialog();
   const location = useRouter();
   const [timer, setTimer] = React.useState(0);
   const [showTooltip, setShowTooltip] = React.useState(false);
   const [showScrollIcon, setShowScrollIcon] = React.useState(false); 
   const commandListRef = React.useRef(null);
 
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
+  // React.useEffect(() => {
+  //   const down = (e: KeyboardEvent) => {
+  //     if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+  //       e.preventDefault();
+  //       setOpen((open) => !open);
+  //     }
+  //   };
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+  //   document.addEventListener("keydown", down);
+  //   return () => document.removeEventListener("keydown", down);
+  // }, []);
 
-  React.useEffect(() => {
-    const checkOverflow = () => {
-      if (commandListRef.current) {
-        const { scrollHeight, clientHeight } = commandListRef.current;
-        setShowScrollIcon(scrollHeight > clientHeight);
-      }
-    };
+  // React.useEffect(() => {
+  //   const checkOverflow = () => {
+  //     if (commandListRef.current) {
+  //       const { scrollHeight, clientHeight } = commandListRef.current;
+  //       setShowScrollIcon(scrollHeight > clientHeight);
+  //     }
+  //   };
 
-    checkOverflow();
-    window.addEventListener("resize", checkOverflow);
-    return () => window.removeEventListener("resize", checkOverflow);
-  }, [open]);
+  //   checkOverflow();
+  //   window.addEventListener("resize", checkOverflow);
+  //   return () => window.removeEventListener("resize", checkOverflow);
+  // }, [open]);
 
   const resetFeatureFlags = async () => {
     toast({
@@ -124,33 +130,19 @@ export function QuickCommandDialog({ children }: { children: any }) {
             </CommandItem>
             <CommandItem>
               <ExperimentGenerator
-                title={"[Marketplace] Feature Experiment Results Generator for Suggested Items"}
-                experimentationKey={MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY}
-              />
-            </CommandItem>
-            <CommandItem>
-              <ExperimentGenerator
-                title={"[Marketplace] Feature Experiment Results Generator for New Search Engine"}
-                experimentationKey={MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY}
-              />
-            </CommandItem>
-            <CommandItem>
-              <ExperimentGenerator
                 title={"[Marketplace] Funnel Experiment Results Generator for Store Header"}
                 experimentationKey={MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY}
               />
             </CommandItem>
-            <CommandItem>
-              <ExperimentGenerator
-                title={
-                  "[Marketplace] Funnel Experiment Results Generator for Shorten Collections Page"
-                }
-                experimentationKey={MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY}
-              />
-            </CommandItem>
+          
           </CommandGroup>
         </CommandList>
       </CommandDialog>
     </>
   );
 }
+
+export {
+  QuickCommandDialog,
+  useQuickCommandDialog
+};
