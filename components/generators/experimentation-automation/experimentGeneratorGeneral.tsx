@@ -7,7 +7,7 @@ import { generateSignUpFlowFunnelExperimentResults } from "@/components/generato
 import { Beaker, FlaskConical } from "lucide-react";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
-import { BAYESIAN,FREQUENTIST } from "./experimentationConstants";
+import { BAYESIAN, FREQUENTIST } from "./experimentationConstants";
 import { wait } from "@/utils/utils";
 
 export default function ExperimentGenerator({
@@ -22,7 +22,7 @@ export default function ExperimentGenerator({
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [isComplete, setIsComplete] = useState(false);
 	const [progress, setProgress] = useState<number>(0);
-	const [currentIteration, setCurrentIteration] = useState(0)
+	const [currentIteration, setCurrentIteration] = useState(0);
 	const [experimentTypeObj, setExperimentTypeObj] = useState<{
 		experimentType: string;
 		numOfRuns: number;
@@ -33,29 +33,29 @@ export default function ExperimentGenerator({
 		alert("Error in LaunchDarkly Client");
 	}
 
-	const runGenerator = async ({flagKey, experimentType}: { flagKey: string; experimentType: string }) => {
+	const runGenerator = async ({
+		flagKey,
+		experimentType,
+	}: {
+		flagKey: string;
+		experimentType: string;
+	}) => {
+		const functionInputs = {
+			client: client,
+			updateContext: updateRandomizedUserContext,
+			setProgress: setProgress,
+			setIsGenerating: setIsGenerating,
+			setIsComplete: setIsComplete,
+			experimentType: experimentType,
+			setCurrentIteration: setCurrentIteration,
+		};
 		if (flagKey?.includes("signup")) {
 			await generateSignUpFlowFunnelExperimentResults({
-				client: client,
-				updateContext: updateRandomizedUserContext,
-				setProgress: setProgress,
-				setIsGenerating: setIsGenerating,
-				setIsComplete: setIsComplete,
-				isGenerating: isGenerating,
-				isComplete: isComplete,
-				setCurrentIteration,
-				experimentTypeObj: experimentTypeObj,
-				setExperimentTypeObj: setExperimentTypeObj,
+				...functionInputs,
 			});
 		} else {
 			await generateAIChatBotFeatureExperimentResults({
-				client: client,
-				updateContext: updateRandomizedUserContext,
-				setProgress: setProgress,
-				setIsGenerating: setIsGenerating,
-				setIsComplete: setIsComplete,
-				experimentType: experimentType,
-				setCurrentIteration:setCurrentIteration
+				...functionInputs,
 			});
 		}
 	};
@@ -83,7 +83,7 @@ export default function ExperimentGenerator({
 											numOfRuns: 500,
 										};
 										await setExperimentTypeObj(bayesianExperimentTypeObj);
-										runGenerator({flagKey, experimentType: BAYESIAN});
+										runGenerator({ flagKey, experimentType: BAYESIAN });
 									}}
 									className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
 								>
@@ -97,7 +97,7 @@ export default function ExperimentGenerator({
 											numOfRuns: 10000,
 										};
 										await setExperimentTypeObj(frequentistExperimentTypeObj);
-										runGenerator({flagKey, experimentType: FREQUENTIST});
+										runGenerator({ flagKey, experimentType: FREQUENTIST });
 									}}
 									className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
 								>

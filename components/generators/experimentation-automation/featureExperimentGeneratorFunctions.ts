@@ -10,8 +10,6 @@ import {
 } from "./experimentationConstants";
 import { AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
 
-const waitTime = 0.25;
-
 const probablityExperimentTypeAI = {
 	[BAYESIAN]: { [ANTHROPIC]: 50, [COHERE]: 80 },
 	[FREQUENTIST]: { [ANTHROPIC]: 50, [COHERE]: 58 },
@@ -86,10 +84,8 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 				(prevProgress: number) =>
 					prevProgress + (1 / totalIterations) * 100
 			);
-			// setProgress(Math.floor((i / totalIterations) * 100));
-			// setProgress(Math.min(Math.floor((i / totalIterations) * 100), 100));
-			await wait(waitTime);
-			//await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate work
+			await wait(0.25);
+
 			await client?.flush();
 			await updateContext();
 		}
