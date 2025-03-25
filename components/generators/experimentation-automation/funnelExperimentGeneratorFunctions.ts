@@ -1,6 +1,12 @@
 import { wait } from "@/utils/utils";
-import { SIGN_UP_STARTED,INITIAL_SIGN_UP_COMPLETED,PERSONAL_DETAIL_COMPLETED,SIGNUP_COMPLETED } from "./experimentationConstants";
+import {
+	SIGN_UP_STARTED,
+	INITIAL_SIGN_UP_COMPLETED,
+	PERSONAL_DETAIL_COMPLETED,
+	SIGNUP_COMPLETED,
+} from "./experimentationConstants";
 import { LDClient } from "launchdarkly-react-client-sdk";
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
 const waitTime = 0.5;
 
@@ -43,22 +49,24 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 	client,
 	updateContext,
 	setProgress,
-	setExpGenerator,
+	setExperimentTypeObj,
 	experimentTypeObj,
 }: {
 	client: LDClient | undefined;
 	updateContext: () => void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
-	setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
+	setExperimentTypeObj: React.Dispatch<
+		React.SetStateAction<{ experimentType: string; numOfRuns: number }>
+	>;
 	experimentTypeObj: { experimentType: string; numOfRuns: number };
 }): Promise<void> => {
 	setProgress(0);
 
 	const experimentType: string = experimentTypeObj.experimentType;
-
+console.log("awefawef")
 	for (let i = 0; i < experimentTypeObj.numOfRuns; i++) {
 		const flagVariation: string = client?.variation(
-			"release-new-signup-promo",
+			RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY,
 			false
 		);
 
@@ -105,6 +113,10 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 		);
 		await wait(waitTime);
 		await updateContext();
+
+		if (i === experimentTypeObj.numOfRuns - 1) {
+			setProgress(100);
+			setExperimentTypeObj({ experimentType: "", numOfRuns: 0 });
+		}
 	}
-	setExpGenerator(false);
 };
