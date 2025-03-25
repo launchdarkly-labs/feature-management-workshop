@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import LoginContext from "@/utils/contexts/login";
 import { LDClient, useLDClient } from "launchdarkly-react-client-sdk";
 import { generateAIChatBotFeatureExperimentResults } from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
@@ -7,12 +7,8 @@ import { generateSignUpFlowFunnelExperimentResults } from "@/components/generato
 import { Beaker, FlaskConical } from "lucide-react";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
-import {
-	RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY,
-	AI_CONFIG_TOGGLEBOT_LDFLAG_KEY,
-} from "@/utils/flagConstants";
+import { BAYESIAN,FREQUENTIST } from "./experimentationConstants";
 import { wait } from "@/utils/utils";
-import { set } from "lodash";
 
 export default function ExperimentGenerator({
 	title,
@@ -25,9 +21,7 @@ export default function ExperimentGenerator({
 	const { updateRandomizedUserContext } = useContext(LoginContext);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [isComplete, setIsComplete] = useState(false);
-	const [expGenerator, setExpGenerator] = useState<boolean>(false);
 	const [progress, setProgress] = useState<number>(0);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [currentIteration, setCurrentIteration] = useState(0)
 	const [experimentTypeObj, setExperimentTypeObj] = useState<{
 		experimentType: string;
@@ -39,36 +33,32 @@ export default function ExperimentGenerator({
 		alert("Error in LaunchDarkly Client");
 	}
 
-	// useEffect(() => {
-	// 	switch (flagKey) {
-	// 		case AI_CONFIG_TOGGLEBOT_LDFLAG_KEY:
-	// 			generateAIChatBotFeatureExperimentResults({
-	// 				client: client,
-	// 				updateContext: updateRandomizedUserContext,
-	// 				setProgress: setProgress,
-	// 				setExperimentTypeObj: setExperimentTypeObj,
-	// 				experimentTypeObj: experimentTypeObj,
-	// 			});
-	// 			break;
-
-	// 		case RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY:
-	// 			generateSignUpFlowFunnelExperimentResults({
-	// 				client: client,
-	// 				updateContext: updateRandomizedUserContext,
-	// 				setProgress: setProgress,
-	// 				setExperimentTypeObj: setExperimentTypeObj,
-	// 				experimentTypeObj: experimentTypeObj,
-	// 			});
-	// 			break;
-
-	// 		default:
-	// 			alert("No function exist for feature experimentation");
-	// 	}
-
-	// 	// return () => {
-	// 	// 	setExperimentTypeObj({ experimentType: "", numOfRuns: 0 });
-	// 	// };
-	// }, [experimentTypeObj]);
+	const runGenerator = async ({flagKey, experimentType}: { flagKey: string; experimentType: string }) => {
+		if (flagKey?.includes("signup")) {
+			await generateSignUpFlowFunnelExperimentResults({
+				client: client,
+				updateContext: updateRandomizedUserContext,
+				setProgress: setProgress,
+				setIsGenerating: setIsGenerating,
+				setIsComplete: setIsComplete,
+				isGenerating: isGenerating,
+				isComplete: isComplete,
+				setCurrentIteration,
+				experimentTypeObj: experimentTypeObj,
+				setExperimentTypeObj: setExperimentTypeObj,
+			});
+		} else {
+			await generateAIChatBotFeatureExperimentResults({
+				client: client,
+				updateContext: updateRandomizedUserContext,
+				setProgress: setProgress,
+				setIsGenerating: setIsGenerating,
+				setIsComplete: setIsComplete,
+				experimentType: experimentType,
+				setCurrentIteration:setCurrentIteration
+			});
+		}
+	};
 
 	return (
 		<>
@@ -92,24 +82,8 @@ export default function ExperimentGenerator({
 											experimentType: "bayesian",
 											numOfRuns: 500,
 										};
-										setIsLoading(true);
-										await wait(1);
-										// setExperimentTypeObj(bayesianExperimentTypeObj);
-										 generateAIChatBotFeatureExperimentResults({
-											client: client,
-											updateContext: updateRandomizedUserContext,
-											setProgress: setProgress,
-											setIsGenerating:setIsGenerating,
-											setIsComplete:setIsComplete,
-											isGenerating:isGenerating,
-											isComplete:isComplete,
-											setCurrentIteration,
-											// currentIteration,
-											experimentTypeObj: bayesianExperimentTypeObj,
-											setExperimentTypeObj: setExperimentTypeObj,
-										});
-										// setExpGenerator(true);
-										setIsLoading(false);
+										await setExperimentTypeObj(bayesianExperimentTypeObj);
+										runGenerator({flagKey, experimentType: BAYESIAN});
 									}}
 									className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
 								>
@@ -122,24 +96,13 @@ export default function ExperimentGenerator({
 											experimentType: "frequentist",
 											numOfRuns: 10000,
 										};
-										setIsLoading(true);
-										await wait(1);
-										setExperimentTypeObj(frequentistExperimentTypeObj);
-
-										// setExpGenerator(true);
-										setIsLoading(false);
+										await setExperimentTypeObj(frequentistExperimentTypeObj);
+										runGenerator({flagKey, experimentType: FREQUENTIST});
 									}}
 									className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
 								>
 									Frequentist Experimentation
 								</button>
-							</div>
-						</div>
-					)}
-					{isLoading && (
-						<div className="flex justify-center items-center h-52">
-							<div className=" font-bold font-sohne justify-center items-center text-xl text-center">
-								Loading...
 							</div>
 						</div>
 					)}
@@ -150,10 +113,9 @@ export default function ExperimentGenerator({
 								{capitalizeFirstLetter(experimentTypeObj.experimentType)}{" "}
 								Experimentation
 								<br />
-								Running {experimentTypeObj.numOfRuns} runs...
+								Running {currentIteration}/{experimentTypeObj.numOfRuns} runs...
 								<br />
 								<div className="flex items-center mt-2 justify-center">
-									{/* <p>{progress.toFixed(2)}% Complete</p> */}
 									<p>{progress.toFixed(2)}% Complete</p>
 								</div>
 							</div>

@@ -49,15 +49,25 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 	client,
 	updateContext,
 	setProgress,
+	setIsGenerating,
+	setIsComplete,
+	isComplete,
+	isGenerating,
 	setExperimentTypeObj,
+	setCurrentIteration,
 	experimentTypeObj,
 }: {
 	client: LDClient | undefined;
 	updateContext: () => void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
+	setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>;
+	isComplete: boolean;
+	isGenerating: boolean;
+	setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
 	setExperimentTypeObj: React.Dispatch<
 		React.SetStateAction<{ experimentType: string; numOfRuns: number }>
 	>;
+	setCurrentIteration: React.Dispatch<React.SetStateAction<number>>;
 	experimentTypeObj: { experimentType: string; numOfRuns: number };
 }): Promise<void> => {
 	setProgress(0);

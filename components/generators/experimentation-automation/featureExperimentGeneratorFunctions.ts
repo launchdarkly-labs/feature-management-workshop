@@ -4,14 +4,19 @@ import { LDClient } from "launchdarkly-react-client-sdk";
 import {
 	AI_CHATBOT_BAD_SERVICE,
 	AI_CHATBOT_GOOD_SERVICE,
+	BAYESIAN,
+	FREQUENTIST,
+	experimentTypeIterations
 } from "./experimentationConstants";
 import { AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
-const waitTime = 0.5;
+
+const waitTime = 0.25;
 
 const probablityExperimentTypeAI = {
-	["bayesian"]: { [ANTHROPIC]: 50, [COHERE]: 80 },
-	["frequentist"]: { [ANTHROPIC]: 50, [COHERE]: 58 },
+	[BAYESIAN]: { [ANTHROPIC]: 50, [COHERE]: 80 },
+	[FREQUENTIST]: { [ANTHROPIC]: 50, [COHERE]: 58 },
 };
+
 
 export const generateAIChatBotFeatureExperimentResults = async ({
 	client,
@@ -19,33 +24,24 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setProgress,
 	setIsGenerating,
 	setIsComplete,
-	isComplete,
-	isGenerating,
-	setExperimentTypeObj,
+	experimentType,
 	setCurrentIteration,
-	experimentTypeObj,
 }: {
 	client: LDClient | undefined;
 	updateContext: () => void;
 	setProgress: React.Dispatch<React.SetStateAction<number>>;
 	setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>;
-	isComplete: boolean;
-	isGenerating: boolean;
 	setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
-	setExperimentTypeObj: React.Dispatch<
-		React.SetStateAction<{ experimentType: string; numOfRuns: number }>
-	>;
+	experimentType: string;
 	setCurrentIteration: React.Dispatch<React.SetStateAction<number>>;
-	experimentTypeObj: { experimentType: string; numOfRuns: number };
 }): Promise<void> => {
-	setProgress(0);
 	setCurrentIteration(0);
+	setProgress(0);
 	setIsComplete(false);
 	setIsGenerating(true);
-	const totalIterations = 500;
-	console.log("awefawffewfaweffwef");
-	const experimentType: string = experimentTypeObj.experimentType || "bayesian";
-	console.log(experimentTypeObj.numOfRuns);
+
+	const totalIterations = experimentTypeIterations[experimentType as keyof typeof experimentTypeIterations];
+	console.log(totalIterations);
 
 	const aiModelVariation = await client?.variation(
 		AI_CONFIG_TOGGLEBOT_LDFLAG_KEY,
@@ -85,16 +81,15 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 					await client?.flush();
 				}
 			}
-			// setProgress(
-			// 	(prevProgress: number) =>
-			// 		prevProgress + (1 / experimentTypeObj.numOfRuns) * 100
-			// );
-			// await wait(waitTime);
-
-			await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate work
 			setCurrentIteration(i);
-			setProgress(Math.floor((i / totalIterations) * 100));
+			setProgress(
+				(prevProgress: number) =>
+					prevProgress + (1 / totalIterations) * 100
+			);
+			// setProgress(Math.floor((i / totalIterations) * 100));
 			// setProgress(Math.min(Math.floor((i / totalIterations) * 100), 100));
+			await wait(waitTime);
+			//await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate work
 			await client?.flush();
 			await updateContext();
 		}
