@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import LoginContext from "@/utils/contexts/login";
 import { LDClient, useLDClient } from "launchdarkly-react-client-sdk";
 import { generateAIChatBotFeatureExperimentResults } from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
@@ -31,6 +31,8 @@ export default function ExperimentGenerator({
 		numOfRuns: number;
 	}>({ experimentType: "", numOfRuns: 0 });
 	const ldClientError = useLDClientError();
+	const [isStopped, setIsStopped] = useState(false);
+	const stopRef = useRef(false);
 
 	if (ldClientError) {
 		alert("Error in LaunchDarkly Client");
@@ -51,6 +53,8 @@ export default function ExperimentGenerator({
 			setIsComplete: setIsComplete,
 			experimentType: experimentType,
 			setCurrentIteration: setCurrentIteration,
+			stopRef: stopRef,
+			setIsStopped: setIsStopped,
 		};
 		if (flagKey?.includes("signup")) {
 			await generateSignUpFlowFunnelExperimentResults({
@@ -61,6 +65,11 @@ export default function ExperimentGenerator({
 				...functionInputs,
 			});
 		}
+	};
+
+	const stopGenerator = () => {
+		stopRef.current = true;
+		setIsStopped(true);
 	};
 
 	return (
@@ -78,39 +87,6 @@ export default function ExperimentGenerator({
 					<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
 						<span className="text-center">{title}</span>
 						<div className="flex flex-col gap-x-4 w-full">
-							{!isGenerating && (
-								<div className="flex gap-x-4 w-full">
-									<Button
-										onClick={async () => {
-											const bayesianExperimentTypeObj = {
-												experimentType: "bayesian",
-												numOfRuns: 500,
-											};
-											await setExperimentTypeObj(bayesianExperimentTypeObj);
-											runGenerator({ flagKey, experimentType: BAYESIAN });
-										}}
-										disabled={isGenerating}
-										className={` w-full ${"bg-gradient-airways"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
-									>
-										Start Bayesian Experiment Generator
-									</Button>
-									<Button
-										onClick={async () => {
-											const frequentistExperimentTypeObj = {
-												experimentType: "frequentist",
-												numOfRuns: 10000,
-											};
-											await setExperimentTypeObj(frequentistExperimentTypeObj);
-											runGenerator({ flagKey, experimentType: FREQUENTIST });
-										}}
-										disabled={isGenerating}
-										className={` w-full ${"bg-gradient-experimentation"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
-									>
-										Start Frequentist Experiment Generator
-									</Button>
-								</div>
-							)}
-
 							{isGenerating && (
 								<div className="">
 									<div className="mb-4 font-bold text-lg">
@@ -127,12 +103,26 @@ export default function ExperimentGenerator({
 												Progress
 											</span>
 											<Badge
-												variant={isComplete ? "success" : "outline"}
+												variant={
+													isComplete
+														? "success"
+														: isStopped
+														? "destructive"
+														: "outline"
+												}
 												className={
-													isComplete ? "bg-green-500 hover:bg-green-600" : ""
+													isComplete
+														? "bg-green-500 hover:bg-green-600"
+														: isStopped
+														? "bg-destructive"
+														: ""
 												}
 											>
-												{isComplete ? "Complete" : `${progress.toFixed(2)}%`}
+												{isComplete
+													? "Complete"
+													: isStopped
+													? "Stopped"
+													: `${progress.toFixed(2)}%`}
 											</Badge>
 										</div>
 										<Progress value={progress} className="h-2" />
@@ -145,17 +135,64 @@ export default function ExperimentGenerator({
 									</div>
 								</div>
 							)}
-
-							{isGenerating && (
-								<Button disabled={isGenerating} className="w-full">
-									{isGenerating && (
-										<>
-											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-											Generating...
-										</>
-									)}
-								</Button>
-							)}
+							<div className="flex gap-x-4 w-full">
+								{!isGenerating && (
+									<>
+										<Button
+											onClick={async () => {
+												const bayesianExperimentTypeObj = {
+													experimentType: "bayesian",
+													numOfRuns: 500,
+												};
+												await setExperimentTypeObj(bayesianExperimentTypeObj);
+												runGenerator({ flagKey, experimentType: BAYESIAN });
+											}}
+											disabled={isGenerating}
+											className={` w-full ${"bg-gradient-airways"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+										>
+											Start Bayesian Experiment Generator
+										</Button>
+										<Button
+											onClick={async () => {
+												const frequentistExperimentTypeObj = {
+													experimentType: "frequentist",
+													numOfRuns: 10000,
+												};
+												await setExperimentTypeObj(
+													frequentistExperimentTypeObj
+												);
+												runGenerator({
+													flagKey,
+													experimentType: FREQUENTIST,
+												});
+											}}
+											disabled={isGenerating}
+											className={` w-full ${"bg-gradient-experimentation"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+										>
+											Start Frequentist Experiment Generator
+										</Button>
+									</>
+								)}
+								{isGenerating && (
+									<>
+										<Button
+											onClick={stopGenerator}
+											variant="destructive"
+											className="w-1/2"
+										>
+											Stop
+										</Button>
+										<Button disabled={isGenerating} className="w-full">
+											{isGenerating && (
+												<>
+													<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+													Generating...
+												</>
+											)}
+										</Button>
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 				</DialogContent>

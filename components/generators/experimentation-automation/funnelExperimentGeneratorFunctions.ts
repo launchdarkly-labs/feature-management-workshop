@@ -11,7 +11,6 @@ import {
 import { LDClient } from "launchdarkly-react-client-sdk";
 import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
-
 const NO_BANNER = "No Banner";
 const NEW_BANNER = "New Banner";
 
@@ -58,6 +57,8 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 	setIsComplete,
 	experimentType,
 	setCurrentIteration,
+	stopRef,
+	setIsStopped
 }: {
 	client: LDClient | undefined;
 	updateContext: () => void;
@@ -66,17 +67,20 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 	setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
 	experimentType: string;
 	setCurrentIteration: React.Dispatch<React.SetStateAction<number>>;
+	stopRef: React.MutableRefObject<any>;
+	setIsStopped: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<void> => {
 	setCurrentIteration(0);
 	setProgress(0);
 	setIsComplete(false);
 	setIsGenerating(true);
+	setIsStopped(false);
+	stopRef.current = false
 
 	const totalIterations =
 		experimentTypeIterations[
 			experimentType as keyof typeof experimentTypeIterations
 		];
-	console.log(totalIterations);
 
 	const flagVariation: string = client?.variation(
 		RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY,
@@ -100,6 +104,11 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 		metricProbablityObj[variationName as keyof typeof metricProbablityObj];
 
 	for (let i = 1; i <= totalIterations; i++) {
+		if (stopRef.current) {
+			setIsComplete(true);
+			setIsGenerating(false);
+			break;
+		}
 		const stage1metric = Math.random() * 100;
 
 		if (stage1metric < metricProbablity.metric1) {

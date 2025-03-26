@@ -23,6 +23,8 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setIsComplete,
 	experimentType,
 	setCurrentIteration,
+	stopRef,
+	setIsStopped
 }: {
 	client: LDClient | undefined;
 	updateContext: () => void;
@@ -31,11 +33,15 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
 	experimentType: string;
 	setCurrentIteration: React.Dispatch<React.SetStateAction<number>>;
+	stopRef: React.MutableRefObject<any>;
+	setIsStopped: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<void> => {
 	setCurrentIteration(0);
 	setProgress(0);
 	setIsComplete(false);
 	setIsGenerating(true);
+	setIsStopped(false);
+	stopRef.current = false
 
 	const totalIterations =
 		experimentTypeIterations[
@@ -48,6 +54,12 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	);
 
 	for (let i = 1; i <= totalIterations; i++) {
+		if (stopRef.current) {
+			setIsComplete(true);
+			setIsGenerating(false);
+			break;
+		}
+
 		if (aiModelVariation._ldMeta.enabled) {
 			if (aiModelVariation.model.name.includes(ANTHROPIC)) {
 				let probablity = Math.random() * 100;
