@@ -2,7 +2,7 @@ import { wait } from "@/utils/utils";
 import {
 	SIGN_UP_STARTED,
 	INITIAL_SIGN_UP_COMPLETED,
-	PERSONAL_DETAIL_COMPLETED,
+	SIGN_UP_PERSONAL_DETAIL_COMPLETED,
 	SIGNUP_COMPLETED,
 	BAYESIAN,
 	FREQUENTIST,
@@ -86,9 +86,9 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 	//if true then control else winner
 	let variationName = "";
 	if (flagVariation) {
-		variationName = NO_BANNER;
-	} else {
 		variationName = NEW_BANNER;
+	} else {
+		variationName = NO_BANNER;
 	}
 
 	const metricProbablityObj =
@@ -97,7 +97,7 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 		];
 
 	const metricProbablity =
-		metricProbablityObj[flagVariation as keyof typeof metricProbablityObj];
+		metricProbablityObj[variationName as keyof typeof metricProbablityObj];
 
 	for (let i = 1; i <= totalIterations; i++) {
 		const stage1metric = Math.random() * 100;
@@ -113,7 +113,7 @@ export const generateSignUpFlowFunnelExperimentResults = async ({
 				const stage3metric = Math.random() * 100;
 
 				if (stage3metric < metricProbablity.metric3) {
-					await client?.track(PERSONAL_DETAIL_COMPLETED);
+					await client?.track(SIGN_UP_PERSONAL_DETAIL_COMPLETED);
 					await client?.flush();
 					const stage4metric = Math.random() * 100;
 

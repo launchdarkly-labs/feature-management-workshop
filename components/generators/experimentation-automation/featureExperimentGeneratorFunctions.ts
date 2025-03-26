@@ -15,7 +15,6 @@ const probablityExperimentTypeAI = {
 	[FREQUENTIST]: { [ANTHROPIC]: 50, [COHERE]: 58 },
 };
 
-
 export const generateAIChatBotFeatureExperimentResults = async ({
 	client,
 	updateContext,
@@ -39,7 +38,6 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setIsGenerating(true);
 
 	const totalIterations = experimentTypeIterations[experimentType as keyof typeof experimentTypeIterations];
-	console.log(totalIterations);
 
 	const aiModelVariation = await client?.variation(
 		AI_CONFIG_TOGGLEBOT_LDFLAG_KEY,
@@ -95,10 +93,5 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 			setIsComplete(true);
 			setIsGenerating(false);
 		}
-
-		// if (i === experimentTypeObj.numOfRuns - 1) {
-		// 	setProgress(100);
-		// 	setExperimentTypeObj({ experimentType: "", numOfRuns: 0 });
-		// }
 	}
 };

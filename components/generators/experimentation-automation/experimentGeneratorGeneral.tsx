@@ -8,7 +8,6 @@ import { Beaker, FlaskConical } from "lucide-react";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import { BAYESIAN, FREQUENTIST } from "./experimentationConstants";
-import { wait } from "@/utils/utils";
 
 export default function ExperimentGenerator({
 	title,

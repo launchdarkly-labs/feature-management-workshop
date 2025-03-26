@@ -12,7 +12,7 @@ import SignUpProgressIndicator from "@/components/ui/bankcomponents/SignUpProgre
 import { COMPANY_LOGOS, BANK } from "@/utils/constants";
 import Image from "next/image";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
-import { PERSONAL_DETAIL_COMPLETED } from "@/components/generators/experimentation-automation/experimentationConstants";
+import { SIGN_UP_PERSONAL_DETAIL_COMPLETED } from "@/components/generators/experimentation-automation/experimentationConstants";
 
 export default function PersonalDetailsPage() {
 	const router = useRouter();
@@ -46,8 +46,8 @@ export default function PersonalDetailsPage() {
 		}
 
 		updateUserData(formData);
-		ldClient?.track(PERSONAL_DETAIL_COMPLETED);
-		logLDMetricSent({ metricKey: PERSONAL_DETAIL_COMPLETED });
+		ldClient?.track(SIGN_UP_PERSONAL_DETAIL_COMPLETED);
+		logLDMetricSent({ metricKey: SIGN_UP_PERSONAL_DETAIL_COMPLETED });
 		router.push("/services");
 	};
 
