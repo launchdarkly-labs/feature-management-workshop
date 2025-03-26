@@ -6,7 +6,7 @@ import {
 	AI_CHATBOT_GOOD_SERVICE,
 	BAYESIAN,
 	FREQUENTIST,
-	experimentTypeIterations
+	experimentTypeIterations,
 } from "./experimentationConstants";
 import { AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
 
@@ -37,13 +37,15 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 	setIsComplete(false);
 	setIsGenerating(true);
 
-	const totalIterations = experimentTypeIterations[experimentType as keyof typeof experimentTypeIterations];
+	const totalIterations =
+		experimentTypeIterations[
+			experimentType as keyof typeof experimentTypeIterations
+		];
 
 	const aiModelVariation = await client?.variation(
 		AI_CONFIG_TOGGLEBOT_LDFLAG_KEY,
 		{}
 	);
-	await client?.flush();
 
 	for (let i = 1; i <= totalIterations; i++) {
 		if (aiModelVariation._ldMeta.enabled) {
@@ -77,16 +79,16 @@ export const generateAIChatBotFeatureExperimentResults = async ({
 					await client?.flush();
 				}
 			}
-			setCurrentIteration(i);
-			setProgress(
-				(prevProgress: number) =>
-					prevProgress + (1 / totalIterations) * 100
-			);
-			await wait(0.25);
-
-			await client?.flush();
-			await updateContext();
 		}
+
+		setCurrentIteration(i);
+		setProgress(
+			(prevProgress: number) => prevProgress + (1 / totalIterations) * 100
+		);
+		await wait(0.25);
+
+		await client?.flush();
+		await updateContext();
 
 		// If this is the last iteration, mark as complete
 		if (i === totalIterations) {
