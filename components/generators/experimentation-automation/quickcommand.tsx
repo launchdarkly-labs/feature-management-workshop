@@ -120,13 +120,13 @@ function QuickCommandDialog({ children }: { children: React.ReactNode }) {
 								</div>
 							)}
 						</CommandItem>
-						<CommandItem>
+						<CommandItem className="!cursor-pointer">
 							<GuardedReleaseGenerator
 								flagKey={TOGGLEBANK_API_GUARDED_RELEASE_LDFLAG_KEY}
 								title={"[ToggleBank] API Guarded Release Generator (Rollback)"}
 							/>
 						</CommandItem>
-						<CommandItem>
+						<CommandItem className="!cursor-pointer">
 							<GuardedReleaseGenerator
 								flagKey={TOGGLEBANK_DB_GUARDED_RELEASE_LDFLAG_KEY}
 								title={
@@ -134,7 +134,7 @@ function QuickCommandDialog({ children }: { children: React.ReactNode }) {
 								}
 							/>
 						</CommandItem>
-						<CommandItem>
+						<CommandItem className="!cursor-pointer">
 							<ExperimentGenerator
 								title={
 									"[ToggleBank] Feature Experiment Results Generator for AI Chatbot"
@@ -142,7 +142,7 @@ function QuickCommandDialog({ children }: { children: React.ReactNode }) {
 								flagKey={AI_CONFIG_TOGGLEBOT_LDFLAG_KEY}
 							/>
 						</CommandItem>
-						<CommandItem>
+						<CommandItem className="!cursor-pointer">
 							<ExperimentGenerator
 								title={
 									"[ToggleBank] Funnel Experiment Results Generator for Sign Up Flow"

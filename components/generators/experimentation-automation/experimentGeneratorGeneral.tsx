@@ -83,7 +83,7 @@ export default function ExperimentGenerator({
 				<DialogTrigger asChild className="cursor-pointer">
 					<p className="font-bold font-sohnelight text-lg">{title}</p>
 				</DialogTrigger>
-				<DialogContent>
+				<DialogContent onCloseAutoFocus={()=>stopGenerator()}>
 					<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
 						<span className="text-center">{title}</span>
 						<div className="flex flex-col gap-x-4 w-full">
