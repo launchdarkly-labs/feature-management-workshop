@@ -1,165 +1,202 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import LoginContext from "@/utils/contexts/login";
 import { LDClient, useLDClient } from "launchdarkly-react-client-sdk";
-import {
-  generateSuggestedItemsFeatureExperimentResults,
-  generateAIChatBotFeatureExperimentResults,
-  generateNewSearchEngineFeatureExperimentResults,
-} from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
-import {
-  generateStoreHeaderFunnelExperimentResults,
-  generateShortenCollectionsPageFunnelExperimentResults,
-} from "@/components/generators/experimentation-automation/funnelExperimentGeneratorFunctions";
+import { generateAIChatBotFeatureExperimentResults } from "@/components/generators/experimentation-automation/featureExperimentGeneratorFunctions";
+import { generateSignUpFlowFunnelExperimentResults } from "@/components/generators/experimentation-automation/funnelExperimentGeneratorFunctions";
 import { Beaker, FlaskConical } from "lucide-react";
-import {
-  TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY,
-  MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY,
-  MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY,
-  MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY,
-  MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY,
-} from "@/components/generators/experimentation-automation/experimentationConstants";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
+import { BAYESIAN, FREQUENTIST } from "./experimentationConstants";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ExperimentGenerator({
-  title,
-  experimentationKey,
+	title,
+	flagKey,
 }: {
-  title: string;
-  experimentationKey: string;
+	title: string;
+	flagKey: string;
 }) {
-  const client: LDClient | undefined = useLDClient();
-  const { updateRandomizedUserContext } = useContext(LoginContext);
-  const [expGenerator, setExpGenerator] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-  const [experimentTypeObj, setExperimentTypeObj] = useState<{
-    experimentType: string;
-    numOfRuns: number;
-  }>({ experimentType: "", numOfRuns: 0 });
-  const ldClientError = useLDClientError();
+	const client: LDClient | undefined = useLDClient();
+	const { updateRandomizedUserContext } = useContext(LoginContext);
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [isComplete, setIsComplete] = useState(false);
+	const [progress, setProgress] = useState<number>(0);
+	const [currentIteration, setCurrentIteration] = useState(0);
+	const [experimentTypeObj, setExperimentTypeObj] = useState<{
+		experimentType: string;
+		numOfRuns: number;
+	}>({ experimentType: "", numOfRuns: 0 });
+	const ldClientError = useLDClientError();
+	const [isStopped, setIsStopped] = useState(false);
+	const stopRef = useRef(false);
 
-  if (ldClientError) {
-    alert("Error in LaunchDarkly Client");
-  }
+	if (ldClientError) {
+		alert("Error in LaunchDarkly Client");
+	}
 
-  useEffect(() => {
-    if (expGenerator) {
-      switch (experimentationKey) {
-        case MARKETPLACE_SUGGESTED_ITEMS_EXPERIMENTATION_KEY:
-          generateSuggestedItemsFeatureExperimentResults({
-            client: client,
-            updateContext: updateRandomizedUserContext,
-            setProgress: setProgress,
-            setExpGenerator: setExpGenerator,
-            experimentTypeObj: experimentTypeObj,
-          });
-          break;
-        case TOGGLEBANK_CHATBOT_AI_EXPERIMENTATION_KEY:
-          generateAIChatBotFeatureExperimentResults({
-            client: client,
-            updateContext: updateRandomizedUserContext,
-            setProgress: setProgress,
-            setExpGenerator: setExpGenerator,
-            experimentTypeObj: experimentTypeObj,
-          });
-          break;
-        case MARKETPLACE_NEW_SEARCH_ENGINE_EXPERIMENTATION_KEY:
-          generateNewSearchEngineFeatureExperimentResults({
-            client: client,
-            updateContext: updateRandomizedUserContext,
-            setProgress: setProgress,
-            setExpGenerator: setExpGenerator,
-            experimentTypeObj: experimentTypeObj,
-          });
-          break;
-        case MARKETPLACE_STORE_HEADER_EXPERIMENTATION_KEY:
-          generateStoreHeaderFunnelExperimentResults({
-            client: client,
-            updateContext: updateRandomizedUserContext,
-            setProgress: setProgress,
-            setExpGenerator: setExpGenerator,
-            experimentTypeObj: experimentTypeObj,
-          });
-          break;
-        case MARKETPLACE_SHORTEN_COLLECTIONS_PAGE_EXPERIMENTATION_KEY:
-          generateShortenCollectionsPageFunnelExperimentResults({
-            client: client,
-            updateContext: updateRandomizedUserContext,
-            setProgress: setProgress,
-            setExpGenerator: setExpGenerator,
-            experimentTypeObj: experimentTypeObj,
-          });
-          break;
-        default:
-          alert("No function exist for feature experimentation");
-      }
-    }
+	const runGenerator = async ({
+		flagKey,
+		experimentType,
+	}: {
+		flagKey: string;
+		experimentType: string;
+	}) => {
+		const functionInputs = {
+			client: client,
+			updateContext: updateRandomizedUserContext,
+			setProgress: setProgress,
+			setIsGenerating: setIsGenerating,
+			setIsComplete: setIsComplete,
+			experimentType: experimentType,
+			setCurrentIteration: setCurrentIteration,
+			stopRef: stopRef,
+			setIsStopped: setIsStopped,
+		};
+		if (flagKey?.includes("signup")) {
+			await generateSignUpFlowFunnelExperimentResults({
+				...functionInputs,
+			});
+		} else {
+			await generateAIChatBotFeatureExperimentResults({
+				...functionInputs,
+			});
+		}
+	};
 
-    return () => {
-      setExperimentTypeObj({ experimentType: "", numOfRuns: 0 });
-    };
-  }, [expGenerator]);
+	const stopGenerator = () => {
+		stopRef.current = true;
+		setIsStopped(true);
+	};
 
-  return (
-    <>
-      {experimentationKey?.includes("funnel") ? (
-        <FlaskConical className="mr-2 h-4 w-4" />
-      ) : (
-        <Beaker className="mr-2 h-4 w-4" />
-      )}
-      <Dialog>
-        <DialogTrigger asChild className="cursor-pointer">
-          <p className="font-bold font-sohnelight text-lg">{title}</p>
-        </DialogTrigger>
-        <DialogContent>
-          {experimentTypeObj.experimentType !== "" ? (
-            <div className="flex justify-center items-center h-52">
-              <div className=" font-bold font-sohne justify-center items-center text-xl text-center">
-                Generating Data {capitalizeFirstLetter(experimentTypeObj.experimentType)}{" "}
-                Experimentation
-                <br />
-                Running {experimentTypeObj.numOfRuns} runs...
-                <br />
-                <div className="flex items-center mt-2 justify-center">
-                  <p>{progress.toFixed(2)}% Complete</p>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
-              <h2>{title}</h2>
-              <div className="flex gap-x-4">
-                <button
-                  onClick={async () => {
+	return (
+		<>
+			{flagKey?.includes("signup") ? (
+				<FlaskConical className="mr-2 h-4 w-4" />
+			) : (
+				<Beaker className="mr-2 h-4 w-4" />
+			)}
+			<Dialog>
+				<DialogTrigger asChild className="cursor-pointer">
+					<p className="font-bold font-sohnelight text-lg">{title}</p>
+				</DialogTrigger>
+				<DialogContent onCloseAutoFocus={()=>stopGenerator()}>
+					<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
+						<span className="text-center">{title}</span>
+						<div className="flex flex-col gap-x-4 w-full">
+							{isGenerating && (
+								<div className="">
+									<div className="mb-4 font-bold text-lg">
+										<span>
+											Generating Data{" "}
+											{capitalizeFirstLetter(experimentTypeObj.experimentType)}{" "}
+											Experimentation
+										</span>
+									</div>
 
-                    const bayesianExperimentTypeObj = { experimentType: "bayesian", numOfRuns: 500 };
-                    setExperimentTypeObj(bayesianExperimentTypeObj);
-                    //generatorFunction(experimentationKey,bayesianExperimentTypeObj );
-                    setExpGenerator(true);
-          
-                  }}
-                  className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
-                >
-                  Bayesian Experimentation
-                </button>
-
-                <button
-                  onClick={async () => {
-                    const frequentistExperimentTypeObj = { experimentType: "frequentist", numOfRuns: 10000 };
-                    setExperimentTypeObj(frequentistExperimentTypeObj);
-                    //generatorFunction(experimentationKey,frequentistExperimentTypeObj );
-                    setExpGenerator(true);
-                  }}
-                  className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
-                >
-                  Frequentist Experimentation
-                </button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    </>
-  );
+									<div className="mb-2">
+										<div className="flex justify-between mb-2">
+											<span className="text-gray-500 text-sm font-normal">
+												Progress
+											</span>
+											<Badge
+												variant={
+													isComplete
+														? "success"
+														: isStopped
+														? "destructive"
+														: "outline"
+												}
+												className={
+													isComplete
+														? "bg-green-500 hover:bg-green-600"
+														: isStopped
+														? "bg-destructive"
+														: ""
+												}
+											>
+												{isComplete
+													? "Complete"
+													: isStopped
+													? "Stopped"
+													: `${progress.toFixed(2)}%`}
+											</Badge>
+										</div>
+										<Progress value={progress} className="h-2" />
+									</div>
+									<div className="flex items-center justify-start mb-4">
+										<span className="text-gray-500 text-sm font-normal">
+											Iterations: {currentIteration}/
+											{experimentTypeObj.numOfRuns}
+										</span>
+									</div>
+								</div>
+							)}
+							<div className="flex gap-x-4 w-full">
+								{!isGenerating && (
+									<>
+										<Button
+											onClick={async () => {
+												const bayesianExperimentTypeObj = {
+													experimentType: "bayesian",
+													numOfRuns: 500,
+												};
+												await setExperimentTypeObj(bayesianExperimentTypeObj);
+												runGenerator({ flagKey, experimentType: BAYESIAN });
+											}}
+											disabled={isGenerating}
+											className={` w-full ${"bg-gradient-airways"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+										>
+											Start Bayesian Experiment Generator
+										</Button>
+										<Button
+											onClick={async () => {
+												const frequentistExperimentTypeObj = {
+													experimentType: "frequentist",
+													numOfRuns: 10000,
+												};
+												await setExperimentTypeObj(
+													frequentistExperimentTypeObj
+												);
+												runGenerator({
+													flagKey,
+													experimentType: FREQUENTIST,
+												});
+											}}
+											disabled={isGenerating}
+											className={` w-full ${"bg-gradient-experimentation"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+										>
+											Start Frequentist Experiment Generator
+										</Button>
+									</>
+								)}
+								{isGenerating && (
+									<>
+										<Button
+											onClick={stopGenerator}
+											variant="destructive"
+											className="w-1/2"
+										>
+											Stop
+										</Button>
+										<Button disabled={isGenerating} className="w-full">
+											{isGenerating && (
+												<>
+													<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+													Generating...
+												</>
+											)}
+										</Button>
+									</>
+								)}
+							</div>
+						</div>
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
+	);
 }

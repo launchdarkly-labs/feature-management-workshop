@@ -1,6 +1,15 @@
 import { ReactElement, useContext } from "react";
 import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "../button";
+import { useRouter } from "next/router";
+import { StaticImageData } from "next/image";
+import WrapperMain from "../WrapperMain";
+import BankNav from "../NavComponent/BankNav";
+import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
+import { SIGN_UP_STARTED } from "@/components/generators/experimentation-automation/experimentationConstants";
+
 import heroBackgroundCreditcard from "@/public/banking/backgrounds/bank-hero-background-creditcard.svg";
 import heroBackgroundDollarSign from "@/public/banking/backgrounds/bank-hero-background-dollarsign.svg";
 import checking from "@/public/banking/icons/checking.svg";
@@ -15,22 +24,16 @@ import savings from "@/public/banking/icons/savings.svg";
 import savingsOnHover from "@/public/banking/icons/savings-on-hover.svg";
 import retirementBackground from "@/public/banking/backgrounds/bank-homepage-retirment-card-background.svg";
 import specialOfferBackground from "@/public/banking/backgrounds/bank-homepage-specialoffer-background.svg";
-import Image from "next/image";
-import { Button } from "../button";
 import bankHomePageBackgroundRight from "@/public/banking/backgrounds/bank-homepage-background-right.svg";
 import bankHomePageBackgroundLeft from "@/public/banking/backgrounds/bank-homepage-background-left.svg";
-import { useRouter } from "next/router";
-import { StaticImageData } from "next/image";
-import WrapperMain from "../WrapperMain";
-import BankNav from "../NavComponent/BankNav";
-import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
 export default function BankHomePage() {
 	const router = useRouter();
 	const ldClient = useLDClient();
 	const { logLDMetricSent } = useContext(LiveLogsContext);
 	const releaseNewSignUpPromoLDFlag =
-		useFlags()["release-new-signup-promo"] ??
+		useFlags()[RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY] ??
 		bankHomePageValues.industryMessages;
 
 	return (
@@ -85,8 +88,8 @@ export default function BankHomePage() {
 								<Button
 									className="shadow-2xl bg-bank-gradient-blue-background hover:bg-bank-gradient-text-color hover:text-white text-white rounded-3xl font-sohnelight w-28 h-10 sm:w-32 sm:h-11 md:w-36 md:h-12 lg:w-40 lg:h-14 xl:w-36 xl:h-12 text-xs sm:text-md md:text-lg lg:text-xl xl:text-xl"
 									onClick={() => {
-										ldClient?.track("sign_up_started");
-										logLDMetricSent({ metricKey: "sign_up_started" });
+										ldClient?.track(SIGN_UP_STARTED);
+										logLDMetricSent({ metricKey: SIGN_UP_STARTED });
 										router.push("/signup");
 									}}
 								>

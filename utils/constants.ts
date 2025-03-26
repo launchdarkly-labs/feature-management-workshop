@@ -30,6 +30,8 @@ export const BANK = "bank";
 export const ANTHROPIC = "anthropic";
 export const COHERE = "cohere";
 export const META = "meta";
+export const ANTHROPIC_CLAUDE = "Anthropic Claude";
+export const COHERE_CORAL = "Cohere Command";
 
 export const MOBILE = "Mobile";
 export const DESKTOP = "Desktop";

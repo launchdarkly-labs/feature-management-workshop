@@ -7,14 +7,15 @@ import { oldCheckingData } from "@/lib/oldCheckingData";
 import WealthManagementSheet from "@/components/ui/bankcomponents/wealthManagement";
 import { WealthManagementGraph } from "@/components/ui/bankcomponents/WealthManagementGraph";
 import Image from "next/image";
-import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
-import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
 import { motion } from "framer-motion";
 import { WealthManagementGraphDataType } from "@/utils/typescriptTypesInterfaceIndustry";
 import { FederatedCheckingAccount } from "@/components/ui/bankcomponents/federatedChecking";
 import { FederatedCreditAccount } from "@/components/ui/bankcomponents/federatedCredit";
 import WrapperMain from "../WrapperMain";
 import BankNav from "../NavComponent/BankNav";
+
+import bankDashboardBackgroundLeft from "@/public/banking/backgrounds/bank-dashboard-background-left.svg";
+import bankDashboardBackgroundRight from "@/public/banking/backgrounds/bank-dashboard-background-right.svg";
 
 export default function BankUserDashboard() {
 	const [loading, setLoading] = useState<boolean>(false);

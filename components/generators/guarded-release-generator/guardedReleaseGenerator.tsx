@@ -3,6 +3,8 @@ import { LDClient, useFlags, useLDClient } from "launchdarkly-react-client-sdk";
 import { randomLatency } from "@/utils/utils";
 import LoginContext from "@/utils/contexts/login";
 import { Beaker } from "lucide-react";
+import { TOGGLEBANK_API_GUARDED_RELEASE_LDFLAG_KEY, TOGGLEBANK_DB_GUARDED_RELEASE_LDFLAG_KEY } from "@/utils/flagConstants";
+import { STOCK_API_ERROR_RATES, RECENT_TRADES_DB_ERRORS,RECENT_TRADES_DB_LATENCY, STOCK_API_LATENCY } from "../experimentation-automation/experimentationConstants";
 
 
 const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:string}) => {
@@ -70,15 +72,15 @@ const GuardedReleaseGenerator = ({ flagKey, title }:{flagKey: string, title:stri
 		let errorMetric = "";
 		let latencyMetric = "";
 
-		if(flagKey === "togglebankAPIGuardedRelease"){
-			errorMetric = "stocks-api-error-rates";
-			latencyMetric = "stocks-api-latency";
+		if(flagKey === TOGGLEBANK_API_GUARDED_RELEASE_LDFLAG_KEY){
+			errorMetric = STOCK_API_ERROR_RATES;
+			latencyMetric = STOCK_API_LATENCY;
 			latency = isEnabled ? randomLatency(500, 600) : randomLatency(40, 50);
 			errorRate = isEnabled ? 75 : 25;
 		}
-		if(flagKey === "togglebankDBGuardedRelease"){
-			errorMetric = "recent-trades-db-errors";
-			latencyMetric = "recent-trades-db-latency";
+		if(flagKey === TOGGLEBANK_DB_GUARDED_RELEASE_LDFLAG_KEY){
+			errorMetric = RECENT_TRADES_DB_ERRORS;
+			latencyMetric = RECENT_TRADES_DB_LATENCY;
 			latency = isEnabled ? randomLatency(30, 45) : randomLatency(34, 43);
 			errorRate = isEnabled ? 15 : 15;
 		}

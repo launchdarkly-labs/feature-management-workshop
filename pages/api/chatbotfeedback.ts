@@ -12,6 +12,7 @@ import {
 import { LDClient, LDSingleKindContext } from "@launchdarkly/node-server-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { UserAIChatBotFeedbackResponseInterface } from "@/utils/typescriptTypesInterfaceIndustry";
+import { AI_CHATBOT_BAD_SERVICE,AI_CHATBOT_GOOD_SERVICE } from "@/components/generators/experimentation-automation/experimentationConstants";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -34,10 +35,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         );
         const { tracker }: { tracker: LDAIConfigTracker } = aiConfig;
 
-        if (feedback === "AI Chatbot Bad Service") {
+        if (feedback === AI_CHATBOT_BAD_SERVICE) {
             await tracker.trackFeedback({ kind: LDFeedbackKind.Negative });
         }
-        if (feedback === "AI chatbot good service") {
+        if (feedback === AI_CHATBOT_GOOD_SERVICE) {
             await tracker.trackFeedback({ kind: LDFeedbackKind.Positive });
         }
 

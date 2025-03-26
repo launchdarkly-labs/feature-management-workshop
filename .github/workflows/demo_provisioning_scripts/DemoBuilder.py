@@ -682,7 +682,7 @@ class DemoBuilder:
         res = self.ldproject.create_metric(
             "ai-chatbot-positive-feedback",
             "AI Chatbot Positive Feedback",
-            "AI chatbot good service",
+            "AI Chatbot Good Service",
             "This metric will track positive feedback given to AI Model used in chatbot for the good responses provided.",
             success_criteria="HigherThanBaseline",
             tags=["experiment"]

@@ -19,6 +19,8 @@ import {
 	COHERE,
 	ANTHROPIC,
 	DEFAULT_AI_MODEL,
+	ANTHROPIC_CLAUDE,
+	COHERE_CORAL,
 } from "@/utils/constants";
 import LiveLogsContext from "@/utils/contexts/LiveLogsContext";
 import { useIsMobile } from "../hooks/use-mobile";
@@ -32,6 +34,8 @@ import {
 import { useSidebar } from "../ui/sidebar";
 import { cn } from "@/utils/utils";
 import { motion } from "framer-motion";
+import { AI_CHATBOT_BAD_SERVICE,AI_CHATBOT_GOOD_SERVICE } from "../generators/experimentation-automation/experimentationConstants";
+import { AI_CONFIG_TOGGLEBOT_LDFLAG_KEY } from "@/utils/flagConstants";
 
 function ChatBotInterface({
 	cardRef,
@@ -44,8 +48,8 @@ function ChatBotInterface({
 }) {
 	const ldClient = useLDClient();
 	const aiNewModelChatbotFlag: AIModelInterface =
-		useFlags()["ai-config--togglebot"] ?? DEFAULT_AI_MODEL;
-	const aiConfigKey = "ai-config--togglebot";
+		useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY] ?? DEFAULT_AI_MODEL;
+	const aiConfigKey = AI_CONFIG_TOGGLEBOT_LDFLAG_KEY;
 	const { open } = useSidebar();
 
 	const [messages, setMessages] = useState<ChatBotMessageInterface[]>([]);
@@ -185,9 +189,9 @@ function ChatBotInterface({
 	};
 
 	const aiModelName = () => {
-		return aiNewModelChatbotFlag?.model?.name?.includes("cohere")
-			? "Cohere Command"
-			: "Anthropic Claude";
+		return aiNewModelChatbotFlag?.model?.name?.includes(COHERE)
+			? COHERE_CORAL
+			: ANTHROPIC_CLAUDE;
 	};
 
 	return (
@@ -253,7 +257,7 @@ function ChatBotInterface({
 									title="How was our service today?"
 									className="rounded-full bg-[#55efc4] text-gray-900 hover:bg-[#00b894] dark:bg-[#55efc4] dark:text-gray-900 dark:hover:bg-[#00b894]"
 									onClick={() => {
-										surveyResponseNotification("AI chatbot good service");
+										surveyResponseNotification(AI_CHATBOT_GOOD_SERVICE);
 									}}
 								>
 									<SmileIcon className="h-6 w-6" />
@@ -265,7 +269,7 @@ function ChatBotInterface({
 									title="How was our service today?"
 									className="rounded-full bg-[#ff7675] text-gray-50 hover:bg-[#d63031] dark:bg-[#ff7675] dark:text-gray-50 dark:hover:bg-[#d63031]"
 									onClick={() => {
-										surveyResponseNotification("AI Chatbot Bad Service");
+										surveyResponseNotification(AI_CHATBOT_BAD_SERVICE);
 									}}
 								>
 									<FrownIcon className="h-6 w-6" />
@@ -380,9 +384,9 @@ function ChatBotInterface({
 
 export default function Chatbot() {
 	const aiNewModelChatbotFlag: AIModelInterface =
-		useFlags()["ai-config--togglebot"] == undefined
+		useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY] == undefined
 			? DEFAULT_AI_MODEL
-			: useFlags()["ai-config--togglebot"];
+			: useFlags()[AI_CONFIG_TOGGLEBOT_LDFLAG_KEY];
 
 	const isMobile = useIsMobile();
 	const [isOpen, setIsOpen] = useState(false);

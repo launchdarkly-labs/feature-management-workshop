@@ -1,211 +1,151 @@
-
 import { wait } from "@/utils/utils";
+import {
+	SIGN_UP_STARTED,
+	INITIAL_SIGN_UP_COMPLETED,
+	SIGN_UP_PERSONAL_DETAIL_COMPLETED,
+	SIGNUP_COMPLETED,
+	BAYESIAN,
+	FREQUENTIST,
+	experimentTypeIterations,
+} from "./experimentationConstants";
+import { LDClient } from "launchdarkly-react-client-sdk";
+import { RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY } from "@/utils/flagConstants";
 
-const waitTime = 0.5;
+const NO_BANNER = "No Banner";
+const NEW_BANNER = "New Banner";
 
 const probablityExperimentTypeStoreHeader = {
-  ["bayesian"]: {
-    ["New Items"]: {
-      //control
-      metric1: 60,
-      metric2: 50,
-      metric3: 40,
-      metric4: 30,
-    },
-    ["Sale"]: {
-      // winner
-      metric1: 70,
-      metric2: 60,
-      metric3: 50,
-      metric4: 40,
-    },
-    ["Final Hours!"]: {
-      metric1: 50,
-      metric2: 40,
-      metric3: 30,
-      metric4: 20,
-    },
-  },
-  ["frequentist"]: {
-    ["New Items"]: {
-      //control
-      metric1: 66,
-      metric2: 56,
-      metric3: 46,
-      metric4: 36,
-    },
-    ["Sale"]: {
-      // winner
-      metric1: 70,
-      metric2: 60,
-      metric3: 50,
-      metric4: 40,
-    },
-    ["Final Hours!"]: {
-      metric1: 64,
-      metric2: 54,
-      metric3: 44,
-      metric4: 34,
-    },
-  },
+	[BAYESIAN]: {
+		[NO_BANNER]: {
+			//control
+			metric1: 60,
+			metric2: 50,
+			metric3: 40,
+			metric4: 30,
+		},
+		[NEW_BANNER]: {
+			// winner
+			metric1: 70,
+			metric2: 60,
+			metric3: 50,
+			metric4: 40,
+		},
+	},
+	[FREQUENTIST]: {
+		[NO_BANNER]: {
+			//control
+			metric1: 66,
+			metric2: 56,
+			metric3: 46,
+			metric4: 36,
+		},
+		[NEW_BANNER]: {
+			// winner
+			metric1: 70,
+			metric2: 60,
+			metric3: 50,
+			metric4: 40,
+		},
+	},
 };
 
-const probablityExperimentTypeShortenCollection = {
-  ["bayesian"]: {
-    ["old-long-collections-page"]: {
-      metric1: 50,
-      metric2: 40,
-      metric3: 20,
-    },
-    ["new-shorten-collections-page"]: {
-      //winner
-      metric1: 70,
-      metric2: 60,
-      metric3: 30,
-    },
-  },
-  ["frequentist"]: {
-    ["old-long-collections-page"]: {
-      metric1: 47,
-      metric2: 37,
-      metric3: 27,
-    },
-    ["new-shorten-collections-page"]: {
-      //winner
-      metric1: 50,
-      metric2: 40,
-      metric3: 30,
-    },
-  },
-};
-
-export const generateStoreHeaderFunnelExperimentResults = async ({
-  client,
-  updateContext,
-  setProgress,
-  setExpGenerator,
-  experimentTypeObj,
+export const generateSignUpFlowFunnelExperimentResults = async ({
+	client,
+	updateContext,
+	setProgress,
+	setIsGenerating,
+	setIsComplete,
+	experimentType,
+	setCurrentIteration,
+	stopRef,
+	setIsStopped
 }: {
-  client: any;
-  updateContext: UpdateContextFunction;
-  setProgress: React.Dispatch<React.SetStateAction<number>>;
-  setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
-  experimentTypeObj: { experimentType: string; numOfRuns: number };
+	client: LDClient | undefined;
+	updateContext: () => void;
+	setProgress: React.Dispatch<React.SetStateAction<number>>;
+	setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>;
+	setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
+	experimentType: string;
+	setCurrentIteration: React.Dispatch<React.SetStateAction<number>>;
+	stopRef: React.MutableRefObject<any>;
+	setIsStopped: React.Dispatch<React.SetStateAction<boolean>>;
 }): Promise<void> => {
-  setProgress(0);
-  let totalPrice = 0;
-  const experimentType: string = experimentTypeObj.experimentType;
+	setCurrentIteration(0);
+	setProgress(0);
+	setIsComplete(false);
+	setIsGenerating(true);
+	setIsStopped(false);
+	stopRef.current = false
 
-  for (let i = 0; i < experimentTypeObj.numOfRuns; i++) {
-    const flagVariation: string = client?.variation("storeAttentionCallout", "New Items");
-    if (flagVariation === "New Items") {
-      totalPrice = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
-    }
+	const totalIterations =
+		experimentTypeIterations[
+			experimentType as keyof typeof experimentTypeIterations
+		];
 
-    if (flagVariation === "Sale") { //winner
-      totalPrice = Math.floor(Math.random() * (500 - 300 + 1)) + 300;
-    }
-    if (flagVariation === "Final Hours!") {
-      totalPrice = Math.floor(Math.random() * (200 - 100 + 1)) + 100;
-    }
+	const flagVariation: string = client?.variation(
+		RELEASE_NEW_SIGNUP_PROMO_LDFLAG_KEY,
+		false
+	);
 
-    let stage1metric = Math.random() * 100;
+	//if true then control else winner
+	let variationName = "";
+	if (flagVariation) {
+		variationName = NEW_BANNER;
+	} else {
+		variationName = NO_BANNER;
+	}
 
-    const metricProbablityObj =
-      probablityExperimentTypeStoreHeader[
-        experimentType as keyof typeof probablityExperimentTypeStoreHeader
-      ];
-    const metricProbablity = metricProbablityObj[flagVariation as keyof typeof metricProbablityObj];
-    if (stage1metric < metricProbablity.metric1) {
-      await client?.track("store-accessed");
-      await client?.flush();
-      let stage2metric = Math.random() * 100;
+	const metricProbablityObj =
+		probablityExperimentTypeStoreHeader[
+			experimentType as keyof typeof probablityExperimentTypeStoreHeader
+		];
 
-      if (stage2metric < metricProbablity.metric2) {
-        await client?.track("item-added");
-        await client?.flush();
-        let stage3metric = Math.random() * 100;
+	const metricProbablity =
+		metricProbablityObj[variationName as keyof typeof metricProbablityObj];
 
-        if (stage3metric < metricProbablity.metric3) {
-          await client?.track("cart-accessed");
-          await client?.flush();
-          let stage4metric = Math.random() * 100;
+	for (let i = 1; i <= totalIterations; i++) {
+		if (stopRef.current) {
+			setIsComplete(true);
+			setIsGenerating(false);
+			break;
+		}
+		const stage1metric = Math.random() * 100;
 
-          if (stage4metric < metricProbablity.metric4) {
-            await client?.track("customer-checkout");
-            await client?.flush();
-            await client?.track("in-cart-total-price", undefined, totalPrice);
-            await client?.flush();
-          }
-        }
-      }
-    }
-    setProgress((prevProgress: number) => prevProgress + (1 / experimentTypeObj.numOfRuns) * 100);
-    await wait(waitTime);
-    await updateContext();
-  }
-  setExpGenerator(false);
-};
+		if (stage1metric < metricProbablity.metric1) {
+			await client?.track(SIGN_UP_STARTED);
+			await client?.flush();
+			const stage2metric = Math.random() * 100;
 
-export const generateShortenCollectionsPageFunnelExperimentResults = async ({
-  client,
-  updateContext,
-  setProgress,
-  setExpGenerator,
-  experimentTypeObj,
-}: {
-  client: any;
-  updateContext: UpdateContextFunction;
-  setProgress: React.Dispatch<React.SetStateAction<number>>;
-  setExpGenerator: React.Dispatch<React.SetStateAction<boolean>>;
-  experimentTypeObj: { experimentType: string; numOfRuns: number };
-}): Promise<void> => {
-  setProgress(0);
-  let totalPrice = 0;
+			if (stage2metric < metricProbablity.metric2) {
+				await client?.track(INITIAL_SIGN_UP_COMPLETED);
+				await client?.flush();
+				const stage3metric = Math.random() * 100;
 
-  const experimentType: string = experimentTypeObj.experimentType;
+				if (stage3metric < metricProbablity.metric3) {
+					await client?.track(SIGN_UP_PERSONAL_DETAIL_COMPLETED);
+					await client?.flush();
+					const stage4metric = Math.random() * 100;
 
-  for (let i = 0; i < experimentTypeObj.numOfRuns; i++) {
-    const flagVariation: string = client?.variation(
-      "release-new-shorten-collections-page",
-      "old-long-collections-page"
-    );
+					if (stage4metric < metricProbablity.metric4) {
+						await client?.track(SIGNUP_COMPLETED);
+						await client?.flush();
+					}
+				}
+			}
+		}
+		setCurrentIteration(i);
+		setProgress(
+			(prevProgress: number) => prevProgress + (1 / totalIterations) * 100
+		);
+		await wait(0.25);
 
-    const metricProbablityObj =
-      probablityExperimentTypeShortenCollection[
-        experimentType as keyof typeof probablityExperimentTypeShortenCollection
-      ];
-    const metricProbablity = metricProbablityObj[flagVariation as keyof typeof metricProbablityObj];
+		await client?.flush();
+		await updateContext();
 
-    if (flagVariation === "old-long-collections-page") {
-      totalPrice = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
-    }
-    if (flagVariation === "new-shorten-collections-page") {
-      totalPrice = Math.floor(Math.random() * (500 - 300 + 1)) + 300;
-    }
-
-    let stage1metric = Math.random() * 100;
-
-    if (stage1metric < metricProbablity.metric1) {
-      await client?.track("item-added");
-      await client?.flush();
-      let stage2metric = Math.random() * 100;
-
-      if (stage2metric < metricProbablity.metric2) {
-        await client?.track("cart-accessed");
-        await client?.flush();
-        let stage3metric = Math.random() * 100;
-
-        if (stage3metric < metricProbablity.metric3) {
-          await client?.track("customer-checkout");
-          await client?.flush();
-          client?.track("in-cart-total-price", undefined, totalPrice);
-        }
-      }
-    }
-    setProgress((prevProgress: number) => prevProgress + (1 / experimentTypeObj.numOfRuns) * 100);
-    await wait(waitTime);
-    await updateContext();
-  }
-  setExpGenerator(false);
+		// If this is the last iteration, mark as complete
+		if (i === totalIterations) {
+			setIsComplete(true);
+			setIsGenerating(false);
+		}
+	}
 };
