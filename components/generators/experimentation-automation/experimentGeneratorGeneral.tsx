@@ -76,40 +76,43 @@ export default function ExperimentGenerator({
 				</DialogTrigger>
 				<DialogContent>
 					<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
-						<h2>{title}</h2>
-						<div className="flex gap-x-4">
-							<button
-								onClick={async () => {
-									const bayesianExperimentTypeObj = {
-										experimentType: "bayesian",
-										numOfRuns: 500,
-									};
-									await setExperimentTypeObj(bayesianExperimentTypeObj);
-									runGenerator({ flagKey, experimentType: BAYESIAN });
-								}}
-								className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
-							>
-								Bayesian Experimentation
-							</button>
+						<span className="text-center">{title}</span>
+						<div className="flex flex-col gap-x-4 w-full">
+							{!isGenerating && (
+								<div className="flex gap-x-4 w-full">
+									<Button
+										onClick={async () => {
+											const bayesianExperimentTypeObj = {
+												experimentType: "bayesian",
+												numOfRuns: 500,
+											};
+											await setExperimentTypeObj(bayesianExperimentTypeObj);
+											runGenerator({ flagKey, experimentType: BAYESIAN });
+										}}
+										disabled={isGenerating}
+										className={` w-full ${"bg-gradient-airways"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+									>
+										Start Bayesian Experiment Generator
+									</Button>
+									<Button
+										onClick={async () => {
+											const frequentistExperimentTypeObj = {
+												experimentType: "frequentist",
+												numOfRuns: 10000,
+											};
+											await setExperimentTypeObj(frequentistExperimentTypeObj);
+											runGenerator({ flagKey, experimentType: FREQUENTIST });
+										}}
+										disabled={isGenerating}
+										className={` w-full ${"bg-gradient-experimentation"} h-full p-2 text-lg rounded-sm hover:brightness-125 text-white`}
+									>
+										Start Frequentist Experiment Generator
+									</Button>
+								</div>
+							)}
 
-							<button
-								onClick={async () => {
-									const frequentistExperimentTypeObj = {
-										experimentType: "frequentist",
-										numOfRuns: 10000,
-									};
-									await setExperimentTypeObj(frequentistExperimentTypeObj);
-									runGenerator({ flagKey, experimentType: FREQUENTIST });
-								}}
-								className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
-							>
-								Frequentist Experimentation
-							</button>
-						</div>
-
-						{isGenerating && (
-							<div className="flex justify-center items-center h-52">
-								<div className=" font-sohne justify-center items-center text-center">
+							{isGenerating && (
+								<div className="">
 									<div className="mb-4 font-bold text-lg">
 										<span>
 											Generating Data{" "}
@@ -140,26 +143,20 @@ export default function ExperimentGenerator({
 											{experimentTypeObj.numOfRuns}
 										</span>
 									</div>
-
-									<Button
-										onClick={() => {}}
-										disabled={isGenerating}
-										className="w-full"
-									>
-										{isGenerating ? (
-											<>
-												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-												Generating...
-											</>
-										) : isComplete ? (
-											"Generate Again"
-										) : (
-											"Start Generator"
-										)}
-									</Button>
 								</div>
-							</div>
-						)}
+							)}
+
+							{isGenerating && (
+								<Button disabled={isGenerating} className="w-full">
+									{isGenerating && (
+										<>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Generating...
+										</>
+									)}
+								</Button>
+							)}
+						</div>
 					</div>
 				</DialogContent>
 			</Dialog>

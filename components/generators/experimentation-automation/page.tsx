@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Loader2 } from "lucide-react"
+import { Loader2, Clock } from "lucide-react"
 
 export default function GeneratorPage() {
   const [progress, setProgress] = useState(0)
@@ -16,6 +16,42 @@ export default function GeneratorPage() {
   const [isStopped, setIsStopped] = useState(false)
   const stopRef = useRef(false)
 
+  // Time tracking
+  const startTimeRef = useRef<number | null>(null)
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState(0)
+  const [iterationsPerSecond, setIterationsPerSecond] = useState(0)
+
+  // Update time calculations every 100ms during generation
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null
+
+    if (isGenerating && startTimeRef.current) {
+      intervalId = setInterval(() => {
+        // Calculate elapsed time
+        const currentTime = Date.now()
+        const elapsed = Math.floor((currentTime - startTimeRef.current!) / 1000)
+        setElapsedTime(elapsed)
+
+        // Calculate iterations per second
+        const ips = elapsed > 0 ? currentIteration / elapsed : 0
+        setIterationsPerSecond(ips)
+
+        // Calculate estimated time remaining
+        if (currentIteration > 0) {
+          const timePerIteration = elapsed / currentIteration
+          const remainingIterations = totalIterations - currentIteration
+          const remaining = timePerIteration * remainingIterations
+          setEstimatedTimeRemaining(Math.ceil(remaining))
+        }
+      }, 100)
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [isGenerating, currentIteration, totalIterations])
+
   const startGenerator = async () => {
     // Reset states
     setProgress(0)
@@ -24,6 +60,12 @@ export default function GeneratorPage() {
     setIsGenerating(true)
     setIsStopped(false)
     stopRef.current = false
+
+    // Reset time tracking
+    startTimeRef.current = Date.now()
+    setElapsedTime(0)
+    setEstimatedTimeRemaining(0)
+    setIterationsPerSecond(0)
 
     // Simulate 500 iterations with progress updates
     for (let i = 1; i <= totalIterations; i++) {
@@ -48,6 +90,14 @@ export default function GeneratorPage() {
   const stopGenerator = () => {
     stopRef.current = true
     setIsStopped(true)
+  }
+
+  // Format time in MM:SS format
+  const formatTime = (seconds: number): string => {
+    if (seconds === Number.POSITIVE_INFINITY || isNaN(seconds)) return "00:00"
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`
   }
 
   return (
@@ -75,6 +125,38 @@ export default function GeneratorPage() {
               Iterations: {currentIteration}/{totalIterations}
             </span>
             <span>{progress}%</span>
+          </div>
+
+          {/* Time estimation section */}
+          <div className="bg-muted/50 rounded-lg p-3 space-y-2">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Clock className="h-4 w-4" />
+              <span>Time Estimation</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <span className="text-muted-foreground">Elapsed:</span>
+                <span className="ml-2 font-mono">{formatTime(elapsedTime)}</span>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Remaining:</span>
+                <span className="ml-2 font-mono">{isGenerating ? formatTime(estimatedTimeRemaining) : "00:00"}</span>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Total Est:</span>
+                <span className="ml-2 font-mono">
+                  {isGenerating
+                    ? formatTime(elapsedTime + estimatedTimeRemaining)
+                    : isComplete
+                      ? formatTime(elapsedTime)
+                      : "00:00"}
+                </span>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Speed:</span>
+                <span className="ml-2 font-mono">{iterationsPerSecond.toFixed(1)}/s</span>
+              </div>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex gap-2">
