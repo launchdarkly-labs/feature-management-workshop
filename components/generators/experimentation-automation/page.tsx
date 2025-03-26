@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,6 +13,8 @@ export default function GeneratorPage() {
   const [isComplete, setIsComplete] = useState(false)
   const [currentIteration, setCurrentIteration] = useState(0)
   const totalIterations = 500
+  const [isStopped, setIsStopped] = useState(false)
+  const stopRef = useRef(false)
 
   const startGenerator = async () => {
     // Reset states
@@ -20,9 +22,17 @@ export default function GeneratorPage() {
     setCurrentIteration(0)
     setIsComplete(false)
     setIsGenerating(true)
+    setIsStopped(false)
+    stopRef.current = false
 
     // Simulate 500 iterations with progress updates
     for (let i = 1; i <= totalIterations; i++) {
+      // Check if stopped
+      if (stopRef.current) {
+        setIsGenerating(false)
+        break
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 10)) // Simulate work
       setCurrentIteration(i)
       setProgress(Math.floor((i / totalIterations) * 100))
@@ -33,6 +43,11 @@ export default function GeneratorPage() {
         setIsGenerating(false)
       }
     }
+  }
+
+  const stopGenerator = () => {
+    stopRef.current = true
+    setIsStopped(true)
   }
 
   return (
@@ -46,10 +61,10 @@ export default function GeneratorPage() {
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Progress</span>
               <Badge
-                variant={isComplete ? "success" : "outline"}
-                className={isComplete ? "bg-green-500 hover:bg-green-600" : ""}
+                variant={isComplete ? "success" : isStopped ? "destructive" : "outline"}
+                className={isComplete ? "bg-green-500 hover:bg-green-600" : isStopped ? "bg-destructive" : ""}
               >
-                {isComplete ? "Complete" : `${progress}%`}
+                {isComplete ? "Complete" : isStopped ? "Stopped" : `${progress}%`}
               </Badge>
             </div>
             <Progress value={progress} className="h-2" />
@@ -62,19 +77,22 @@ export default function GeneratorPage() {
             <span>{progress}%</span>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button onClick={startGenerator} disabled={isGenerating} className="w-full">
-            {isGenerating ? (
-              <>
+        <CardFooter className="flex gap-2">
+          {isGenerating ? (
+            <>
+              <Button onClick={stopGenerator} variant="destructive" className="w-1/2">
+                Stop
+              </Button>
+              <Button disabled className="w-1/2">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Generating...
-              </>
-            ) : isComplete ? (
-              "Generate Again"
-            ) : (
-              "Start Generator"
-            )}
-          </Button>
+              </Button>
+            </>
+          ) : (
+            <Button onClick={startGenerator} className="w-full">
+              {isComplete ? "Generate Again" : isStopped ? "Resume Generator" : "Start Generator"}
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>

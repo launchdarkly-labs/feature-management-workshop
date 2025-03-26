@@ -8,6 +8,10 @@ import { Beaker, FlaskConical } from "lucide-react";
 import { useLDClientError } from "launchdarkly-react-client-sdk";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import { BAYESIAN, FREQUENTIST } from "./experimentationConstants";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ExperimentGenerator({
 	title,
@@ -71,55 +75,92 @@ export default function ExperimentGenerator({
 					<p className="font-bold font-sohnelight text-lg">{title}</p>
 				</DialogTrigger>
 				<DialogContent>
-					{isGenerating === false && (
-						<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
-							<h2>{title}</h2>
-							<div className="flex gap-x-4">
-								<button
-									onClick={async () => {
-										const bayesianExperimentTypeObj = {
-											experimentType: "bayesian",
-											numOfRuns: 500,
-										};
-										await setExperimentTypeObj(bayesianExperimentTypeObj);
-										runGenerator({ flagKey, experimentType: BAYESIAN });
-									}}
-									className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
-								>
-									Bayesian Experimentation
-								</button>
+					<div className="flex flex-col justify-center text-xl font-bold items-center h-full gap-y-4">
+						<h2>{title}</h2>
+						<div className="flex gap-x-4">
+							<button
+								onClick={async () => {
+									const bayesianExperimentTypeObj = {
+										experimentType: "bayesian",
+										numOfRuns: 500,
+									};
+									await setExperimentTypeObj(bayesianExperimentTypeObj);
+									runGenerator({ flagKey, experimentType: BAYESIAN });
+								}}
+								className={`mt-2 ${"bg-gradient-airways"} p-2 rounded-sm hover:brightness-125 text-white`}
+							>
+								Bayesian Experimentation
+							</button>
 
-								<button
-									onClick={async () => {
-										const frequentistExperimentTypeObj = {
-											experimentType: "frequentist",
-											numOfRuns: 10000,
-										};
-										await setExperimentTypeObj(frequentistExperimentTypeObj);
-										runGenerator({ flagKey, experimentType: FREQUENTIST });
-									}}
-									className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
-								>
-									Frequentist Experimentation
-								</button>
-							</div>
+							<button
+								onClick={async () => {
+									const frequentistExperimentTypeObj = {
+										experimentType: "frequentist",
+										numOfRuns: 10000,
+									};
+									await setExperimentTypeObj(frequentistExperimentTypeObj);
+									runGenerator({ flagKey, experimentType: FREQUENTIST });
+								}}
+								className={`mt-2 ${"bg-gradient-experimentation"} p-2 rounded-sm hover:brightness-125 text-white`}
+							>
+								Frequentist Experimentation
+							</button>
 						</div>
-					)}
-					{isGenerating && (
-						<div className="flex justify-center items-center h-52">
-							<div className=" font-bold font-sohne justify-center items-center text-xl text-center">
-								Generating Data{" "}
-								{capitalizeFirstLetter(experimentTypeObj.experimentType)}{" "}
-								Experimentation
-								<br />
-								Running {currentIteration}/{experimentTypeObj.numOfRuns} runs...
-								<br />
-								<div className="flex items-center mt-2 justify-center">
-									<p>{progress.toFixed(2)}% Complete</p>
+
+						{isGenerating && (
+							<div className="flex justify-center items-center h-52">
+								<div className=" font-sohne justify-center items-center text-center">
+									<div className="mb-4 font-bold text-lg">
+										<span>
+											Generating Data{" "}
+											{capitalizeFirstLetter(experimentTypeObj.experimentType)}{" "}
+											Experimentation
+										</span>
+									</div>
+
+									<div className="mb-2">
+										<div className="flex justify-between mb-2">
+											<span className="text-gray-500 text-sm font-normal">
+												Progress
+											</span>
+											<Badge
+												variant={isComplete ? "success" : "outline"}
+												className={
+													isComplete ? "bg-green-500 hover:bg-green-600" : ""
+												}
+											>
+												{isComplete ? "Complete" : `${progress.toFixed(2)}%`}
+											</Badge>
+										</div>
+										<Progress value={progress} className="h-2" />
+									</div>
+									<div className="flex items-center justify-start mb-4">
+										<span className="text-gray-500 text-sm font-normal">
+											Iterations: {currentIteration}/
+											{experimentTypeObj.numOfRuns}
+										</span>
+									</div>
+
+									<Button
+										onClick={() => {}}
+										disabled={isGenerating}
+										className="w-full"
+									>
+										{isGenerating ? (
+											<>
+												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+												Generating...
+											</>
+										) : isComplete ? (
+											"Generate Again"
+										) : (
+											"Start Generator"
+										)}
+									</Button>
 								</div>
 							</div>
-						</div>
-					)}
+						)}
+					</div>
 				</DialogContent>
 			</Dialog>
 		</>
