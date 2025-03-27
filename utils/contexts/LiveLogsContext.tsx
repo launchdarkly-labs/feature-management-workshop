@@ -14,19 +14,21 @@ const LiveLogsContext = createContext<{
 		metricKey: string;
 		metricValue?: number;
 	}) => void;
+	clearLiveLogs: () => void;
 }>({
 	liveLogs: [],
 	currentLDFlagEnvValues: [],
 	logLDMetricSent: () => {},
+	clearLiveLogs: () => {},
 });
 
 export default LiveLogsContext;
 
-
-
 export const LiveLogsProvider = ({ children }: { children: ReactNode }) => {
 	const [liveLogs, setLiveLogs] = useState<any[]>([]);
-	const [currentLDFlagEnvValues, setCurrentLDFlagEnvValues] = useState<[string, any][]>([]);
+	const [currentLDFlagEnvValues, setCurrentLDFlagEnvValues] = useState<
+		[string, any][]
+	>([]);
 	const allLDFlags = useFlags();
 	const ldClient = useLDClient();
 	const { appMultiContext } = useContext(LoginContext);
@@ -96,9 +98,18 @@ export const LiveLogsProvider = ({ children }: { children: ReactNode }) => {
 		});
 	};
 
+	const clearLiveLogs = () => {
+		setLiveLogs([]);
+	};
+
 	return (
 		<LiveLogsContext.Provider
-			value={{ liveLogs, currentLDFlagEnvValues, logLDMetricSent }}
+			value={{
+				liveLogs,
+				currentLDFlagEnvValues,
+				logLDMetricSent,
+				clearLiveLogs,
+			}}
 		>
 			{children}
 		</LiveLogsContext.Provider>

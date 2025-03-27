@@ -201,7 +201,7 @@ function ChatBotInterface({
 					ref={cardRef}
 					className={cn(
 						"relative lg:fixed lg:bottom-16 lg:right-0 lg:z-50 flex items-end justify-end p-0 lg:p-6 max-w-full",
-						open && "lg:right-[30vw]"
+						open && "right-0 lg:right-[30vw]"
 					)}
 				>
 					<Card className="w-full lg:max-w-md lg:mx-auto">
@@ -432,7 +432,7 @@ export default function Chatbot() {
 				transition={{ duration: 1.5 }}
 				className={cn(
 					"fixed bottom-4 right-4 z-10",
-					open && " right-[calc(30vw+1rem)]"
+					open && "lg:right-[calc(30vw+1rem)]"
 				)}
 			>
 				<Button
