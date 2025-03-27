@@ -93,9 +93,9 @@ export function AppSidebar() {
 									Clear Logs
 								</Button>
 							</div>
-							<div className="flex flex-col justify-center h-[20rem] sm:h-[40rem]">
+							<div className={`flex flex-col justify-center`}>
 								{liveLogs.length === 0 && (
-									<div className="flex flex-col items-center justify-center">
+									<div className="flex flex-col items-center justify-center h-[20rem] sm:h-[40rem]">
 										<div className="bg-gray-500 rounded-full flex items-center justify-center h-24 w-24 mb-2">
 											<File className="  text-white h-20 w-20 p-4" />
 										</div>
