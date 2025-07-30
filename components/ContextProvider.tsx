@@ -30,7 +30,7 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
             const FetchedProvider = await asyncWithLDProvider({
                 clientSideID: process.env.NEXT_PUBLIC_LD_CLIENT_KEY || "",
                 reactOptions: {
-                    useCamelCaseFlagKeys: true,
+                    useCamelCaseFlagKeys: false,
                 },
                 options: {
                     application: {
