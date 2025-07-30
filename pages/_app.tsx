@@ -27,13 +27,6 @@ if (typeof window !== "undefined") {
           <TelemetryProvider>
             <LoginProvider>
               <LiveLogsProvider>
-                <SidebarProvider
-                  defaultOpen={false}
-                  style={{
-                    "--sidebar-width": "30vw",
-                    "--sidebar-width-mobile": "100vw",
-                  }}
-                >
                   <SignupProvider>
                     <QuickCommandDialog>
                       <Head>
@@ -44,14 +37,8 @@ if (typeof window !== "undefined") {
                         <link rel="apple-touch-icon" href="/apple-icon.png" />
                       </Head>
                       <Component {...pageProps} />
-                      <AppSidebar />
-                      <SidebarTrigger
-                        className="bg-airlinedarkblue fixed bottom-4 left-4 h-12 w-12 hover:bg-airlinedarkblue z-10"
-                        title="Click to open sidebar to show server side calls"
-                      />
                     </QuickCommandDialog>
                   </SignupProvider>
-                </SidebarProvider>
               </LiveLogsProvider>
             </LoginProvider>
           </TelemetryProvider>

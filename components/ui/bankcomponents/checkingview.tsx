@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
     Sheet,
     SheetContent,
@@ -16,10 +15,10 @@ import {
     TableHeader,
     TableRow,
 } from "../table";
-import { useEffect, useState } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { CiMoneyCheck1 } from "react-icons/ci";
 import BankDashboardAccountCard from "./BankDashboardAccountCard";
+import { Button } from "@/components/ui/button";
 
 type Transaction = {
     id: number;
@@ -31,42 +30,112 @@ type Transaction = {
     user: string;
 };
 
+// Generate dates within the last 14 days from today
+function getRecentDate(daysAgo: number): string {
+    const d = new Date();
+    d.setDate(d.getDate() - daysAgo);
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+}
+
+// Fake data for checking account transactions, all within the last 2 weeks
+const transactions: Transaction[] = [
+    {
+        id: 1,
+        date: getRecentDate(0), // today
+        merchant: "Amazon",
+        status: "cleared",
+        amount: 129.99,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 2,
+        date: getRecentDate(1),
+        merchant: "Starbucks",
+        status: "cleared",
+        amount: 5.75,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 3,
+        date: getRecentDate(2),
+        merchant: "Apple",
+        status: "pending",
+        amount: 999.0,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 4,
+        date: getRecentDate(3),
+        merchant: "Target",
+        status: "cleared",
+        amount: 54.23,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 5,
+        date: getRecentDate(4),
+        merchant: "Shell Gas",
+        status: "cleared",
+        amount: 42.11,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 6,
+        date: getRecentDate(5),
+        merchant: "Netflix",
+        status: "cleared",
+        amount: 15.49,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 7,
+        date: getRecentDate(6),
+        merchant: "Uber",
+        status: "cleared",
+        amount: 23.80,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 8,
+        date: getRecentDate(7),
+        merchant: "Whole Foods",
+        status: "cleared",
+        amount: 87.65,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 9,
+        date: getRecentDate(8),
+        merchant: "Spotify",
+        status: "cleared",
+        amount: 9.99,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+    {
+        id: 10,
+        date: getRecentDate(9),
+        merchant: "CVS Pharmacy",
+        status: "cleared",
+        amount: 32.50,
+        accounttype: "checking",
+        user: "John Doe",
+    },
+];
+
 export function CheckingAccount() {
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-
     const { financialDBMigration, togglebankDBGuardedRelease } = useFlags();
-
-    async function getTransactions() {
-        const response = await fetch("/api/checkingdata");
-        let transactionsJson: Transaction[];
-        if (response.status == 200) {
-            const data = await response.json();
-            transactionsJson = data;
-        } else {
-            transactionsJson = [
-                {
-                    id: 0,
-                    date: "",
-                    merchant: "",
-                    status: "Server Error",
-                    amount: 0,
-                    accounttype: "",
-                    user: "",
-                },
-            ];
-        }
-
-        setTransactions(transactionsJson);
-        return transactionsJson;
-    }
-
-    useEffect(() => {
-        getTransactions();
-    }, [financialDBMigration]);
-
-    useEffect(() => {
-        getTransactions();
-    }, [togglebankDBGuardedRelease]);
 
     return (
         <Sheet>
@@ -105,7 +174,8 @@ export function CheckingAccount() {
                     <TableCaption>
                         <Button
                             className="flex rounded-none bg-blue-700 text-lg font-sohnelight"
-                            onClick={getTransactions}
+                            // No-op for fake data
+                            onClick={() => {}}
                         >
                             Refresh Data
                         </Button>

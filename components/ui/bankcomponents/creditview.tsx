@@ -19,45 +19,75 @@ import {
     TableHeader,
     TableRow,
 } from "../table";
-import { useEffect, useState } from "react";
-import { TransactionInterface } from "@/utils/typescriptTypesInterfaceIndustry";
 import BankDashboardAccountCard from "./BankDashboardAccountCard";
+
+// Helper to format date as MM/DD/YYYY
+function formatDate(date: Date) {
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const yyyy = date.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+}
+
+// Generate dates within the last 2 weeks
+const today = new Date();
+const daysAgo = (n: number) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - n);
+    return formatDate(d);
+};
+
+// Fake data for credit account transactions, all within the last 2 weeks
+const creditTransactions = [
+    {
+        id: 1,
+        date: daysAgo(1), // yesterday
+        merchant: "Delta Airlines",
+        status: "cleared",
+        amount: 450.0,
+        accounttype: "credit",
+        user: "John Doe",
+    },
+    {
+        id: 2,
+        date: daysAgo(3),
+        merchant: "Whole Foods",
+        status: "cleared",
+        amount: 123.45,
+        accounttype: "credit",
+        user: "John Doe",
+    },
+    {
+        id: 3,
+        date: daysAgo(5),
+        merchant: "Netflix",
+        status: "pending",
+        amount: 19.99,
+        accounttype: "credit",
+        user: "John Doe",
+    },
+    {
+        id: 4,
+        date: daysAgo(8),
+        merchant: "Apple Store",
+        status: "cleared",
+        amount: 999.0,
+        accounttype: "credit",
+        user: "John Doe",
+    },
+    {
+        id: 5,
+        date: daysAgo(13),
+        merchant: "Shell Gas",
+        status: "cleared",
+        amount: 62.3,
+        accounttype: "credit",
+        user: "John Doe",
+    },
+];
 
 export function CreditAccount() {
     const { financialDBMigration, togglebankDBGuardedRelease } = useFlags();
-    const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
-
-    async function getTransactions() {
-        const response = await fetch("/api/creditdata");
-        let transactionsJson: TransactionInterface[];
-        if (response.status == 200) {
-            const data = await response?.json();
-
-            transactionsJson = data;
-        } else {
-            transactionsJson = [
-                {
-                    id: 0,
-                    date: "",
-                    merchant: "",
-                    status: "Server Error",
-                    amount: 0,
-                    accounttype: "",
-                    user: "",
-                },
-            ];
-        }
-        setTransactions(transactionsJson);
-        return transactionsJson;
-    }
-
-    useEffect(() => {
-        getTransactions();
-    }, [financialDBMigration]);
-
-    useEffect(() => {
-        getTransactions();
-    }, [togglebankDBGuardedRelease]);
 
     return (
         <Sheet>
@@ -97,19 +127,24 @@ export function CreditAccount() {
                     <TableCaption>A list of your recent credit transactions.</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Invoice</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead>Merchant</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Method</TableHead>
                             <TableHead className="text-right">Amount</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {transactions.map((invoice, i) => (
+                        {creditTransactions.map((invoice, i) => (
                             <TableRow key={i}>
                                 <TableCell className="font-medium">{invoice.date}</TableCell>
                                 <TableCell>{invoice.merchant}</TableCell>
                                 <TableCell>{invoice.status}</TableCell>
-                                <TableCell className="text-right">{invoice.amount}</TableCell>
+                                <TableCell className="text-right">
+                                    {invoice.amount.toLocaleString("en-US", {
+                                        style: "currency",
+                                        currency: "USD",
+                                    })}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

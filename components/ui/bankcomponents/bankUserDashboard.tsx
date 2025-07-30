@@ -87,6 +87,56 @@ export default function BankUserDashboard() {
 			<WrapperMain>
 				<BankNav />
 
+				
+
+				<section
+					className={`w-full mb-8 mt-0 sm:mt-8 flex flex-col xl:flex-row font-sohne ${
+						federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
+					} px-2 sm:px-4 xl:px-8`}
+				>
+					<section
+						className={`w-full h-full ${
+							federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
+						} px-1 sm:px-2 xl:px-4`}
+					>
+						<SectionTitle text="Account Summary" textColor="text-blue-600" />
+
+						<CardRowWrapper>
+							<>
+								<MotionCardWrapper>
+									<CheckingAccount />
+								</MotionCardWrapper>
+								<MotionCardWrapper>
+									<CreditAccount />
+								</MotionCardWrapper>
+								<MotionCardWrapper>
+									<MorgtgageAccount />
+								</MotionCardWrapper>
+							</>
+						</CardRowWrapper>
+					</section>
+
+					{federatedAccounts && (
+						<section className={`w-full h-full xl:w-[40%] px-1 sm:px-2 xl:px-4`}>
+							<SectionTitle
+								text="Federated Account Access"
+								textColor="text-black"
+							/>
+
+							<CardRowWrapper>
+								<>
+									<MotionCardWrapper>
+										<FederatedCheckingAccount />
+									</MotionCardWrapper>
+									<MotionCardWrapper>
+										<FederatedCreditAccount />
+									</MotionCardWrapper>
+								</>
+							</CardRowWrapper>
+						</section>
+					)}
+				</section>
+
 				<section className="w-full mb-8 mt-0 sm:mt-8 ">
 					<SectionTitle
 						text="Wealth Management"
@@ -115,54 +165,6 @@ export default function BankUserDashboard() {
 							</section>
 						)}
 					</div>
-				</section>
-
-				<section
-					className={`flex flex-col xl:flex-row mb-8 font-sohne  ${
-						federatedAccounts ? "gap-y-8 sm:gap-x-8" : ""
-					}`}
-				>
-					<section
-						className={`w-full h-full ${
-							federatedAccounts ? "xl:w-[60%]" : "xl:w-full"
-						}  `}
-					>
-						<SectionTitle text="Account Summary" textColor="text-blue-600" />
-
-						<CardRowWrapper>
-							<>
-								<MotionCardWrapper>
-									<CheckingAccount />
-								</MotionCardWrapper>
-								<MotionCardWrapper>
-									<CreditAccount />
-								</MotionCardWrapper>
-								<MotionCardWrapper>
-									<MorgtgageAccount />
-								</MotionCardWrapper>
-							</>
-						</CardRowWrapper>
-					</section>
-
-					{federatedAccounts && (
-						<section className={`w-full h-full xl:w-[40%] `}>
-							<SectionTitle
-								text="Federated Account Access"
-								textColor="text-black"
-							/>
-
-							<CardRowWrapper>
-								<>
-									<MotionCardWrapper>
-										<FederatedCheckingAccount />
-									</MotionCardWrapper>
-									<MotionCardWrapper>
-										<FederatedCreditAccount />
-									</MotionCardWrapper>
-								</>
-							</CardRowWrapper>
-						</section>
-					)}
 				</section>
 
 				<section className="flex flex-col lg:flex-row w-full h-full gap-y-8 sm:gap-x-8 justify-between">
